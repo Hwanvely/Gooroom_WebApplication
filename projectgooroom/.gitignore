@@ -38,3 +38,6 @@ out/
 
 ## 테스트폴더 무시
 test/
+
+## OAuth2.0
+/src/main/resources/application-oauth.yml
