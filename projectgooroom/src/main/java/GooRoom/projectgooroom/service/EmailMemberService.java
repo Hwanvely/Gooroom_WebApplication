@@ -40,7 +40,7 @@ public class EmailMemberService {
                 .email(memberDto.getEmail())
                 .gender(memberDto.getGender())
                 .password(passwordEncoder.encode(memberDto.getPassword()))
-                .phoneNumber(memberDto.getPhoneNumber())
+                .mobile(memberDto.getMobile())
                 .nickname(memberDto.getNickname())
                 .loginType(LoginType.EMAIL)
                 .role(Role.USER)

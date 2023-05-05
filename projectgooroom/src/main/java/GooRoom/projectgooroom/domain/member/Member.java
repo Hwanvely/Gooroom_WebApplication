@@ -17,11 +17,6 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private LoginType loginType;
-
-    private String socialId;
-
     private String refreshToken;
 
     @NotNull
@@ -40,12 +35,24 @@ public class Member {
     private String email;
 
     @NotNull
-    private String phoneNumber;
+    private String mobile;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private LocalDate birth;
+    private String birthday;
+
+    private String birthyear;
+
+    @Enumerated(EnumType.STRING)
+    private LoginType loginType; // KAKAO, NAVER, GOOGLE
+
+    private String socialId;
+
+    // 유저 권한 설정 메소드
+    public void authorizeUser() {
+        this.role = Role.USER;
+    }
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
     private MemberInformation memberInformation;
