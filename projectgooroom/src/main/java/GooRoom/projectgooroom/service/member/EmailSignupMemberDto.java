@@ -19,7 +19,6 @@ public class EmailSignupMemberDto {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Gender gender;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private String birth;
+    private String birthyear;
+    private String birthday;
 }
