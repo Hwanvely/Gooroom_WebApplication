@@ -46,6 +46,6 @@ public class MemberService {
 
     private void validateDuplicateMember(EmailSignupMemberDto memberDto) {
         if(!memberRepository.findMemberByEmail(memberDto.getEmail()).isEmpty())
-            throw new MemberException(MemberExceptionType.ALREADY_EXIST_USEREMAIL);
+            throw new MemberException(MemberExceptionType.ALREADY_EXIST_USER_EMAIL);
     }
 }
