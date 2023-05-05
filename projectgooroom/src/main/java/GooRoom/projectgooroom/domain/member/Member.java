@@ -3,6 +3,7 @@ package GooRoom.projectgooroom.domain.member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
@@ -52,5 +53,17 @@ public class Member {
 
     public void updateRefreshToken(String updateRefreshToken){
         this.refreshToken = updateRefreshToken;
+    }
+
+    public void passwordEncode(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(this.password);
+    }
+
+    public void updatePassword(PasswordEncoder passwordEncoder, String updatePassword){
+        this.password = passwordEncoder.encode(updatePassword);
+    }
+
+    public void updateNickname(String updateNickname){
+        this.nickname = updateNickname;
     }
 }

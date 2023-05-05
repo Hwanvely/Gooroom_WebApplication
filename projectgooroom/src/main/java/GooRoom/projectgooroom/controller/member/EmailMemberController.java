@@ -1,8 +1,8 @@
 package GooRoom.projectgooroom.controller.member;
 
 import GooRoom.projectgooroom.domain.member.Member;
-import GooRoom.projectgooroom.service.EmailSignupMemberDto;
-import GooRoom.projectgooroom.service.EmailMemberService;
+import GooRoom.projectgooroom.service.member.EmailSignupMemberDto;
+import GooRoom.projectgooroom.service.member.EmailMemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

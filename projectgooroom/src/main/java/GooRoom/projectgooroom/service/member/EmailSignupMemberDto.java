@@ -1,4 +1,4 @@
-package GooRoom.projectgooroom.service;
+package GooRoom.projectgooroom.service.member;
 
 import GooRoom.projectgooroom.domain.member.Gender;
 import com.fasterxml.jackson.annotation.JsonFormat;
