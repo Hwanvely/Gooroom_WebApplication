@@ -8,25 +8,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * 예외 발생 Handler
+ */
 @RestControllerAdvice
 @Slf4j
 public class ExceptionAdvice {
 
+    /**
+     * 커스텀 예외 발생시 처리
+     * @param exception
+     * @return
+     */
     @ExceptionHandler(BaseException.class)
     public ResponseEntity handleBaseEx(BaseException exception) {
-        log.error("BaseException errorMessage(): {}", exception.getExceptionType().getErrorMessage());
-        log.error("BaseException errorCode(): {}", exception.getExceptionType().getErrorCode());
+        log.error("CustomException errorMessage(): {}", exception.getExceptionType().getErrorMessage());
+        log.error("CustomException errorCode(): {}", exception.getExceptionType().getErrorCode());
 
         return new ResponseEntity(new ExceptionDto(exception.getExceptionType().getErrorCode()), exception.getExceptionType().getHttpStatus());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity handleMemberEx(Exception exception) {
-        exception.printStackTrace();
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-
+    /**
+     * 커스텀 예외 발생시 예외 코드 반환 DTO
+     */
     @Data
     @AllArgsConstructor
     static class ExceptionDto {

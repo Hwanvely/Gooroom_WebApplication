@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+/**
+ * 이메일 회원가입 시 DTO
+ */
 @Data
 public class EmailSignupMemberDto {
     private String name;

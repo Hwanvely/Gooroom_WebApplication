@@ -16,7 +16,7 @@ import java.time.LocalDate;
 class MemberServiceTest {
 
     @Autowired
-    private MemberService memberService;
+    private EmailMemberService memberService;
     @Autowired
     private MemberRepository memberRepository;
 
