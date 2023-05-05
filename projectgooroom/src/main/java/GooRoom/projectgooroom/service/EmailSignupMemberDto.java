@@ -21,5 +21,5 @@ public class EmailSignupMemberDto {
     private Gender gender;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birth;
+    private String birth;
 }

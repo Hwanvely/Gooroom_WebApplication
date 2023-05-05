@@ -18,6 +18,8 @@ spring:
     suffix: .html
     mode: LEGACYHTML5
     enabled: true
+  profiles:
+    include: oauth
 
 jwt:
   secretKey: U2ltcGxlQm9hcmQtSnVuc2VvLVNwcmluZ0Jvb3QtVXNpbmdTcHJpbmdTZWN1cml0eS0yMDIzLTA0LTA5LXN1bmRheS13aXRoLU1hY2tib29rQWlyLUFpcnBvZHNwcm8taXBob25lMTRwcm8taXBhZGFyaXI0Cg==

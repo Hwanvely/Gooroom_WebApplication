@@ -36,7 +36,7 @@ public class EmailMemberService {
 
         Member member = Member.builder()
                 .name(memberDto.getName())
-                .birth(memberDto.getBirth())
+                .birthday(memberDto.getBirth())
                 .email(memberDto.getEmail())
                 .gender(memberDto.getGender())
                 .password(passwordEncoder.encode(memberDto.getPassword()))
