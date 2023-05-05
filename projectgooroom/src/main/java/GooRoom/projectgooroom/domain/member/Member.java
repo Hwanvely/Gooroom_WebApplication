@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter @Setter
@@ -20,6 +20,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private LoginType loginType;
 
+    private String socialId;
+
     private String refreshToken;
 
     @NotNull
@@ -27,6 +29,9 @@ public class Member {
 
     @NotNull
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @NotNull
     private String name;
@@ -40,7 +45,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private LocalDateTime birth;
+    private LocalDate birth;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
     private MemberInformation memberInformation;
