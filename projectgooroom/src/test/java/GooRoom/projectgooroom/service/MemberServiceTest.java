@@ -3,6 +3,8 @@ package GooRoom.projectgooroom.service;
 import GooRoom.projectgooroom.domain.member.Member;
 import GooRoom.projectgooroom.exception.MemberException;
 import GooRoom.projectgooroom.repository.MemberRepository;
+import GooRoom.projectgooroom.service.member.EmailMemberService;
+import GooRoom.projectgooroom.service.member.EmailSignupMemberDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
