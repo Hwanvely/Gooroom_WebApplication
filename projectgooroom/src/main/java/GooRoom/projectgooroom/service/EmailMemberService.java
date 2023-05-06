@@ -8,6 +8,7 @@ import GooRoom.projectgooroom.exception.MemberExceptionType;
 import GooRoom.projectgooroom.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class EmailMemberService {
 
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -31,21 +33,24 @@ public class EmailMemberService {
      * @return Member 회원가입한 Member
      * @throws MemberException
      */
+    @Transactional
     public Member joinWithEmail(EmailSignupMemberDto memberDto) throws MemberException{
         validateDuplicateMember(memberDto);
 
         Member member = Member.builder()
                 .name(memberDto.getName())
-                .birthday(memberDto.getBirth())
+                .birthday(memberDto.getBirthday())
+                .birthyear(memberDto.getBirthyear())
                 .email(memberDto.getEmail())
                 .gender(memberDto.getGender())
-                .password(passwordEncoder.encode(memberDto.getPassword()))
+                .password(memberDto.getPassword())
                 .mobile(memberDto.getMobile())
                 .nickname(memberDto.getNickname())
                 .loginType(LoginType.EMAIL)
                 .role(Role.USER)
                 .build();
 
+        member.passwordEncode(passwordEncoder);
         memberRepository.save(member);
         return member;
     }

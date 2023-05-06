@@ -18,6 +18,7 @@ spring:
     suffix: .html
     mode: LEGACYHTML5
     enabled: true
+
   profiles:
     include: oauth
 

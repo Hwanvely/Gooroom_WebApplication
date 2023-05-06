@@ -2,6 +2,7 @@ package GooRoom.projectgooroom.login.handler;
 
 import GooRoom.projectgooroom.jwt.JwtService;
 import GooRoom.projectgooroom.repository.MemberRepository;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+
+import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,6 +25,15 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Value("${jwt.access.expiration}")
     private String accessTokenExpiration;
 
+    /**
+     * 로그인 성공시 JWT토큰 발급
+     * @param request the request which caused the successful authentication
+     * @param response the response
+     * @param authentication the <tt>Authentication</tt> object which was created during
+     * the authentication process.
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
@@ -32,13 +44,11 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken); // 응답 헤더에 AccessToken, RefreshToken 실어서 응답
 
         memberRepository.findMemberByEmail(email)
-                .ifPresent(user -> {
-                    user.updateRefreshToken(refreshToken);
-                    memberRepository.saveAndFlush(user);
+                .ifPresent(member -> {
+                    member.updateRefreshToken(refreshToken);
+                    memberRepository.saveAndFlush(member);
                 });
-        log.info("로그인에 성공하였습니다. 이메일 : {}", email);
-        log.info("로그인에 성공하였습니다. AccessToken : {}", accessToken);
-        log.info("발급된 AccessToken 만료 기간 : {}", accessTokenExpiration);
+        log.info("Login Success. email: ", email);
     }
 
     private String extractUsername(Authentication authentication) {

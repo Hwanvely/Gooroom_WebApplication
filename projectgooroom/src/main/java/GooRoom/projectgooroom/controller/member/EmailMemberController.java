@@ -25,7 +25,7 @@ public class EmailMemberController {
      * @param memberDto
      * @throws Exception 중복회원 가입시 예외
      */
-    @PostMapping("/users/email")
+    @PostMapping("/signup/email")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     public void createByEmail(@Valid @RequestBody EmailSignupMemberDto memberDto) throws Exception{
