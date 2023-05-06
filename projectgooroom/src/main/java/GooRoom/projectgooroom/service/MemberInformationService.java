@@ -35,7 +35,6 @@ public class MemberInformationService {
                 .wakeupTime(informationDto.getWakeupTime())
                 .organizeType(informationDto.getOrganizeType())
                 .cleanupType(informationDto.getCleanupType())
-                .profileImage(informationDto.getProfileImage())
                 .introduce(informationDto.getIntroduce())
                 .build();
         information.addMember(member);
@@ -49,4 +48,9 @@ public class MemberInformationService {
         memberInformation.editInformation(informationDto);
     }
 
+    @Transactional
+    public void addProfileImage(Long memberId, String filePath){
+        Member member = memberRepository.findMemberById(memberId).get();
+        member.getMemberInformation().addProfileImage(filePath);
+    }
 }

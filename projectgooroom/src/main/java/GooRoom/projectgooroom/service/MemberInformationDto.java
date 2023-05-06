@@ -13,8 +13,6 @@ import lombok.Data;
  */
 @Data
 public class MemberInformationDto {
-    private Member member;
-    private String profileImage;
     private Boolean smokingType;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)

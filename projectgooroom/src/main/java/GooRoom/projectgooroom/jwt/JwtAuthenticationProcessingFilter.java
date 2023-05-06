@@ -14,11 +14,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -122,7 +124,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 .ifPresent(accessToken -> jwtService.extractEmail(accessToken)
                         .ifPresent(email -> memberRepository.findMemberByEmail(email)
                                 .ifPresent(this::saveAuthentication)));
-
         filterChain.doFilter(request, response);
     }
 
@@ -147,7 +148,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             password = generateRandomPassword();
         }
 
-        UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
+        UserDetails userDetailsUser = User.builder()
                 .username(member.getEmail())
                 .password(password)
                 .roles(member.getRole().name())

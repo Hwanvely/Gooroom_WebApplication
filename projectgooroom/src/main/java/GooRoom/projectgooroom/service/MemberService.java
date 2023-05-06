@@ -64,6 +64,16 @@ public class MemberService {
     }
 
     /**
+     * email을 통한 Member 검색
+     * @param email
+     * @return
+     */
+    public Member findOneByEmail(String email){
+        return memberRepository.findMemberByEmail(email).get();
+    }
+
+
+    /**
      * Email 중복확인
      * @param memberDto
      */

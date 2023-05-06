@@ -36,22 +36,23 @@ public class MemberInformation {
     @Lob
     private String introduce;
 
-    ///연관관계 편의 메소드
-    public void addMember(Member member){
+    public void addMember(Member member) {
         this.member = member;
-        if(member.getMemberInformation()!=this){
-            member.setMemberInformation(this);
-        }
+        if(member.getMemberInformation()!=this)
+            member.addMemberInformation(this);
     }
 
-    public void editInformation(MemberInformationDto informationDto){
+    public void editInformation(MemberInformationDto informationDto) {
         this.smokingType = informationDto.getSmokingType();
         this.drinkingType = informationDto.getDrinkingType();
         this.sleepingHabitType = informationDto.getSleepingHabitType();
         this.wakeupTime = informationDto.getWakeupTime();
         this.organizeType = informationDto.getOrganizeType();
         this.cleanupType = informationDto.getCleanupType();
-        this.profileImage = informationDto.getProfileImage();
         this.introduce = informationDto.getIntroduce();
+    }
+
+    public void addProfileImage(String filePath){
+        this.profileImage = filePath;
     }
 }
