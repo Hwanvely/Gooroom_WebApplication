@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDate;
-
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -57,6 +55,14 @@ public class Member {
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
     private MemberInformation memberInformation;
+
+    ///연관관계 편의 메소드
+    public void addMemberInformation(MemberInformation information){
+        this.memberInformation = information;
+        if(information.getMember()!=this){
+            information.addMember(this);
+        }
+    }
 
     public void updateRefreshToken(String updateRefreshToken){
         this.refreshToken = updateRefreshToken;
