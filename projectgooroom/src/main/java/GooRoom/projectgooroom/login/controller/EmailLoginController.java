@@ -1,8 +1,8 @@
-package GooRoom.projectgooroom.controller.member;
+package GooRoom.projectgooroom.login.controller;
 
 import GooRoom.projectgooroom.domain.member.Member;
 import GooRoom.projectgooroom.service.EmailSignupMemberDto;
-import GooRoom.projectgooroom.service.EmailMemberService;
+import GooRoom.projectgooroom.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class EmailMemberController {
+public class EmailLoginController {
 
-    private final EmailMemberService memberService;
+    private final MemberService emailMemberService;
 
     /**
      * Email을 통한 회원가입
@@ -29,7 +29,7 @@ public class EmailMemberController {
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     public void createByEmail(@Valid @RequestBody EmailSignupMemberDto memberDto) throws Exception{
-        Member member = memberService.joinWithEmail(memberDto);
+        Member member = emailMemberService.joinWithEmail(memberDto);
         log.info("Create member by email: " +memberDto.getEmail());
     }
 }

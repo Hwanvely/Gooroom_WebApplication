@@ -8,7 +8,6 @@ import GooRoom.projectgooroom.exception.MemberExceptionType;
 import GooRoom.projectgooroom.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class EmailMemberService {
+public class MemberService {
 
 
     private final MemberRepository memberRepository;
@@ -65,6 +64,16 @@ public class EmailMemberService {
     }
 
     /**
+     * email을 통한 Member 검색
+     * @param email
+     * @return
+     */
+    public Member findOneByEmail(String email){
+        return memberRepository.findMemberByEmail(email).get();
+    }
+
+
+    /**
      * Email 중복확인
      * @param memberDto
      */
@@ -72,4 +81,5 @@ public class EmailMemberService {
         if(!memberRepository.findMemberByEmail(memberDto.getEmail()).isEmpty())
             throw new MemberException(MemberExceptionType.ALREADY_EXIST_USER_EMAIL);
     }
+
 }

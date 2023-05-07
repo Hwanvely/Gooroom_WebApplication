@@ -1,13 +1,15 @@
 package GooRoom.projectgooroom.domain.member;
 
+import GooRoom.projectgooroom.service.MemberInformationDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter @Setter
-@NotNull
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class MemberInformation {
 
     @Id @GeneratedValue
@@ -33,4 +35,24 @@ public class MemberInformation {
 
     @Lob
     private String introduce;
+
+    public void addMember(Member member) {
+        this.member = member;
+        if(member.getMemberInformation()!=this)
+            member.addMemberInformation(this);
+    }
+
+    public void editInformation(MemberInformationDto informationDto) {
+        this.smokingType = informationDto.getSmokingType();
+        this.drinkingType = informationDto.getDrinkingType();
+        this.sleepingHabitType = informationDto.getSleepingHabitType();
+        this.wakeupTime = informationDto.getWakeupTime();
+        this.organizeType = informationDto.getOrganizeType();
+        this.cleanupType = informationDto.getCleanupType();
+        this.introduce = informationDto.getIntroduce();
+    }
+
+    public void addProfileImage(String filePath){
+        this.profileImage = filePath;
+    }
 }

@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Date;
@@ -157,6 +158,7 @@ public class JwtService {
     /**
      * RefreshToken DB 저장(업데이트)
      */
+    @Transactional
     public void updateRefreshToken(String email, String refreshToken) {
         memberRepository.findMemberByEmail(email)
                 .ifPresentOrElse(

@@ -3,9 +3,10 @@ package GooRoom.projectgooroom.exception;
 import org.springframework.http.HttpStatus;
 
 public enum MemberExceptionType implements BaseExceptionType {
-    //회원가입, 로그인 시
+    //회원가입 시
     ALREADY_EXIST_USER_EMAIL(409, HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
-    WRONG_PASSWORD(401,HttpStatus.UNAUTHORIZED, "비밀번호가 잘못되었습니다."),
+    //로그인 실패 시
+    LOGIN_FAILURE(401,HttpStatus.NOT_FOUND, "등록되지 않은 이메일 또는 비밀번호를 잘못 입력했습니다."),
     NOT_FOUND_MEMBER(404, HttpStatus.NOT_FOUND, "회원 정보가 없습니다.");
 
 
