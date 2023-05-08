@@ -18,10 +18,10 @@ public class Member {
 
     private String refreshToken;
 
-//    //@notnull
+   //@notnull
     private String nickname;
 
-//    //@notnull
+  //@notnull
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -53,6 +53,11 @@ public class Member {
         this.role = Role.USER;
     }
 
+    //비밀번호 변경, 회원 탈퇴 시, 비밀번호를 확인하며, 이때 비밀번호의 일치여부를 판단하는 메서드입니다.
+    public boolean matchPassword(PasswordEncoder passwordEncoder, String checkPassword){
+        return passwordEncoder.matches(checkPassword, getPassword());
+    }
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
     private MemberInformation memberInformation;
 
@@ -74,6 +79,10 @@ public class Member {
 
     public void updatePassword(PasswordEncoder passwordEncoder, String updatePassword){
         this.password = passwordEncoder.encode(updatePassword);
+    }
+
+    public void updateMobile(String update_mobile) {
+        this.mobile = update_mobile;
     }
 
     public void updateNickname(String updateNickname){

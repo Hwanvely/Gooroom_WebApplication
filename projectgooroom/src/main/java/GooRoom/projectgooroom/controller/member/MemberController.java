@@ -3,9 +3,10 @@ package GooRoom.projectgooroom.controller.member;
 import GooRoom.projectgooroom.domain.member.Member;
 import GooRoom.projectgooroom.exception.MemberException;
 import GooRoom.projectgooroom.exception.MemberExceptionType;
-import GooRoom.projectgooroom.service.MemberInformationDto;
+import GooRoom.projectgooroom.service.dto.MemberInformationDto;
 import GooRoom.projectgooroom.service.MemberInformationService;
 import GooRoom.projectgooroom.service.MemberService;
+import GooRoom.projectgooroom.service.dto.MemberWithdrawDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberInformationService memberInformationService;
 
-    //프로필 사진 경로 지정
+    //프로필 사진 절대 경로 지정
     private static final String PROFILE_IMAGE_PATH = "/Users/junseo/Documents/Study/Gooroom_WebApplication/projectgooroom/src/main/resources/image/user/";
 
     /**
@@ -131,5 +132,11 @@ public class MemberController {
             file.transferTo(new File(path));
             memberInformationService.addProfileImage(member.getId(), path);
         }
+    }
+
+    @DeleteMapping("/users")
+    @ResponseStatus(HttpStatus.OK)
+    public void withdraw(@Valid @RequestBody MemberWithdrawDto memberWithdrawDto) throws Exception {
+        memberService.withdraw(memberWithdrawDto.checkPassword());
     }
 }

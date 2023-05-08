@@ -1,6 +1,6 @@
 package GooRoom.projectgooroom.domain.member;
 
-import GooRoom.projectgooroom.service.MemberInformationDto;
+import GooRoom.projectgooroom.service.dto.MemberInformationDto;
 import jakarta.persistence.*;
 import lombok.*;
 

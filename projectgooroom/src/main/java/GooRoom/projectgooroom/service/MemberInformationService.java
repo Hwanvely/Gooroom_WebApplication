@@ -4,6 +4,7 @@ import GooRoom.projectgooroom.domain.member.Member;
 import GooRoom.projectgooroom.domain.member.MemberInformation;
 import GooRoom.projectgooroom.repository.MemberInformationRepository;
 import GooRoom.projectgooroom.repository.MemberRepository;
+import GooRoom.projectgooroom.service.dto.MemberInformationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -7,7 +7,8 @@ public enum MemberExceptionType implements BaseExceptionType {
     ALREADY_EXIST_USER_EMAIL(409, HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
     //로그인 실패 시
     LOGIN_FAILURE(401,HttpStatus.NOT_FOUND, "등록되지 않은 이메일 또는 비밀번호를 잘못 입력했습니다."),
-    NOT_FOUND_MEMBER(404, HttpStatus.NOT_FOUND, "회원 정보가 없습니다.");
+    NOT_FOUND_MEMBER(404, HttpStatus.NOT_FOUND, "회원 정보가 없습니다."),
+    INVALIDATE_TOKEN(403, HttpStatus.FORBIDDEN, "만료된 토큰 또는 유효하지 않은 토큰입니다.");
 
 
     private int errorCode;

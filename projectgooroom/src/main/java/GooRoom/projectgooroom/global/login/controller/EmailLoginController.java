@@ -1,7 +1,7 @@
 package GooRoom.projectgooroom.global.login.controller;
 
 import GooRoom.projectgooroom.domain.member.Member;
-import GooRoom.projectgooroom.service.EmailSignupMemberDto;
+import GooRoom.projectgooroom.service.dto.EmailSignupMemberDto;
 import GooRoom.projectgooroom.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
