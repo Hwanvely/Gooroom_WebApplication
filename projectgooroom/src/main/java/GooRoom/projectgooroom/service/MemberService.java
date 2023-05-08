@@ -7,6 +7,7 @@ import GooRoom.projectgooroom.exception.MemberException;
 import GooRoom.projectgooroom.exception.MemberExceptionType;
 import GooRoom.projectgooroom.repository.MemberRepository;
 import GooRoom.projectgooroom.service.dto.EmailSignupDto;
+import GooRoom.projectgooroom.service.dto.MemberDto;
 import GooRoom.projectgooroom.service.dto.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,7 @@ public class MemberService {
                 .gender(emailSignupDto.gender())
                 .password(emailSignupDto.password())
                 .mobile(emailSignupDto.mobile())
-                .nickname(emailSignupDto.nickName())
+                .nickname(emailSignupDto.nickname())
                 .loginType(LoginType.EMAIL)
                 .role(Role.USER)
                 .build();
@@ -57,12 +58,13 @@ public class MemberService {
     }
 
     /**
-     * nickName, mobile 수정
+     * nickname, mobile 수정
      * @param memberUpdateDto
      */
+    @Transactional
     public void update(Long memberId, MemberUpdateDto memberUpdateDto) throws Exception{
         Member member = memberRepository.findMemberById(memberId).get();
-        memberUpdateDto.nickName().ifPresent(member::updateNickname);
+        memberUpdateDto.nickname().ifPresent(member::updateNickname);
         memberUpdateDto.mobile().ifPresent(member::updateMobile);
     }
 
@@ -70,6 +72,7 @@ public class MemberService {
      * 비밀번호 수정
      * @param checkPassword
      */
+    @Transactional
     public void updatePassword(Long memberId, String checkPassword, String toBePassword)throws Exception{
         Member member = memberRepository.findMemberById(memberId).get();
         if(!member.matchPassword(passwordEncoder, checkPassword)){
@@ -82,6 +85,7 @@ public class MemberService {
      * 회원탈퇴
      * @param checkPassword
      */
+    @Transactional
     public void withdraw(Long memberId, String checkPassword) throws Exception {
         Member member = memberRepository.findMemberById(memberId).get();
 
@@ -90,6 +94,24 @@ public class MemberService {
         }
 
         memberRepository.delete(member);
+    }
+
+    /**
+     * 회원 조회 by id (해당 id의 회원조회)
+     * @param memberId
+     */
+    public MemberDto getInfo(Long memberId) throws Exception {
+        Member member = memberRepository.findMemberById(memberId).get();
+        return new MemberDto(member);
+    }
+
+    /**
+     * 나의 정보 조회
+     * @param
+     */
+    public MemberDto getMyInfo(Long memberId) throws Exception {
+        Member member = memberRepository.findMemberById(memberId).get();
+        return new MemberDto(member);
     }
 
     /**

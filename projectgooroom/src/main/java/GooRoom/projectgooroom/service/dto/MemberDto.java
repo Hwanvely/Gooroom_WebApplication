@@ -29,13 +29,13 @@ public class MemberDto {
     private String birthday;
 
     @Builder
-    public MemberDto(String name, String nickname, String email, String mobile, Gender gender, String birthyear, String birthday) {
-        this.name = name;
-        this.nickname = nickname;
-        this.email = email;
-        this.mobile = mobile;
-        this.gender = gender;
-        this.birthyear = birthyear;
-        this.birthday = birthday;
+    public MemberDto(Member member) {
+        this.name = member.getName();
+        this.nickname = member.getNickname();
+        this.email = member.getEmail();
+        this.mobile = member.getMobile();
+        this.gender = member.getGender();
+        this.birthyear = member.getBirthyear();
+        this.birthday = member.getBirthday();
     }
 }

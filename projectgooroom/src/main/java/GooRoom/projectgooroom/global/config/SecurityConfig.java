@@ -2,6 +2,8 @@ package GooRoom.projectgooroom.global.config;
 
 import GooRoom.projectgooroom.global.jwt.JwtAuthenticationProcessingFilter;
 import GooRoom.projectgooroom.global.jwt.JwtService;
+import GooRoom.projectgooroom.global.jwt.handler.JwtAccessDenialHandler;
+import GooRoom.projectgooroom.global.jwt.handler.JwtAuthenticationEntryPoint;
 import GooRoom.projectgooroom.global.login.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import GooRoom.projectgooroom.global.login.handler.LoginFailureHandler;
 import GooRoom.projectgooroom.global.login.handler.LoginSuccessHandler;
@@ -38,6 +40,8 @@ public class SecurityConfig {
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final JwtAccessDenialHandler jwtAccessDenialHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,8 +61,8 @@ public class SecurityConfig {
                 .authorizeRequests()
 
                 // 아이콘, css, js 관련
-                // 기본 페이지, image, h2-console에 접근 가능
-                .requestMatchers("/","/images/**","/h2-console/**").permitAll()
+                // 기본 페이지, css, image, js 하위 폴더에 있는 자료들은 모두 접근 가능, h2-console에 접근 가능
+                .requestMatchers("/**","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**").permitAll()
                 .requestMatchers("/signup/**").permitAll() //회원가입 접근 가능
                 .requestMatchers("/login/**").permitAll()   //로그인 접근 가능
                 .anyRequest().authenticated()
@@ -68,6 +72,10 @@ public class SecurityConfig {
                 .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
                 .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
                 .userInfoEndpoint().userService(customOAuth2UserService); // customUserService 설정
+
+        http.exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDenialHandler);
 
         // 원래 스프링 시큐리티 필터 순서가 LogoutFilter 이후에 로그인 필터 동작
         // 따라서, LogoutFilter 이후에 우리가 만든 필터 동작하도록 설정
