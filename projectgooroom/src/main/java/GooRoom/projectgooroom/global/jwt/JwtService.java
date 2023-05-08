@@ -1,4 +1,4 @@
-package GooRoom.projectgooroom.jwt;
+package GooRoom.projectgooroom.global.jwt;
 
 
 import GooRoom.projectgooroom.exception.MemberException;

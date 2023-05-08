@@ -1,4 +1,4 @@
-package GooRoom.projectgooroom.ouath2.handler;
+package GooRoom.projectgooroom.global.ouath2.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

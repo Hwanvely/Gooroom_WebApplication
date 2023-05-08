@@ -1,9 +1,6 @@
 package GooRoom.projectgooroom.service;
 
-import GooRoom.projectgooroom.domain.member.CleanupType;
-import GooRoom.projectgooroom.domain.member.DrinkingType;
-import GooRoom.projectgooroom.domain.member.Member;
-import GooRoom.projectgooroom.domain.member.OrganizeType;
+import GooRoom.projectgooroom.domain.member.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Lob;
 import lombok.Data;
@@ -18,7 +15,7 @@ public class MemberInformationDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private DrinkingType drinkingType;
     private Boolean sleepingHabitType;
-    private int wakeupTime;
+    private WakeupType wakeupType;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private OrganizeType organizeType;

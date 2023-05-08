@@ -2,7 +2,6 @@ package GooRoom.projectgooroom.domain.member;
 
 import GooRoom.projectgooroom.service.MemberInformationDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -25,7 +24,8 @@ public class MemberInformation {
     @Enumerated(EnumType.STRING)
     private DrinkingType drinkingType;
     private Boolean sleepingHabitType;
-    private int wakeupTime;
+    @Enumerated(EnumType.STRING)
+    private WakeupType wakeupType;
 
     @Enumerated(EnumType.STRING)
     private OrganizeType organizeType;
@@ -46,7 +46,7 @@ public class MemberInformation {
         this.smokingType = informationDto.getSmokingType();
         this.drinkingType = informationDto.getDrinkingType();
         this.sleepingHabitType = informationDto.getSleepingHabitType();
-        this.wakeupTime = informationDto.getWakeupTime();
+        this.wakeupType = informationDto.getWakeupType();
         this.organizeType = informationDto.getOrganizeType();
         this.cleanupType = informationDto.getCleanupType();
         this.introduce = informationDto.getIntroduce();

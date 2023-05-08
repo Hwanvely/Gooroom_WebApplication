@@ -1,4 +1,4 @@
-package GooRoom.projectgooroom.login.filter;
+package GooRoom.projectgooroom.global.login.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

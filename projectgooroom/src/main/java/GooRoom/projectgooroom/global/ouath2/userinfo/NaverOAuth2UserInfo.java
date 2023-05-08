@@ -1,4 +1,4 @@
-package GooRoom.projectgooroom.ouath2.userinfo;
+package GooRoom.projectgooroom.global.ouath2.userinfo;
 
 import java.util.Map;
 

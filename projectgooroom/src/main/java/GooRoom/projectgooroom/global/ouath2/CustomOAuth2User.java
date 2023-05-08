@@ -1,4 +1,4 @@
-package GooRoom.projectgooroom.ouath2;
+package GooRoom.projectgooroom.global.ouath2;
 
 import GooRoom.projectgooroom.domain.member.Role;
 import lombok.Getter;

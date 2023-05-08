@@ -32,7 +32,7 @@ public class MemberInformationService {
                 .smokingType(informationDto.getSmokingType())
                 .drinkingType(informationDto.getDrinkingType())
                 .sleepingHabitType(informationDto.getSleepingHabitType())
-                .wakeupTime(informationDto.getWakeupTime())
+                .wakeupType(informationDto.getWakeupType())
                 .organizeType(informationDto.getOrganizeType())
                 .cleanupType(informationDto.getCleanupType())
                 .introduce(informationDto.getIntroduce())

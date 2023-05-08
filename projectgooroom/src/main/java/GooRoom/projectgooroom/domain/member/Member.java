@@ -18,22 +18,22 @@ public class Member {
 
     private String refreshToken;
 
-    @NotNull
+//    //@notnull
     private String nickname;
 
-    @NotNull
+//    //@notnull
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @NotNull
+    //@notnull
     private String name;
 
-    @NotNull
+    //@notnull
     private String email;
 
-    @NotNull
+    //@notnull
     private String mobile;
 
     @Enumerated(EnumType.STRING)

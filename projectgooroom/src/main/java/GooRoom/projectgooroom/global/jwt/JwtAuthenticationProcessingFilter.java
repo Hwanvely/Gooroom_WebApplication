@@ -1,4 +1,4 @@
-package GooRoom.projectgooroom.jwt;
+package GooRoom.projectgooroom.global.jwt;
 
 
 import GooRoom.projectgooroom.domain.member.Member;
@@ -20,7 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.Optional;
 import java.util.Random;
 
 /**

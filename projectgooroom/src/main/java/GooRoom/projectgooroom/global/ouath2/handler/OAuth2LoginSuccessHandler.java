@@ -1,8 +1,8 @@
-package GooRoom.projectgooroom.ouath2.handler;
+package GooRoom.projectgooroom.global.ouath2.handler;
 
 import GooRoom.projectgooroom.domain.member.Role;
-import GooRoom.projectgooroom.jwt.JwtService;
-import GooRoom.projectgooroom.ouath2.CustomOAuth2User;
+import GooRoom.projectgooroom.global.jwt.JwtService;
+import GooRoom.projectgooroom.global.ouath2.CustomOAuth2User;
 import GooRoom.projectgooroom.repository.MemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,14 +1,14 @@
-package GooRoom.projectgooroom.config;
+package GooRoom.projectgooroom.global.config;
 
-import GooRoom.projectgooroom.jwt.JwtAuthenticationProcessingFilter;
-import GooRoom.projectgooroom.jwt.JwtService;
-import GooRoom.projectgooroom.login.filter.CustomJsonUsernamePasswordAuthenticationFilter;
-import GooRoom.projectgooroom.login.handler.LoginFailureHandler;
-import GooRoom.projectgooroom.login.handler.LoginSuccessHandler;
-import GooRoom.projectgooroom.login.service.LoginService;
-import GooRoom.projectgooroom.ouath2.handler.OAuth2LoginFailureHandler;
-import GooRoom.projectgooroom.ouath2.handler.OAuth2LoginSuccessHandler;
-import GooRoom.projectgooroom.ouath2.service.CustomOAuth2UserService;
+import GooRoom.projectgooroom.global.jwt.JwtAuthenticationProcessingFilter;
+import GooRoom.projectgooroom.global.jwt.JwtService;
+import GooRoom.projectgooroom.global.login.filter.CustomJsonUsernamePasswordAuthenticationFilter;
+import GooRoom.projectgooroom.global.login.handler.LoginFailureHandler;
+import GooRoom.projectgooroom.global.login.handler.LoginSuccessHandler;
+import GooRoom.projectgooroom.global.login.service.LoginService;
+import GooRoom.projectgooroom.global.ouath2.handler.OAuth2LoginFailureHandler;
+import GooRoom.projectgooroom.global.ouath2.handler.OAuth2LoginSuccessHandler;
+import GooRoom.projectgooroom.global.ouath2.service.CustomOAuth2UserService;
 import GooRoom.projectgooroom.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +20,10 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -83,7 +82,7 @@ public class SecurityConfig {
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean

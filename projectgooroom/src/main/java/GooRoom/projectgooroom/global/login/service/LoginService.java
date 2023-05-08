@@ -1,4 +1,4 @@
-package GooRoom.projectgooroom.login.service;
+package GooRoom.projectgooroom.global.login.service;
 
 import GooRoom.projectgooroom.domain.member.Member;
 import GooRoom.projectgooroom.repository.MemberRepository;

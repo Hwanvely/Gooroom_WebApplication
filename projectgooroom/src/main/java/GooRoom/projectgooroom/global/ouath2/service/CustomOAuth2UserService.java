@@ -1,9 +1,9 @@
-package GooRoom.projectgooroom.ouath2.service;
+package GooRoom.projectgooroom.global.ouath2.service;
 
 import GooRoom.projectgooroom.domain.member.LoginType;
 import GooRoom.projectgooroom.domain.member.Member;
-import GooRoom.projectgooroom.ouath2.CustomOAuth2User;
-import GooRoom.projectgooroom.ouath2.OAuthAttributes;
+import GooRoom.projectgooroom.global.ouath2.CustomOAuth2User;
+import GooRoom.projectgooroom.global.ouath2.OAuthAttributes;
 import GooRoom.projectgooroom.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Map;
 
-import static GooRoom.projectgooroom.domain.member.LoginType.GOOGLE;
 import static GooRoom.projectgooroom.domain.member.LoginType.KAKAO;
 
 @Slf4j

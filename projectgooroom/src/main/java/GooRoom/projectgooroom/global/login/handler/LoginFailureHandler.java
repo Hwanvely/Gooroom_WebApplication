@@ -1,4 +1,4 @@
-package GooRoom.projectgooroom.login.handler;
+package GooRoom.projectgooroom.global.login.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package GooRoom.projectgooroom.login.controller;
+package GooRoom.projectgooroom.global.login.controller;
 
 import GooRoom.projectgooroom.domain.member.Member;
 import GooRoom.projectgooroom.service.EmailSignupMemberDto;

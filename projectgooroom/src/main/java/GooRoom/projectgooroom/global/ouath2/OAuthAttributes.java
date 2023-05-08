@@ -1,10 +1,10 @@
-package GooRoom.projectgooroom.ouath2;
+package GooRoom.projectgooroom.global.ouath2;
 
 import GooRoom.projectgooroom.domain.member.LoginType;
 import GooRoom.projectgooroom.domain.member.Member;
 import GooRoom.projectgooroom.domain.member.Role;
-import GooRoom.projectgooroom.ouath2.userinfo.NaverOAuth2UserInfo;
-import GooRoom.projectgooroom.ouath2.userinfo.OAuth2UserInfo;
+import GooRoom.projectgooroom.global.ouath2.userinfo.NaverOAuth2UserInfo;
+import GooRoom.projectgooroom.global.ouath2.userinfo.OAuth2UserInfo;
 import lombok.Builder;
 import lombok.Getter;
 
