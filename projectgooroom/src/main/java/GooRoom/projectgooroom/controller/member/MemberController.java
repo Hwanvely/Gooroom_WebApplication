@@ -136,7 +136,15 @@ public class MemberController {
 
     @DeleteMapping("/users")
     @ResponseStatus(HttpStatus.OK)
-    public void withdraw(@Valid @RequestBody MemberWithdrawDto memberWithdrawDto) throws Exception {
-        memberService.withdraw(memberWithdrawDto.checkPassword());
+    public void withdraw( @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody MemberWithdrawDto memberWithdrawDto) throws Exception {
+
+        if(userDetails == null)
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+
+        String email = userDetails.getUsername();
+        Member member = memberService.findOneByEmail(email);
+
+        memberService.withdraw(member.getId(), memberWithdrawDto.checkPassword());
     }
 }

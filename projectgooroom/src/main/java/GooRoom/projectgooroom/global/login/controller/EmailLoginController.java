@@ -1,7 +1,7 @@
 package GooRoom.projectgooroom.global.login.controller;
 
 import GooRoom.projectgooroom.domain.member.Member;
-import GooRoom.projectgooroom.service.dto.EmailSignupMemberDto;
+import GooRoom.projectgooroom.service.dto.EmailSignupDto;
 import GooRoom.projectgooroom.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +22,14 @@ public class EmailLoginController {
 
     /**
      * Email을 통한 회원가입
-     * @param memberDto
+     * @param emailSignupDto
      * @throws Exception 중복회원 가입시 예외
      */
     @PostMapping("/signup/email")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    public void createByEmail(@Valid @RequestBody EmailSignupMemberDto memberDto) throws Exception{
-        Member member = emailMemberService.joinWithEmail(memberDto);
-        log.info("Create member by email: " +memberDto.getEmail());
+    public void createByEmail(@Valid @RequestBody EmailSignupDto emailSignupDto) throws Exception{
+        Member member = emailMemberService.joinWithEmail(emailSignupDto);
+        log.info("Create member by email: " +emailSignupDto.email());
     }
 }
