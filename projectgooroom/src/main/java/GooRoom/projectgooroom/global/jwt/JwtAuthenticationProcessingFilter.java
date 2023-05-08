@@ -39,10 +39,10 @@ import java.util.Random;
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL_LOGIN = "/login/email"; // "/login/email"으로 들어오는 요청은 Filter 작동 X
-    private static final String NO_CHECK_URL_SIGNUP = "/signup/email"; // "/signup/email"으로 들어오는 요청은 Filter 작동 X
+    private static final String NO_CHECK_URL_LOGIN = "/login/"; // "/login/**"으로 들어오는 요청은 Filter 작동 X
+    private static final String NO_CHECK_URL_SIGNUP = "/signup/"; // "/signup/**"으로 들어오는 요청은 Filter 작동 X
 
-    private static final String NO_CHECK_URL_NAVER = "/"; // "/signup/email"으로 들어오는 요청은 Filter 작동 X
+    private static final String NO_CHECK_URL_NAVER = "/"; // "네이버 로그인"으로 들어오는 요청은 Filter 작동 X
 
 
 
@@ -56,17 +56,17 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().equals(NO_CHECK_URL_LOGIN)) {
-            filterChain.doFilter(request, response); // "/login/email" 요청이 들어오면, 다음 필터 호출
+        if (request.getRequestURI().startsWith(NO_CHECK_URL_LOGIN)) {
+            filterChain.doFilter(request, response); // "/login/**" 요청이 들어오면, 다음 필터 호출
             return; // return으로 이후 현재 필터 진행 막기 (안해주면 아래로 내려가서 계속 필터 진행시킴)
         }
-        if (request.getRequestURI().equals(NO_CHECK_URL_SIGNUP)) {
-            filterChain.doFilter(request, response); // "/signup/email" 요청이 들어오면, 다음 필터 호출
+        if (request.getRequestURI().startsWith(NO_CHECK_URL_SIGNUP)) {
+            filterChain.doFilter(request, response); // "/signup/**" 요청이 들어오면, 다음 필터 호출
             return; // return으로 이후 현재 필터 진행 막기 (안해주면 아래로 내려가서 계속 필터 진행시킴)
         }
 
         if (request.getRequestURI().equals(NO_CHECK_URL_NAVER)) {
-            filterChain.doFilter(request, response); // "/signup/email" 요청이 들어오면, 다음 필터 호출
+            filterChain.doFilter(request, response); // "네이버 로그인 접근" 요청이 들어오면, 다음 필터 호출
             return; // return으로 이후 현재 필터 진행 막기 (안해주면 아래로 내려가서 계속 필터 진행시킴)
         }
 
