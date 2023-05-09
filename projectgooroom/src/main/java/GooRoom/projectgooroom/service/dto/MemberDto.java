@@ -18,7 +18,6 @@ import java.io.Serial;
 public class MemberDto {
     private String name;
     private String nickname;
-    private String password;
     private String email;
     private String mobile;
 

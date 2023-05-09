@@ -1,10 +1,12 @@
 package GooRoom.projectgooroom.global.ouath2;
 
+import GooRoom.projectgooroom.domain.member.Gender;
 import GooRoom.projectgooroom.domain.member.LoginType;
 import GooRoom.projectgooroom.domain.member.Member;
 import GooRoom.projectgooroom.domain.member.Role;
 import GooRoom.projectgooroom.global.ouath2.userinfo.NaverOAuth2UserInfo;
 import GooRoom.projectgooroom.global.ouath2.userinfo.OAuth2UserInfo;
+import com.nimbusds.oauth2.sdk.util.StringUtils;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -64,9 +66,28 @@ public class OAuthAttributes {
         return Member.builder()
                 .loginType(loginType)
                 .socialId(oauth2UserInfo.getId())
-                .email(UUID.randomUUID() + "@socialUser.com")
+                .name(oauth2UserInfo.getName())
+                .email(oauth2UserInfo.getEmail())
                 .nickname(oauth2UserInfo.getNickname())
+                .gender(fromString(oauth2UserInfo.getGender()))
+                .birthday(oauth2UserInfo.getBirthDay())
+                .birthyear(oauth2UserInfo.getBirthYear())
+                .mobile(oauth2UserInfo.getMobile())
                 .role(Role.GUEST)
                 .build();
+    }
+
+    public static Gender fromString(String value) {
+        if (StringUtils.isBlank(value)) {
+            return null;
+        }
+        switch (value.toUpperCase()) {
+            case "M":
+                return Gender.MALE;
+            case "F":
+                return Gender.FEMALE;
+            default:
+                throw new IllegalArgumentException("Invalid gender value: " + value);
+        }
     }
 }

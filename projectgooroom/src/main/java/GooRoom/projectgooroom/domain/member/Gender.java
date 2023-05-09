@@ -3,8 +3,8 @@ package GooRoom.projectgooroom.domain.member;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Gender {
-    MALE("MALE"),
-    FEMALE("FEMALE");
+    MALE("M"),
+    FEMALE("F");
 
     private final String name;
 

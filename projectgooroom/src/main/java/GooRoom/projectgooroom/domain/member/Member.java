@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Getter @Setter
@@ -21,7 +22,7 @@ public class Member {
     @NotNull
     private String nickname;
 
-    @NotNull
+//    @NotNull
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -49,6 +50,7 @@ public class Member {
     private String socialId;
 
     // 유저 권한 설정 메소드
+    @Transactional
     public void authorizeUser() {
         this.role = Role.USER;
     }
