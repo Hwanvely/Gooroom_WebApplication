@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 public enum MemberExceptionType implements BaseExceptionType {
     //회원가입 시
     ALREADY_EXIST_USER_EMAIL(409, HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
+    ALREADY_EXIST_USER_NICKNAME(409, HttpStatus.CONFLICT, "이미 존재하는 닉네임입니다."),
     //로그인 실패 시
     LOGIN_FAILURE(401,HttpStatus.UNAUTHORIZED, "등록되지 않은 이메일 또는 비밀번호를 잘못 입력했습니다."),
     NOT_FOUND_MEMBER(401, HttpStatus.UNAUTHORIZED, "회원 정보가 없습니다."),

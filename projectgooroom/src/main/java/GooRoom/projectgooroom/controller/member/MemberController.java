@@ -1,6 +1,7 @@
 package GooRoom.projectgooroom.controller.member;
 
 import GooRoom.projectgooroom.domain.member.Member;
+import GooRoom.projectgooroom.domain.member.MemberInformation;
 import GooRoom.projectgooroom.exception.MemberException;
 import GooRoom.projectgooroom.exception.MemberExceptionType;
 import GooRoom.projectgooroom.service.dto.*;
@@ -10,7 +11,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,8 +50,46 @@ public class MemberController {
         Member member = memberService.joinWithEmail(emailSignupDto);
         log.info("Create member by email: " +emailSignupDto.email());
     }
+
     /**
-     * 회원정보수정
+     * 내 정보 조회
+     * @param userDetails
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/users")
+    public ResponseEntity getMyInfo(@AuthenticationPrincipal UserDetails userDetails,
+                                    HttpServletResponse response) throws Exception {
+
+        if(userDetails == null)
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+
+        String email = userDetails.getUsername();
+        Member member = memberService.findOneByEmail(email);
+
+
+        MemberDto info = memberService.getMyInfo(member.getId());
+        return new ResponseEntity(info, HttpStatus.OK);
+    }
+
+    /**
+     * 회원 정보 조회
+     * @param id(memberId)
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/users/{id}")
+    public ResponseEntity getInfo(@Valid @PathVariable("id") Long id) throws Exception {
+        MemberDto memberDto = memberService.getInfo(id);
+        return new ResponseEntity(memberDto, HttpStatus.OK);
+    }
+
+    /**
+     * 회원 정보 수정
+     * @param userDetails
+     * @param memberUpdateDto
+     * @throws Exception
      */
     @PutMapping("/users")
     @ResponseStatus(HttpStatus.OK)
@@ -60,25 +104,17 @@ public class MemberController {
 
         memberService.update(member.getId(),memberUpdateDto);
     }
+
     /**
-     * 비밀번호 수정
+     * 회원 삭제, MemberInformation 또한 삭제.
+     * @param userDetails
+     * @param memberWithdrawDto
+     * @throws Exception
      */
-    @PutMapping("/users/password")
-    @ResponseStatus(HttpStatus.OK)
-    public void updatePassword(@AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody UpdatePasswordDto updatePasswordDto) throws Exception {
-        if(userDetails == null)
-            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
-
-        String email = userDetails.getUsername();
-        Member member = memberService.findOneByEmail(email);
-
-        memberService.updatePassword(member.getId(),updatePasswordDto.checkPassword(),updatePasswordDto.toBePassword());
-    }
     @DeleteMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public void withdraw( @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody MemberWithdrawDto memberWithdrawDto) throws Exception {
+                          @Valid @RequestBody MemberWithdrawDto memberWithdrawDto) throws Exception {
 
         if(userDetails == null)
             throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
@@ -90,30 +126,15 @@ public class MemberController {
     }
 
     /**
-     * 회원정보조회
+     * nickname을 통한 MemberInformation 조회
+     * @param nickname
+     * @return
+     * @throws Exception
      */
-    @GetMapping("/users/{id}")
-    public ResponseEntity getInfo(@Valid @PathVariable("id") Long id) throws Exception {
-        MemberDto memberDto = memberService.getInfo(id);
-        return new ResponseEntity(memberDto, HttpStatus.OK);
-    }
-
-    /**
-     * 내정보조회
-     */
-    @GetMapping("/users")
-    public ResponseEntity getMyInfo(@AuthenticationPrincipal UserDetails userDetails,
-            HttpServletResponse response) throws Exception {
-
-        if(userDetails == null)
-            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
-
-        String email = userDetails.getUsername();
-        Member member = memberService.findOneByEmail(email);
-
-
-        MemberDto info = memberService.getMyInfo(member.getId());
-        return new ResponseEntity(info, HttpStatus.OK);
+    @GetMapping("/users/lifestyle/{nickname}")
+    public ResponseEntity getMemberInformation(@Valid @PathVariable("nickname") String nickname) throws Exception {
+        MemberInformationDto memberInformation = memberService.getMemberInformation(nickname);
+        return new ResponseEntity(memberInformation, HttpStatus.OK);
     }
 
     /**
@@ -137,6 +158,34 @@ public class MemberController {
         Long memberId = memberService.findOneByEmail(email).getId();
 
         memberInformationService.createMemberInformation(memberId, informationDto);
+    }
+
+    @GetMapping("/users/profileImage/{nickname}")
+    public ResponseEntity getProfileImage(@Valid @PathVariable("nickname") String nickname)throws IOException{
+        try{
+            MemberInformation memberInformation = memberService.findOneByNickname(nickname).getMemberInformation();
+            String profileImage = memberInformation.getProfileImage();
+            File image = new File(profileImage);
+            InputStream inputStream = new FileInputStream(image);
+            MediaType imageType;
+
+            if (image.getName().endsWith(".jpg") || image.getName().endsWith(".jpeg")) {
+                imageType = MediaType.IMAGE_JPEG;
+            } else if (image.getName().endsWith(".png")) {
+                imageType = MediaType.IMAGE_PNG;
+            } else {
+                throw new IllegalArgumentException("Unsupported image format");
+            }
+
+            // Response 헤더 설정
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(imageType);
+
+            return new ResponseEntity(new InputStreamResource(inputStream), headers, HttpStatus.OK);
+
+        }catch (Exception e){
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
@@ -217,5 +266,21 @@ public class MemberController {
             file.transferTo(new File(path));
             memberInformationService.addProfileImage(member.getId(), path);
         }
+    }
+
+    /**
+     * 비밀번호 수정
+     */
+    @PutMapping("/users/password")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePassword(@AuthenticationPrincipal UserDetails userDetails,
+                               @Valid @RequestBody UpdatePasswordDto updatePasswordDto) throws Exception {
+        if(userDetails == null)
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+
+        String email = userDetails.getUsername();
+        Member member = memberService.findOneByEmail(email);
+
+        memberService.updatePassword(member.getId(),updatePasswordDto.checkPassword(),updatePasswordDto.toBePassword());
     }
 }

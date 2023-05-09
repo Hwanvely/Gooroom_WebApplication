@@ -3,12 +3,13 @@ package GooRoom.projectgooroom.service.dto;
 import GooRoom.projectgooroom.domain.member.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Lob;
-import lombok.Data;
+import lombok.*;
 
 /**
  * MemberInformation 입력 DTO
  */
 @Data
+@Builder
 public class MemberInformationDto {
     private Boolean smokingType;
 

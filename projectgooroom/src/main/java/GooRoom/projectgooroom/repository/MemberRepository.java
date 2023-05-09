@@ -35,6 +35,13 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findMemberByEmail(String email);
 
     /**
+     * nickname으로 Member 검색
+     * @param nickname
+     * @return
+     */
+    Optional<Member> findMemberByNickname(String nickname);
+
+    /**
      * refreshToken으로 Member 검색
      * @param refreshToken
      * @return {@link Optional} containing the {@link Member}
