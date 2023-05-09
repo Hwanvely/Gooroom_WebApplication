@@ -155,9 +155,13 @@ public class MemberController {
             throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
 
         String email = member.getUsername();
-        Long memberId = memberService.findOneByEmail(email).getId();
+        Member findMember = memberService.findOneByEmail(email);
 
-        memberInformationService.createMemberInformation(memberId, informationDto);
+        if(findMember.getMemberInformation()!=null){
+            throw new MemberException(MemberExceptionType.ALREADY_EXIST_MEMBERINFORMATION);
+        }
+
+        memberInformationService.createMemberInformation(findMember.getId(), informationDto);
     }
 
     @GetMapping("/users/profileImage/{nickname}")
