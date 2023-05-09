@@ -73,6 +73,7 @@ public class OAuthAttributes {
                 .birthday(oauth2UserInfo.getBirthDay())
                 .birthyear(oauth2UserInfo.getBirthYear())
                 .mobile(oauth2UserInfo.getMobile())
+                .password(UUID.randomUUID().toString())
                 .role(Role.GUEST)
                 .build();
     }

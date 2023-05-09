@@ -8,7 +8,7 @@ public enum MemberExceptionType implements BaseExceptionType {
     //로그인 실패 시
     LOGIN_FAILURE(401,HttpStatus.UNAUTHORIZED, "등록되지 않은 이메일 또는 비밀번호를 잘못 입력했습니다."),
     NOT_FOUND_MEMBER(401, HttpStatus.UNAUTHORIZED, "회원 정보가 없습니다."),
-    INVALIDATE_TOKEN(401, HttpStatus.UNAUTHORIZED, "만료된 토큰 또는 유효하지 않은 토큰입니다.");
+    INVALIDATE_TOKEN(499, HttpStatus.UNAUTHORIZED, "만료된 토큰 또는 유효하지 않은 토큰입니다.");
 
 
     private int errorCode;
