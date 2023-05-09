@@ -50,18 +50,18 @@ public class Member {
     private String socialId;
 
     // 유저 권한 설정 메소드
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
+    private MemberInformation memberInformation;
+
     @Transactional
     public void authorizeUser() {
         this.role = Role.USER;
     }
-
     //비밀번호 변경, 회원 탈퇴 시, 비밀번호를 확인하며, 이때 비밀번호의 일치여부를 판단하는 메서드입니다.
+
     public boolean matchPassword(PasswordEncoder passwordEncoder, String checkPassword){
         return passwordEncoder.matches(checkPassword, getPassword());
     }
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
-    private MemberInformation memberInformation;
 
     ///연관관계 편의 메소드
     public void addMemberInformation(MemberInformation information){
