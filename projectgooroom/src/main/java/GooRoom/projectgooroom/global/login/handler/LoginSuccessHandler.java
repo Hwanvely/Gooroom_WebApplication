@@ -1,7 +1,7 @@
 package GooRoom.projectgooroom.global.login.handler;
 
 import GooRoom.projectgooroom.global.jwt.JwtService;
-import GooRoom.projectgooroom.repository.MemberRepository;
+import GooRoom.projectgooroom.member.repository.MemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

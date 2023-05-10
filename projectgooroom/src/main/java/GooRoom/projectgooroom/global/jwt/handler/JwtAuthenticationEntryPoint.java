@@ -1,6 +1,6 @@
 package GooRoom.projectgooroom.global.jwt.handler;
 
-import GooRoom.projectgooroom.exception.MemberExceptionType;
+import GooRoom.projectgooroom.global.exception.MemberExceptionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

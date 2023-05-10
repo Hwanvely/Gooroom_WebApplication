@@ -1,7 +1,7 @@
 package GooRoom.projectgooroom.global.login.service;
 
-import GooRoom.projectgooroom.domain.member.Member;
-import GooRoom.projectgooroom.repository.MemberRepository;
+import GooRoom.projectgooroom.member.domain.Member;
+import GooRoom.projectgooroom.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

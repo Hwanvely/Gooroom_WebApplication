@@ -1,8 +1,8 @@
 package GooRoom.projectgooroom.global.jwt;
 
 
-import GooRoom.projectgooroom.domain.member.Member;
-import GooRoom.projectgooroom.repository.MemberRepository;
+import GooRoom.projectgooroom.member.domain.Member;
+import GooRoom.projectgooroom.member.repository.MemberRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

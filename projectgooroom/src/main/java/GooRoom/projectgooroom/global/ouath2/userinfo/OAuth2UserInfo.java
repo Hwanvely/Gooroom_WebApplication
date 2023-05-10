@@ -1,7 +1,5 @@
 package GooRoom.projectgooroom.global.ouath2.userinfo;
 
-import GooRoom.projectgooroom.domain.member.Gender;
-
 import java.util.Map;
 
 public abstract class OAuth2UserInfo {
