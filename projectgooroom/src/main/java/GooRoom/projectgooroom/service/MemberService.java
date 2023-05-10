@@ -2,12 +2,14 @@ package GooRoom.projectgooroom.service;
 
 import GooRoom.projectgooroom.domain.member.LoginType;
 import GooRoom.projectgooroom.domain.member.Member;
+import GooRoom.projectgooroom.domain.member.MemberInformation;
 import GooRoom.projectgooroom.domain.member.Role;
 import GooRoom.projectgooroom.exception.MemberException;
 import GooRoom.projectgooroom.exception.MemberExceptionType;
 import GooRoom.projectgooroom.repository.MemberRepository;
 import GooRoom.projectgooroom.service.dto.EmailSignupDto;
 import GooRoom.projectgooroom.service.dto.MemberDto;
+import GooRoom.projectgooroom.service.dto.MemberInformationDto;
 import GooRoom.projectgooroom.service.dto.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +39,7 @@ public class MemberService {
      */
     @Transactional
     public Member joinWithEmail(EmailSignupDto emailSignupDto) throws MemberException{
-        validateDuplicateMember(emailSignupDto);
+        validateDuplicateMember(emailSignupDto.email(), emailSignupDto.nickname());
 
         Member member = Member.builder()
                 .name(emailSignupDto.name())
@@ -106,12 +108,32 @@ public class MemberService {
     }
 
     /**
-     * 나의 정보 조회
-     * @param
+     * Id를 통한 나의 정보 조회
+     * @param memberId
+     * @return MemberDto
      */
     public MemberDto getMyInfo(Long memberId) throws Exception {
         Member member = memberRepository.findMemberById(memberId).get();
         return new MemberDto(member);
+    }
+
+    /**
+     * nickname을 통한 MemberInformation조회
+     * @param nickname
+     * @return MemberInformationDto
+     * @throws Exception
+     */
+    public MemberInformationDto getMemberInformation(String nickname) throws Exception{
+        MemberInformation memberInformation = memberRepository.findMemberByNickname(nickname).get().getMemberInformation();
+        return MemberInformationDto.builder()
+                        .cleanupType(memberInformation.getCleanupType())
+                        .drinkingType(memberInformation.getDrinkingType())
+                        .organizeType(memberInformation.getOrganizeType())
+                        .introduce(memberInformation.getIntroduce())
+                        .smokingType(memberInformation.getSmokingType())
+                        .sleepingHabitType(memberInformation.getSleepingHabitType())
+                        .wakeupType(memberInformation.getWakeupType())
+                        .build();
     }
 
     /**
@@ -132,16 +154,18 @@ public class MemberService {
         return memberRepository.findMemberByEmail(email).get();
     }
 
+    public Member findOneByNickname(String nickname){
+        return memberRepository.findMemberByNickname(nickname).get();
+    }
 
     /**
      * Email 중복확인
-     * @param emailSignupDto
+     * @param email, nickname
      */
-    private void validateDuplicateMember(EmailSignupDto emailSignupDto) {
-        if(!memberRepository.findMemberByEmail(emailSignupDto.email()).isEmpty())
+    private void validateDuplicateMember(String email, String nickname) {
+        if(!memberRepository.findMemberByEmail(email).isEmpty())
             throw new MemberException(MemberExceptionType.ALREADY_EXIST_USER_EMAIL);
+        if(!memberRepository.findMemberByNickname(nickname).isEmpty())
+            throw new MemberException(MemberExceptionType.ALREADY_EXIST_USER_NICKNAME);
     }
-
-
-
 }

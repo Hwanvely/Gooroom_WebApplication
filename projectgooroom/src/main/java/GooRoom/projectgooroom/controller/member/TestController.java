@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class TestController {
 
-//    @GetMapping("/")
-//    public String naverTest(){
-//        return "home";
-//    }
+    @GetMapping("/")
+    public String naverTest(){
+        return "home";
+    }
 }
