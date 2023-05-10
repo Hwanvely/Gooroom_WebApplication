@@ -1,8 +1,5 @@
 package GooRoom.projectgooroom.global.ouath2.userinfo;
 
-import GooRoom.projectgooroom.domain.member.Gender;
-import com.nimbusds.oauth2.sdk.util.StringUtils;
-
 import java.util.Map;
 
 public class NaverOAuth2UserInfo extends OAuth2UserInfo {

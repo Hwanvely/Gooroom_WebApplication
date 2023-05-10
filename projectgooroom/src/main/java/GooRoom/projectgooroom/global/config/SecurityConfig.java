@@ -11,7 +11,7 @@ import GooRoom.projectgooroom.global.login.service.LoginService;
 import GooRoom.projectgooroom.global.ouath2.handler.OAuth2LoginFailureHandler;
 import GooRoom.projectgooroom.global.ouath2.handler.OAuth2LoginSuccessHandler;
 import GooRoom.projectgooroom.global.ouath2.service.CustomOAuth2UserService;
-import GooRoom.projectgooroom.repository.MemberRepository;
+import GooRoom.projectgooroom.member.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

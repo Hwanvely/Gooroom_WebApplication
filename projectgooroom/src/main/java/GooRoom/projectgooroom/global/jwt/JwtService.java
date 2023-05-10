@@ -1,9 +1,9 @@
 package GooRoom.projectgooroom.global.jwt;
 
 
-import GooRoom.projectgooroom.exception.MemberException;
-import GooRoom.projectgooroom.exception.MemberExceptionType;
-import GooRoom.projectgooroom.repository.MemberRepository;
+import GooRoom.projectgooroom.global.exception.MemberException;
+import GooRoom.projectgooroom.global.exception.MemberExceptionType;
+import GooRoom.projectgooroom.member.repository.MemberRepository;
 import com.auth0.jwt.algorithms.Algorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,18 +1,16 @@
 package GooRoom.projectgooroom.global.ouath2.handler;
 
-import GooRoom.projectgooroom.domain.member.Member;
-import GooRoom.projectgooroom.domain.member.Role;
+import GooRoom.projectgooroom.member.domain.Member;
+import GooRoom.projectgooroom.member.domain.Role;
 import GooRoom.projectgooroom.global.jwt.JwtService;
 import GooRoom.projectgooroom.global.ouath2.CustomOAuth2User;
-import GooRoom.projectgooroom.repository.MemberRepository;
+import GooRoom.projectgooroom.member.repository.MemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

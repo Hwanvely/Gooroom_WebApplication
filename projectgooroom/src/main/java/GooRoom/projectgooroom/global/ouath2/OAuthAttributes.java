@@ -1,9 +1,9 @@
 package GooRoom.projectgooroom.global.ouath2;
 
-import GooRoom.projectgooroom.domain.member.Gender;
-import GooRoom.projectgooroom.domain.member.LoginType;
-import GooRoom.projectgooroom.domain.member.Member;
-import GooRoom.projectgooroom.domain.member.Role;
+import GooRoom.projectgooroom.member.domain.Gender;
+import GooRoom.projectgooroom.member.domain.LoginType;
+import GooRoom.projectgooroom.member.domain.Member;
+import GooRoom.projectgooroom.member.domain.Role;
 import GooRoom.projectgooroom.global.ouath2.userinfo.NaverOAuth2UserInfo;
 import GooRoom.projectgooroom.global.ouath2.userinfo.OAuth2UserInfo;
 import com.nimbusds.oauth2.sdk.util.StringUtils;

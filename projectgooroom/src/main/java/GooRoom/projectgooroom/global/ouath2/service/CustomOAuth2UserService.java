@@ -1,10 +1,10 @@
 package GooRoom.projectgooroom.global.ouath2.service;
 
-import GooRoom.projectgooroom.domain.member.LoginType;
-import GooRoom.projectgooroom.domain.member.Member;
+import GooRoom.projectgooroom.member.domain.LoginType;
+import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.global.ouath2.CustomOAuth2User;
 import GooRoom.projectgooroom.global.ouath2.OAuthAttributes;
-import GooRoom.projectgooroom.repository.MemberRepository;
+import GooRoom.projectgooroom.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,12 +14,11 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Map;
 
-import static GooRoom.projectgooroom.domain.member.LoginType.KAKAO;
+import static GooRoom.projectgooroom.member.domain.LoginType.KAKAO;
 
 @Slf4j
 @Service
