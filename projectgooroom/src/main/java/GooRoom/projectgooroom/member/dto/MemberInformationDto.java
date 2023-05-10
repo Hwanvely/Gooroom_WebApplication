@@ -1,6 +1,5 @@
 package GooRoom.projectgooroom.member.dto;
 
-import GooRoom.projectgooroom.domain.member.*;
 import GooRoom.projectgooroom.member.domain.CleanupType;
 import GooRoom.projectgooroom.member.domain.DrinkingType;
 import GooRoom.projectgooroom.member.domain.OrganizeType;

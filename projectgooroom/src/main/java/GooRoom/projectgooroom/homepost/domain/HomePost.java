@@ -1,6 +1,7 @@
 package GooRoom.projectgooroom.homepost.domain;
 
 import GooRoom.projectgooroom.global.embedded.Address;
+import GooRoom.projectgooroom.homepost.dto.EditHomePostDto;
 import GooRoom.projectgooroom.member.domain.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -61,5 +62,22 @@ public class HomePost {
     public void addMember(Member member){
         this.member = member;
         member.getHomePostList().add(this);
+    }
+
+    public void addRoomImage(String roomImagePath){
+        this.roomImage = roomImagePath;
+    }
+
+    public void addLastEditTime(){
+        this.lastEditTime = LocalDateTime.now();
+    }
+
+    public void editHomePost(EditHomePostDto homePostDto){
+        this.title = homePostDto.title();
+        this.postStatus = homePostDto.postStatus();
+        this.rentType = homePostDto.rentType();
+        this.roomPrice = homePostDto.roomPrice();
+        this.address = homePostDto.address();
+        this.content = homePostDto.content();
     }
 }

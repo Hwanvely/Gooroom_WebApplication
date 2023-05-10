@@ -14,7 +14,6 @@ public record HomePostDto(
         Boolean hasHome,
         @JsonFormat(shape = JsonFormat.Shape.STRING)
         PostStatus postStatus,
-        LocalDateTime lastEditTime,
         @JsonFormat(shape = JsonFormat.Shape.STRING)
         ResidenceType residenceType,
 
@@ -31,7 +30,6 @@ public record HomePostDto(
                 .title(title)
                 .hasHome(hasHome)
                 .postStatus(postStatus)
-                .lastEditTime(lastEditTime)
                 .residenceType(residenceType)
                 .rentType(rentType)
                 .roomPrice(roomPrice)
