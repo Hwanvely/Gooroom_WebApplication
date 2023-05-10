@@ -1,10 +1,16 @@
 package GooRoom.projectgooroom.domain.member;
 
+import GooRoom.projectgooroom.domain.homePost.HomePost;
+import GooRoom.projectgooroom.domain.homePost.Postmark;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -22,7 +28,7 @@ public class Member {
     @NotNull
     private String nickname;
 
-//    @NotNull
+    @NotNull
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -52,6 +58,13 @@ public class Member {
     // 유저 권한 설정 메소드
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
     private MemberInformation memberInformation;
+
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<HomePost> homePostList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Postmark> postmarkList = new ArrayList<>();
 
     @Transactional
     public void authorizeUser() {

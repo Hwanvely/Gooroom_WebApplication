@@ -53,4 +53,13 @@ public class HomePost {
     private String content;
 
     private String roomImage;
+
+    /**
+     * 연관관계 생성 메서드
+     * @param member
+     */
+    public void addMember(Member member){
+        this.member = member;
+        member.getHomePostList().add(this);
+    }
 }

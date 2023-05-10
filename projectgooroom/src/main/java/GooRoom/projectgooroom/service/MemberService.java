@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 
 /**
  * Email 회원가입 시 MemberService
@@ -52,6 +54,8 @@ public class MemberService {
                 .nickname(emailSignupDto.nickname())
                 .loginType(LoginType.EMAIL)
                 .role(Role.USER)
+                .homePostList(new ArrayList<>())
+                .postmarkList(new ArrayList<>())
                 .build();
 
         member.passwordEncode(passwordEncoder);
