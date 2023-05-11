@@ -13,6 +13,10 @@ spring:
       hibernate:
         format_sql: true
 
+  servlet:
+    multipart:
+      max-file-size: 20MB
+
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
