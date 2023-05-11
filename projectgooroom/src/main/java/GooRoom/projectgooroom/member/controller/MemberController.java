@@ -164,6 +164,12 @@ public class MemberController {
         memberInformationService.createMemberInformation(findMember.getId(), informationDto);
     }
 
+    /**
+     * nickname을 통한 프로필이미지 조회
+     * @param nickname
+     * @return
+     * @throws IOException
+     */
     @GetMapping("/users/profileImage/{nickname}")
     public ResponseEntity getProfileImage(@Valid @PathVariable("nickname") String nickname)throws IOException{
         try{
