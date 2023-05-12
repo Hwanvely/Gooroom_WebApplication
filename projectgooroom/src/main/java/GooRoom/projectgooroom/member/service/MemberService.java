@@ -58,6 +58,7 @@ public class MemberService {
                 .postmarkList(new ArrayList<>())
                 .build();
 
+        member.calculateAge();
         member.passwordEncode(passwordEncoder);
         memberRepository.save(member);
         return member;

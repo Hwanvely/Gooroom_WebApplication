@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class Member {
+
+    private static int CURRENT_YEAR = LocalDate.now().getYear();
 
     @Id @GeneratedValue
     @Column(name = "member_id")
@@ -48,6 +51,8 @@ public class Member {
     private String birthday;
 
     private String birthyear;
+
+    private int age;
 
     @Enumerated(EnumType.STRING)
     private LoginType loginType; // KAKAO, NAVER, GOOGLE
@@ -101,5 +106,9 @@ public class Member {
 
     public void updateNickname(String updateNickname){
         this.nickname = updateNickname;
+    }
+
+    public void calculateAge(){
+        this.age = CURRENT_YEAR - Integer.valueOf(birthyear);
     }
 }
