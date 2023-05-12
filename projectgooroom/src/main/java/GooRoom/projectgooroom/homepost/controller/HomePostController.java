@@ -49,7 +49,7 @@ public class HomePostController {
     @PostMapping("/mates")
     @Transactional
     public ResponseEntity postHomePost(@Valid @AuthenticationPrincipal UserDetails userDetails,
-                                   @Valid @RequestPart("homepost") HomePostDto homePostDto,
+                                   @Valid @RequestPart("homePost") HomePostDto homePostDto,
                                    @Valid @RequestPart("file")MultipartFile file){
         if(userDetails == null){
             throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
@@ -167,7 +167,7 @@ public class HomePostController {
     @ResponseStatus(HttpStatus.OK)
     public void editHomePost(@AuthenticationPrincipal UserDetails userDetails,
                                        @Valid @PathVariable("postId")Long postId,
-                                       @Valid @RequestPart("homepost") EditHomePostDto homePostDto,
+                                       @Valid @RequestPart("homePost") EditHomePostDto homePostDto,
                                        @Valid @RequestPart("file")MultipartFile file){
         try{
             HomePost homePost = homePostService.findOne(postId);
@@ -210,5 +210,4 @@ public class HomePostController {
             throw e;
         }
     }
-
 }

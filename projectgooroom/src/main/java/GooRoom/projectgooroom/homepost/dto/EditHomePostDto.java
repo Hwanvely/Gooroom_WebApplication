@@ -10,6 +10,7 @@ public record EditHomePostDto(
         RentType rentType,
         int roomPrice,
         String city,
+        String dong,
         String roadName,
         String buildingNumber,
         String zipcode,

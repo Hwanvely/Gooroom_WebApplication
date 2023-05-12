@@ -13,6 +13,7 @@ import java.util.Objects;
 @Getter
 public class Address {
     private String city;
+    private String dong;
     private String roadName;
     private String buildingNumber;
     private String zipcode;
@@ -24,11 +25,11 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return Objects.equals(city, address.city) && Objects.equals(roadName, address.roadName) && Objects.equals(buildingNumber, address.buildingNumber) && Objects.equals(zipcode, address.zipcode);
+        return Objects.equals(getCity(), address.getCity()) && Objects.equals(getDong(), address.getDong()) && Objects.equals(getRoadName(), address.getRoadName()) && Objects.equals(getBuildingNumber(), address.getBuildingNumber()) && Objects.equals(getZipcode(), address.getZipcode());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(city, roadName, buildingNumber, zipcode);
+        return Objects.hash(getCity(), getDong(), getRoadName(), getBuildingNumber(), getZipcode());
     }
 }

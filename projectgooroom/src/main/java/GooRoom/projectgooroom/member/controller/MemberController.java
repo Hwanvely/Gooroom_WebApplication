@@ -281,7 +281,7 @@ public class MemberController {
     /**
      * 비밀번호 수정
      */
-    @PutMapping("/users/password")
+    @PatchMapping("/users/password")
     @ResponseStatus(HttpStatus.OK)
     public void updatePassword(@AuthenticationPrincipal UserDetails userDetails,
                                @Valid @RequestBody UpdatePasswordDto updatePasswordDto) throws Exception {

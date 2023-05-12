@@ -21,6 +21,7 @@ public record HomePostDto(
         int roomPrice,
         //Address
         String city,
+        String dong,
         String roadName,
         String buildingNumber,
         String zipcode,
@@ -37,6 +38,7 @@ public record HomePostDto(
                 .roomPrice(roomPrice)
                 .address(Address.builder()
                         .city(city)
+                        .dong(dong)
                         .roadName(roadName)
                         .buildingNumber(buildingNumber)
                         .zipcode(zipcode)

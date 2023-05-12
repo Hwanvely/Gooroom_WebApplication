@@ -79,6 +79,7 @@ public class HomePost {
         this.roomPrice = homePostDto.roomPrice();
         this.address = Address.builder()
                 .city(homePostDto.city())
+                .dong(homePostDto.dong())
                 .roadName(homePostDto.roadName())
                 .buildingNumber(homePostDto.buildingNumber())
                 .zipcode(homePostDto.zipcode())
