@@ -9,7 +9,10 @@ public record EditHomePostDto(
         PostStatus postStatus,
         RentType rentType,
         int roomPrice,
-        Address address,
+        String city,
+        String roadName,
+        String buildingNumber,
+        String zipcode,
         String content)
 {
 

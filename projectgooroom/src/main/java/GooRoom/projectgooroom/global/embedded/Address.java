@@ -3,12 +3,14 @@ package GooRoom.projectgooroom.global.embedded;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Objects;
 
 @Embeddable
 @Builder
 @AllArgsConstructor
+@Getter
 public class Address {
     private String city;
     private String roadName;

@@ -1,38 +1,38 @@
 package GooRoom.projectgooroom.homepost.dto;
 
-import GooRoom.projectgooroom.global.embedded.Address;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.domain.PostStatus;
 import GooRoom.projectgooroom.homepost.domain.RentType;
 import GooRoom.projectgooroom.homepost.domain.ResidenceType;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class GetHomePostDto{
-    private InputStreamResource profileImage;
-    private InputStreamResource roomImage;
     private String nickname;
     private String title;
     private Boolean hasHome;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private PostStatus postStatus;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDateTime lastEditTime;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private ResidenceType residenceType;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private RentType rentType;
     private int roomPrice;
-    private Address address;
+
+    private String city;
+    private String roadName;
+    private String buildingNumber;
+
+    private String zipcode;
     private String content;
 
 
-    public GetHomePostDto(InputStreamResource profileImage, InputStreamResource roomImage, HomePost homePost, String nickname) {
-        this.profileImage = profileImage;
-        this.roomImage = roomImage;
+    public GetHomePostDto(HomePost homePost, String nickname) {
         this.title = homePost.getTitle();
         this.hasHome = homePost.getHasHome();
         this.postStatus = homePost.getPostStatus();
@@ -40,7 +40,10 @@ public class GetHomePostDto{
         this.residenceType = homePost.getResidenceType();
         this.rentType = homePost.getRentType();
         this.roomPrice = homePost.getRoomPrice();
-        this.address = homePost.getAddress();
+        this.city = homePost.getAddress().getCity();
+        this.roadName = homePost.getAddress().getRoadName();
+        this.buildingNumber = homePost.getAddress().getBuildingNumber();
+        this.zipcode = homePost.getAddress().getZipcode();
         this.content = homePost.getContent();
         this.nickname = nickname;
     }

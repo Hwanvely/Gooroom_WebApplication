@@ -2,6 +2,8 @@ package GooRoom.projectgooroom.homepost.service;
 
 import GooRoom.projectgooroom.global.exception.HomePostException;
 import GooRoom.projectgooroom.global.exception.HomePostExceptionType;
+import GooRoom.projectgooroom.global.exception.MemberException;
+import GooRoom.projectgooroom.global.exception.MemberExceptionType;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.dto.EditHomePostDto;
 import GooRoom.projectgooroom.member.domain.Member;
@@ -14,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.File;
 
 @Service
 @RequiredArgsConstructor
@@ -85,7 +89,9 @@ public class HomePostService {
         checkWriter(postId, email);
         HomePost homePost = homePostRepository.findHomePostById(postId);
         homePost.editHomePost(homePostDto);
-        homePost.addRoomImage(filePath);
+        if(filePath!=null){
+            homePost.addRoomImage(filePath);
+        }
         return homePost.getId();
     }
 
@@ -97,6 +103,13 @@ public class HomePostService {
     @Transactional
     public void deleteHomePost(Long postId, String email){
         Member member = checkWriter(postId, email);
+        HomePost post = homePostRepository.findHomePostById(postId);
+        if(post.getRoomImage()!=null){
+            File oldFile = new File(post.getRoomImage());
+            if (oldFile.exists()) { // 파일이 존재하는지 확인
+                oldFile.delete();
+            }
+        }
         homePostRepository.deleteById(postId);
         member.getHomePostList().removeIf(homePost -> homePost.getId() == postId);
     }
@@ -109,13 +122,18 @@ public class HomePostService {
      */
     private Member checkWriter(Long postId, String email) {
         Member member = memberRepository.findMemberByEmail(email).get();
-        if(homePostRepository.findHomePostById(postId).getMember().getId()
-                !=
-                member.getId()){
-            throw new HomePostException(HomePostExceptionType.AUTHOR_MISMATCH);
-        }
-        else{
-            return member;
+        try{
+            Long postWriterId = homePostRepository.findHomePostById(postId).getMember().getId();
+            if(postWriterId
+                    !=
+                    member.getId()){
+                throw new HomePostException(HomePostExceptionType.AUTHOR_MISMATCH);
+            }
+            else{
+                return member;
+            }
+        }catch (Exception e){
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
         }
     }
 }

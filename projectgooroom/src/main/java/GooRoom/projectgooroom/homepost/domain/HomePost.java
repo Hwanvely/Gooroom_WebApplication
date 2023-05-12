@@ -77,7 +77,12 @@ public class HomePost {
         this.postStatus = homePostDto.postStatus();
         this.rentType = homePostDto.rentType();
         this.roomPrice = homePostDto.roomPrice();
-        this.address = homePostDto.address();
+        this.address = Address.builder()
+                .city(homePostDto.city())
+                .roadName(homePostDto.roadName())
+                .buildingNumber(homePostDto.buildingNumber())
+                .zipcode(homePostDto.zipcode())
+                .build();
         this.content = homePostDto.content();
     }
 }
