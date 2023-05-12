@@ -132,7 +132,7 @@ public class HomePostService {
             else{
                 return member;
             }
-        }catch (Exception e){
+        }catch (MemberException e){
             throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
         }
     }
