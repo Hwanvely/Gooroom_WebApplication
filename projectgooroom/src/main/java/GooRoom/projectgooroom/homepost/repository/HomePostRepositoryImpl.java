@@ -28,7 +28,7 @@ public class HomePostRepositoryImpl implements HomePostRepositoryCustom {
     }
 
     @Override
-    public Page<HomePost> findHomePostByFiter(Pageable pageable, HomePostFilterDto homePostFilter) {
+    public Page<HomePost> findHomePostByFilter(Pageable pageable, HomePostFilterDto homePostFilter) {
         //HomePost 조회.
         List<HomePost> content = queryFactory
                 .selectFrom(homePost)
