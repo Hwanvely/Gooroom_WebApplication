@@ -129,16 +129,20 @@ public class MemberService {
      * @throws Exception
      */
     public MemberInformationDto getMemberInformation(String nickname) throws Exception{
-        MemberInformation memberInformation = memberRepository.findMemberByNickname(nickname).get().getMemberInformation();
-        return MemberInformationDto.builder()
-                        .cleanupType(memberInformation.getCleanupType())
-                        .drinkingType(memberInformation.getDrinkingType())
-                        .organizeType(memberInformation.getOrganizeType())
-                        .introduce(memberInformation.getIntroduce())
-                        .smokingType(memberInformation.getSmokingType())
-                        .sleepingHabitType(memberInformation.getSleepingHabitType())
-                        .wakeupType(memberInformation.getWakeupType())
-                        .build();
+        try{
+            MemberInformation memberInformation = memberRepository.findMemberByNickname(nickname).get().getMemberInformation();
+            return MemberInformationDto.builder()
+                    .cleanupType(memberInformation.getCleanupType())
+                    .drinkingType(memberInformation.getDrinkingType())
+                    .organizeType(memberInformation.getOrganizeType())
+                    .introduce(memberInformation.getIntroduce())
+                    .smokingType(memberInformation.getSmokingType())
+                    .sleepingHabitType(memberInformation.getSleepingHabitType())
+                    .wakeupType(memberInformation.getWakeupType())
+                    .build();
+        }catch (Exception e){
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+        }
     }
 
     /**
@@ -156,11 +160,19 @@ public class MemberService {
      * @return
      */
     public Member findOneByEmail(String email){
-        return memberRepository.findMemberByEmail(email).get();
+        try{
+            return memberRepository.findMemberByEmail(email).get();
+        }catch (Exception e){
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+        }
     }
 
     public Member findOneByNickname(String nickname){
-        return memberRepository.findMemberByNickname(nickname).get();
+        try{
+            return memberRepository.findMemberByNickname(nickname).get();
+        }catch (Exception e){
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+        }
     }
 
     /**

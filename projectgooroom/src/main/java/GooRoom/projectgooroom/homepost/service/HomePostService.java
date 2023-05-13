@@ -115,6 +115,11 @@ public class HomePostService {
         member.getHomePostList().removeIf(homePost -> homePost.getId() == postId);
     }
 
+    /**
+     * 찜하기
+     * @param email
+     * @param homePostId
+     */
     public void addPostMark(String email, Long homePostId) {
         Member member = memberRepository.findMemberByEmail(email).get();
         HomePost homePost = homePostRepository.findHomePostById(homePostId);
