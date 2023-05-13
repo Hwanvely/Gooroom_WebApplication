@@ -6,11 +6,8 @@ import GooRoom.projectgooroom.member.domain.MemberInformation;
 import GooRoom.projectgooroom.member.domain.Role;
 import GooRoom.projectgooroom.global.exception.MemberException;
 import GooRoom.projectgooroom.global.exception.MemberExceptionType;
+import GooRoom.projectgooroom.member.dto.*;
 import GooRoom.projectgooroom.member.repository.MemberRepository;
-import GooRoom.projectgooroom.member.dto.EmailSignupDto;
-import GooRoom.projectgooroom.member.dto.MemberDto;
-import GooRoom.projectgooroom.member.dto.MemberInformationDto;
-import GooRoom.projectgooroom.member.dto.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -128,18 +125,21 @@ public class MemberService {
      * @return MemberInformationDto
      * @throws Exception
      */
-    public MemberInformationDto getMemberInformation(String nickname) throws Exception{
+    public MemberGetInformationDto getMemberInformation(String nickname) throws Exception{
         try{
             MemberInformation memberInformation = memberRepository.findMemberByNickname(nickname).get().getMemberInformation();
-            return MemberInformationDto.builder()
-                    .cleanupType(memberInformation.getCleanupType())
-                    .drinkingType(memberInformation.getDrinkingType())
-                    .organizeType(memberInformation.getOrganizeType())
-                    .introduce(memberInformation.getIntroduce())
-                    .smokingType(memberInformation.getSmokingType())
-                    .sleepingHabitType(memberInformation.getSleepingHabitType())
-                    .wakeupType(memberInformation.getWakeupType())
-                    .build();
+            return new MemberGetInformationDto(
+                    memberInformation.getMember().getName(),
+                    memberInformation.getMember().getGender(),
+                    memberInformation.getMember().getAge(),
+                    memberInformation.getSmokingType(),
+                    memberInformation.getDrinkingType(),
+                    memberInformation.getSleepingHabitType(),
+                    memberInformation.getWakeupType(),
+                    memberInformation.getOrganizeType(),
+                    memberInformation.getCleanupType(),
+                    memberInformation.getIntroduce()
+            );
         }catch (Exception e){
             throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
         }
