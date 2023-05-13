@@ -5,6 +5,7 @@ import GooRoom.projectgooroom.global.exception.HomePostExceptionType;
 import GooRoom.projectgooroom.global.exception.MemberException;
 import GooRoom.projectgooroom.global.exception.MemberExceptionType;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
+import GooRoom.projectgooroom.homepost.domain.Postmark;
 import GooRoom.projectgooroom.homepost.dto.EditHomePostDto;
 import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.homepost.repository.HomePostRepository;
@@ -112,6 +113,12 @@ public class HomePostService {
         }
         homePostRepository.deleteById(postId);
         member.getHomePostList().removeIf(homePost -> homePost.getId() == postId);
+    }
+
+    public void addPostMark(String email, Long homePostId) {
+        Member member = memberRepository.findMemberByEmail(email).get();
+        HomePost homePost = homePostRepository.findHomePostById(homePostId);
+        Postmark postmark = new Postmark(member, homePost);
     }
 
     /**

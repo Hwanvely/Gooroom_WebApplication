@@ -22,4 +22,10 @@ public class Postmark {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "home_post_id")
     private HomePost homePost;
+
+    public Postmark(Member member, HomePost homePost) {
+        this.member = member;
+        member.getPostmarkList().add(this);
+        this.homePost = homePost;
+    }
 }
