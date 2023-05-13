@@ -1,27 +1,101 @@
 package GooRoom.projectgooroom.homepost.repository;
 
 import GooRoom.projectgooroom.homepost.domain.HomePost;
-import GooRoom.projectgooroom.homepost.dto.HomePostFilter;
-import GooRoom.projectgooroom.homepost.dto.HomePostListDto;
+import GooRoom.projectgooroom.homepost.domain.RentType;
+import GooRoom.projectgooroom.homepost.domain.ResidenceType;
+import GooRoom.projectgooroom.homepost.dto.HomePostFilterDto;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
+import java.util.List;
 
 import static GooRoom.projectgooroom.homepost.domain.QHomePost.homePost;
+import static GooRoom.projectgooroom.member.domain.QMember.member;
 
 @Repository
 @Transactional
-@RequiredArgsConstructor
 public class HomePostRepositoryImpl implements HomePostRepositoryCustom {
 
-    private final JPAQueryFactory queryFactory;
+    private JPAQueryFactory queryFactory;
+    public HomePostRepositoryImpl(JPAQueryFactory queryFactory) {
+        this.queryFactory = queryFactory;
+    }
+
     @Override
-    public Page<HomePost> findHomePostByFiter(Pageable pageable, HomePostFilter homePostFilter) {
+    public Page<HomePost> findHomePostByFilter(Pageable pageable, HomePostFilterDto homePostFilter) {
+        //HomePost 조회.
+        List<HomePost> content = queryFactory
+                .selectFrom(homePost)
+                .join(homePost.member, member)
+                .where(
+                        hasHomeEq(homePostFilter.hasHome()),
+                        residenceTypeEq(homePostFilter.residenceType()),
+                        rentTypeEq(homePostFilter.rentType()),
+                        priceBetween(homePostFilter.minPrice(), homePostFilter.maxPrice()),
+                        addressDongEq(homePostFilter.dong()),
+                        ageBetween(homePostFilter.minAge(), homePostFilter.maxAge())
+                )
+                .fetch();
+        //HomePost 수
+        Long count = queryFactory
+                .select(homePost.count())
+                .from(homePost)
+                .join(homePost.member, member)
+                .where(
+                        hasHomeEq(homePostFilter.hasHome()),
+                        residenceTypeEq(homePostFilter.residenceType()),
+                        rentTypeEq(homePostFilter.rentType()),
+                        addressDongEq(homePostFilter.dong()),
+                        ageBetween(homePostFilter.minAge(), homePostFilter.maxAge())
+                )
+                .fetchOne();
+        return new PageImpl<>(content, pageable, count);
+    }
+
+    ///행정동 확인 쿼리
+    private BooleanExpression addressDongEq(String dong) {
+        if (dong != null) {
+            return homePost.address.dong.eq(dong);
+        }
         return null;
+    }
+
+    ///작성자 나이 범위 확인 쿼리
+    private BooleanExpression ageBetween(int minAge, int maxAge) {
+        NumberExpression<Integer> ageExpression = member.age;
+        if (minAge > 0 && maxAge > 0) {
+            return ageExpression.between(minAge, maxAge);
+        }
+        return null; // 또는 다른 조건을 반환
+    }
+
+    ///가격 범위 확인 쿼리
+    private BooleanExpression priceBetween(int minPrice, int maxPrice) {
+        NumberExpression<Integer> priceExpression = homePost.roomPrice;
+        if (minPrice > 0 && maxPrice > 0) {
+            return priceExpression.between(minPrice, maxPrice);
+        }
+        return null;
+    }
+
+    ///rentType 확인 쿼리
+    private BooleanExpression rentTypeEq(RentType rentType) {
+        return rentType!=null?homePost.rentType.eq(rentType):null;
+    }
+
+    ///residenceType 확인 쿼리
+    private BooleanExpression residenceTypeEq(ResidenceType residenceType) {
+        return residenceType!=null?homePost.residenceType.eq(residenceType):null;
+    }
+
+    ///hasHome 확인 쿼리
+    private BooleanExpression hasHomeEq(Boolean hashome) {
+        return hashome!=null?homePost.hasHome.eq(hashome):null;
     }
 }

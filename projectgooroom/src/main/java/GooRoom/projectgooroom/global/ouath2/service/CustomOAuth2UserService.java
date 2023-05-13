@@ -100,6 +100,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private Member saveUser(OAuthAttributes attributes, LoginType loginType) {
         Member createdUser = attributes.toEntity(loginType, attributes.getOauth2UserInfo());
+        createdUser.calculateAge();
         return memberRepository.save(createdUser);
     }
 }

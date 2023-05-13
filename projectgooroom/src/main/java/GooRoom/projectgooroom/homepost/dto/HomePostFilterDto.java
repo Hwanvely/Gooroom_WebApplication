@@ -4,7 +4,7 @@ import GooRoom.projectgooroom.homepost.domain.RentType;
 import GooRoom.projectgooroom.homepost.domain.ResidenceType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public record HomePostFilter(
+public record HomePostFilterDto(
         @JsonFormat(shape = JsonFormat.Shape.STRING)
         RentType rentType,
         int minPrice,

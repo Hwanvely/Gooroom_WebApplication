@@ -1,12 +1,18 @@
 package GooRoom.projectgooroom.homepost.repository;
 
 import GooRoom.projectgooroom.homepost.domain.HomePost;
-import GooRoom.projectgooroom.homepost.dto.HomePostFilter;
+import GooRoom.projectgooroom.homepost.dto.HomePostFilterDto;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
 
 public interface HomePostRepositoryCustom {
-    Page<HomePost> findHomePostByFiter(Pageable pageable, HomePostFilter homePostFilter);
+    /**
+     * Filter조건에 맞는 HomePost 페이징 조회.
+     * rentType, 가격대, 작성자 연령대, residenceType, 행정동, hasHome
+     * @param pageable
+     * @param homePostFilter
+     * @return
+     */
+    Page<HomePost> findHomePostByFilter(Pageable pageable, HomePostFilterDto homePostFilter);
 }
