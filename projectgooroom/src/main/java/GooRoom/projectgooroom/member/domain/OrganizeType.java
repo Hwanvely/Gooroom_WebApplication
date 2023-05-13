@@ -5,13 +5,13 @@ public enum OrganizeType {
     TODAY(1),
     TOMORROW(2);
 
-    private final int value;
+    private final double value;
 
     OrganizeType(int value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 }

@@ -5,13 +5,13 @@ public enum CleanupType {
     PER_2WEEK(1),
     PER_MONTH(2);
 
-    private final int value;
+    private final double value;
 
     CleanupType(int value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 }

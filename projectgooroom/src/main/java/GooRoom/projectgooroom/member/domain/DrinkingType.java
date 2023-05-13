@@ -5,13 +5,13 @@ public enum DrinkingType {
     SOMETIMES(1),
     USUALLY(2);
 
-    private final int value;
+    private final double value;
 
     DrinkingType(int value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 }

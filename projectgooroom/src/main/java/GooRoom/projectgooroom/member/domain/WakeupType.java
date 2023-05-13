@@ -5,13 +5,13 @@ public enum WakeupType {
     MORNING(1),
     AFTERNOON(2);
 
-    private final int value;
+    private final double value;
 
     WakeupType(int value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 }

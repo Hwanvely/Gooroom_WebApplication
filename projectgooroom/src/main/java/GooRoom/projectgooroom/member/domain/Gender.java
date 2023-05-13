@@ -7,7 +7,7 @@ public enum Gender {
     FEMALE("F",1);
 
     private final String name;
-    private final int value;
+    private final double value;
 
     Gender(String name, int value) {
         this.name = name;
@@ -19,7 +19,7 @@ public enum Gender {
         return name;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 }
