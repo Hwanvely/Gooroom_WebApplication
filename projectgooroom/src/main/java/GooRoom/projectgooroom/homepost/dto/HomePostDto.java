@@ -7,8 +7,6 @@ import GooRoom.projectgooroom.homepost.domain.RentType;
 import GooRoom.projectgooroom.homepost.domain.ResidenceType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.time.LocalDateTime;
-
 public record HomePostDto(
         String title,
         Boolean hasHome,
@@ -21,9 +19,14 @@ public record HomePostDto(
         RentType rentType,
 
         int roomPrice,
-        Address address,
-        String content
+        //Address
+        String city,
+        String dong,
+        String roadName,
+        String buildingNumber,
+        String zipcode,
 
+        String content
 ) {
     public HomePost toEntity(){
         return HomePost.builder()
@@ -33,7 +36,13 @@ public record HomePostDto(
                 .residenceType(residenceType)
                 .rentType(rentType)
                 .roomPrice(roomPrice)
-                .address(address)
+                .address(Address.builder()
+                        .city(city)
+                        .dong(dong)
+                        .roadName(roadName)
+                        .buildingNumber(buildingNumber)
+                        .zipcode(zipcode)
+                        .build())
                 .content(content)
                 .build();
     }

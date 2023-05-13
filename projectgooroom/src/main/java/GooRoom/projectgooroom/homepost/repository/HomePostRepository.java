@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface HomePostRepository extends JpaRepository<HomePost, Long> {
+public interface HomePostRepository extends JpaRepository<HomePost, Long>, HomePostRepositoryCustom {
 
     /**
      * 전체 HomePost 페이징 조회
