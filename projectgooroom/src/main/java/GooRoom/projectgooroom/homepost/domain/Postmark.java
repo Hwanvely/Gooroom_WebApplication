@@ -25,7 +25,6 @@ public class Postmark {
 
     public Postmark(Member member, HomePost homePost) {
         this.member = member;
-        member.getPostmarkList().add(this);
         this.homePost = homePost;
     }
 }

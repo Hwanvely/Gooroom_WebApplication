@@ -116,14 +116,16 @@ public class HomePostService {
     }
 
     /**
-     * 찜하기
+     * 찜하기 추가
      * @param email
      * @param homePostId
      */
+    @Transactional
     public void addPostMark(String email, Long homePostId) {
         Member member = memberRepository.findMemberByEmail(email).get();
         HomePost homePost = homePostRepository.findHomePostById(homePostId);
         Postmark postmark = new Postmark(member, homePost);
+        member.addPostmark(postmark);
     }
 
     /**

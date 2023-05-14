@@ -88,6 +88,10 @@ public class Member {
         }
     }
 
+    public void addPostmark(Postmark postmark){
+        postmarkList.add(postmark);
+    }
+
     public void updateRefreshToken(String updateRefreshToken){
         this.refreshToken = updateRefreshToken;
     }
