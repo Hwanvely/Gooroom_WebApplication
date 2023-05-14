@@ -1,6 +1,7 @@
 package GooRoom.projectgooroom.homepost.repository;
 
 import GooRoom.projectgooroom.homepost.domain.HomePost;
+import GooRoom.projectgooroom.homepost.domain.PostStatus;
 import GooRoom.projectgooroom.homepost.domain.RentType;
 import GooRoom.projectgooroom.homepost.domain.ResidenceType;
 import GooRoom.projectgooroom.homepost.dto.HomePostFilterDto;
@@ -34,6 +35,7 @@ public class HomePostRepositoryImpl implements HomePostRepositoryCustom {
                 .selectFrom(homePost)
                 .join(homePost.member, member)
                 .where(
+                        postTypeEq(homePostFilter.postStatus()),
                         hasHomeEq(homePostFilter.hasHome()),
                         residenceTypeEq(homePostFilter.residenceType()),
                         rentTypeEq(homePostFilter.rentType()),
@@ -48,6 +50,7 @@ public class HomePostRepositoryImpl implements HomePostRepositoryCustom {
                 .from(homePost)
                 .join(homePost.member, member)
                 .where(
+                        postTypeEq(homePostFilter.postStatus()),
                         hasHomeEq(homePostFilter.hasHome()),
                         residenceTypeEq(homePostFilter.residenceType()),
                         rentTypeEq(homePostFilter.rentType()),
@@ -58,12 +61,13 @@ public class HomePostRepositoryImpl implements HomePostRepositoryCustom {
         return new PageImpl<>(content, pageable, count);
     }
 
+    private BooleanExpression postTypeEq(PostStatus postStatus) {
+        return postStatus != null ? homePost.postStatus.eq(postStatus) : null;
+    }
+
     ///행정동 확인 쿼리
     private BooleanExpression addressDongEq(String dong) {
-        if (dong != null) {
-            return homePost.address.dong.eq(dong);
-        }
-        return null;
+        return dong != null ? homePost.address.dong.eq(dong) : null;
     }
 
     ///작성자 나이 범위 확인 쿼리
@@ -72,7 +76,7 @@ public class HomePostRepositoryImpl implements HomePostRepositoryCustom {
         if (minAge > 0 && maxAge > 0) {
             return ageExpression.between(minAge, maxAge);
         }
-        return null; // 또는 다른 조건을 반환
+        return null;
     }
 
     ///가격 범위 확인 쿼리

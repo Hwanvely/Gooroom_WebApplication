@@ -133,7 +133,7 @@ public class MemberController {
      */
     @GetMapping("/users/lifestyle/{nickname}")
     public ResponseEntity getMemberInformation(@Valid @PathVariable("nickname") String nickname) throws Exception {
-        MemberInformationDto memberInformation = memberService.getMemberInformation(nickname);
+        MemberGetInformationDto memberInformation = memberService.getMemberInformation(nickname);
         return new ResponseEntity(memberInformation, HttpStatus.OK);
     }
 
