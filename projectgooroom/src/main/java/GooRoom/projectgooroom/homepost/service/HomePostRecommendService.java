@@ -83,8 +83,7 @@ public class HomePostRecommendService {
 
         //최종 반환 순서
         List<HomePost> sortedHomePosts = getHomeCollaboratedFilteredPosts(homePostList, count, similarityMap);
-
-
+        
         return new PageImpl<>(sortedHomePosts);
     }
 
