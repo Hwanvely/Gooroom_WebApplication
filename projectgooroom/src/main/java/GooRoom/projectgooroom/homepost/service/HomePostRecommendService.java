@@ -48,7 +48,7 @@ public class HomePostRecommendService {
         MemberInformation clientMemberInformation = member.getMemberInformation();
 
         //검색 필터에 맞는 게시글 조회
-        Page<HomePost> homePostByFilter = homePostRepository.findHomePostByFilter(pageable, homePostFilterDto);
+        Page<HomePost> homePostByFilter = homePostRepository.findHomePostByFilter(pageable, homePostFilterDto, member.getId());
         List<HomePost> homePostList = homePostByFilter.getContent();
         //검색 필더에 맞는 게시글의 수
         int count = homePostList.size();

@@ -14,5 +14,5 @@ public interface HomePostRepositoryCustom {
      * @param homePostFilter
      * @return
      */
-    Page<HomePost> findHomePostByFilter(Pageable pageable, HomePostFilterDto homePostFilter);
+    Page<HomePost> findHomePostByFilter(Pageable pageable, HomePostFilterDto homePostFilter, Long memberId);
 }

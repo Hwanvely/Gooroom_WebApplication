@@ -29,7 +29,7 @@ public class HomePostRepositoryImpl implements HomePostRepositoryCustom {
     }
 
     @Override
-    public Page<HomePost> findHomePostByFilter(Pageable pageable, HomePostFilterDto homePostFilter) {
+    public Page<HomePost> findHomePostByFilter(Pageable pageable, HomePostFilterDto homePostFilter, Long memberId) {
         //HomePost 조회.
         List<HomePost> content = queryFactory
                 .selectFrom(homePost)
@@ -41,7 +41,8 @@ public class HomePostRepositoryImpl implements HomePostRepositoryCustom {
                         rentTypeEq(homePostFilter.rentType()),
                         priceBetween(homePostFilter.minPrice(), homePostFilter.maxPrice()),
                         addressDongEq(homePostFilter.dong()),
-                        ageBetween(homePostFilter.minAge(), homePostFilter.maxAge())
+                        ageBetween(homePostFilter.minAge(), homePostFilter.maxAge()),
+                        member.id.ne(memberId)
                 )
                 .fetch();
         //HomePost 수
@@ -55,7 +56,8 @@ public class HomePostRepositoryImpl implements HomePostRepositoryCustom {
                         residenceTypeEq(homePostFilter.residenceType()),
                         rentTypeEq(homePostFilter.rentType()),
                         addressDongEq(homePostFilter.dong()),
-                        ageBetween(homePostFilter.minAge(), homePostFilter.maxAge())
+                        ageBetween(homePostFilter.minAge(), homePostFilter.maxAge()),
+                        member.id.ne(memberId)
                 )
                 .fetchOne();
         return new PageImpl<>(content, pageable, count);
