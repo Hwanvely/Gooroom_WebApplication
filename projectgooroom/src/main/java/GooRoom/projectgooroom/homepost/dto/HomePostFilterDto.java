@@ -17,6 +17,6 @@ public record HomePostFilterDto(
         String dong,
         int minAge,
         int maxAge,
-        boolean hasHome
+        Boolean hasHome
 ) {
 }
