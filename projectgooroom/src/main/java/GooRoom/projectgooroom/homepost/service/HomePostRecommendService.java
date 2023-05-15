@@ -1,6 +1,7 @@
 package GooRoom.projectgooroom.homepost.service;
 
 import GooRoom.projectgooroom.homepost.domain.HomePost;
+import GooRoom.projectgooroom.homepost.domain.Postmark;
 import GooRoom.projectgooroom.homepost.dto.HomePostFilterDto;
 import GooRoom.projectgooroom.homepost.repository.HomePostRepositoryImpl;
 import GooRoom.projectgooroom.member.domain.Member;
@@ -26,7 +27,7 @@ public class HomePostRecommendService {
     private final MemberRepository memberRepository;
 
     //postmark 시 부여 가중치 비율
-    private static final int POST_MARK_WEIGHT = 10;
+    private static final Double POST_MARK_WEIGHT = 1.1;
 
     ///boolean을 double로 변환
     public static double booleanToDouble(boolean value) {
@@ -71,16 +72,18 @@ public class HomePostRecommendService {
         //Member 간 유사도 측정
         Map<Long, Double> similarityMap = getSimilarityMap(writerList, euclideanMap, maxEuclideanD, minEuclideanD);
 
-        //즐겨찾기 유사도 측정
-
-        /**
-         * 추후 구현
-         */
+        //즐겨찾기 멤버에 가산점 부여.
+        List<Postmark> postmarkList = member.getPostmarkList();
+        postmarkList.forEach(postmark -> writerList.forEach(writer -> {
+            if (postmark.getHomePost().getMember().getId() == writer.getId()) {
+                Long key = writer.getId();
+                similarityMap.compute(key, (k, value) -> value * POST_MARK_WEIGHT);
+            }
+        }));
 
         //최종 반환 순서
         List<HomePost> sortedHomePosts = getHomeCollaboratedFilteredPosts(homePostList, count, similarityMap);
-
-
+        
         return new PageImpl<>(sortedHomePosts);
     }
 
@@ -120,12 +123,20 @@ public class HomePostRecommendService {
      * @return
      */
     private static Map<Long, Double> getSimilarityMap(List<Member> writerList, Map<Long, Double> euclideanMap, double maxEuclideanD, double minEuclideanD) {
-        Map<Long, Double> similarityMap = writerList.stream()
+        //모두 유사도가 같은 경우
+        if(maxEuclideanD==minEuclideanD){
+            return writerList.stream()
+                    .collect(Collectors.toMap(
+                            Member::getId,
+                            writer -> 1.0
+                    ));
+        }
+
+        return writerList.stream()
                 .collect(Collectors.toMap(
                         Member::getId,
                         writer -> 1-(euclideanMap.get(writer.getId()) - minEuclideanD) / (maxEuclideanD - minEuclideanD)
                 ));
-        return similarityMap;
     }
 
     /**
