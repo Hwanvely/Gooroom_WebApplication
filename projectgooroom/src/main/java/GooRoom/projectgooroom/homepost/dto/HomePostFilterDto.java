@@ -1,8 +1,8 @@
 package GooRoom.projectgooroom.homepost.dto;
 
 import GooRoom.projectgooroom.homepost.domain.PostStatus;
-import GooRoom.projectgooroom.homepost.domain.RentType;
-import GooRoom.projectgooroom.homepost.domain.ResidenceType;
+import GooRoom.projectgooroom.global.embedded.RentType;
+import GooRoom.projectgooroom.global.embedded.ResidenceType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public record HomePostFilterDto(
