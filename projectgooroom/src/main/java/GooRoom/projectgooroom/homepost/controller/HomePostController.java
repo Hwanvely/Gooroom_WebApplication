@@ -6,8 +6,8 @@ import GooRoom.projectgooroom.global.exception.MemberException;
 import GooRoom.projectgooroom.global.exception.MemberExceptionType;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.domain.PostStatus;
-import GooRoom.projectgooroom.homepost.domain.RentType;
-import GooRoom.projectgooroom.homepost.domain.ResidenceType;
+import GooRoom.projectgooroom.global.embedded.RentType;
+import GooRoom.projectgooroom.global.embedded.ResidenceType;
 import GooRoom.projectgooroom.homepost.dto.*;
 import GooRoom.projectgooroom.homepost.service.HomePostRecommendService;
 import GooRoom.projectgooroom.homepost.service.HomePostService;
@@ -144,7 +144,8 @@ public class HomePostController {
             InputStream inputStream = new FileInputStream(image);
             MediaType imageType;
 
-            if (image.getName().endsWith(".jpg") || image.getName().endsWith(".jpeg")) {
+            if (image.getName().endsWith(".jpg") || image.getName().endsWith(".jpeg")
+                    ||image.getName().endsWith(".JPG")||image.getName().endsWith(".JPEG")) {
                 imageType = MediaType.IMAGE_JPEG;
             } else if (image.getName().endsWith(".png")) {
                 imageType = MediaType.IMAGE_PNG;
@@ -223,7 +224,7 @@ public class HomePostController {
     public ResponseEntity<HomePostListDto> getHomePostList(@AuthenticationPrincipal UserDetails userDetails,
                                                            @RequestParam Optional<RentType> rentType,
                                                            @RequestParam(defaultValue = "0") int minPrice,
-                                                           @RequestParam(defaultValue = "999999") int maxPrice,
+                                                           @RequestParam(defaultValue = "999999999") int maxPrice,
                                                            @RequestParam Optional<ResidenceType> residenceType,
                                                            @RequestParam Optional<String> dong,
                                                            @RequestParam(defaultValue = "0") int minAge,

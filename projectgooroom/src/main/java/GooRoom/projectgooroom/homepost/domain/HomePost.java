@@ -1,6 +1,8 @@
 package GooRoom.projectgooroom.homepost.domain;
 
 import GooRoom.projectgooroom.global.embedded.Address;
+import GooRoom.projectgooroom.global.embedded.RentType;
+import GooRoom.projectgooroom.global.embedded.ResidenceType;
 import GooRoom.projectgooroom.homepost.dto.EditHomePostDto;
 import GooRoom.projectgooroom.member.domain.Member;
 import jakarta.persistence.*;

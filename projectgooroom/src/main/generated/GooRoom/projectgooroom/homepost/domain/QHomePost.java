@@ -36,9 +36,9 @@ public class QHomePost extends EntityPathBase<HomePost> {
 
     public final EnumPath<PostStatus> postStatus = createEnum("postStatus", PostStatus.class);
 
-    public final EnumPath<RentType> rentType = createEnum("rentType", RentType.class);
+    public final EnumPath<GooRoom.projectgooroom.global.embedded.RentType> rentType = createEnum("rentType", GooRoom.projectgooroom.global.embedded.RentType.class);
 
-    public final EnumPath<ResidenceType> residenceType = createEnum("residenceType", ResidenceType.class);
+    public final EnumPath<GooRoom.projectgooroom.global.embedded.ResidenceType> residenceType = createEnum("residenceType", GooRoom.projectgooroom.global.embedded.ResidenceType.class);
 
     public final StringPath roomImage = createString("roomImage");
 

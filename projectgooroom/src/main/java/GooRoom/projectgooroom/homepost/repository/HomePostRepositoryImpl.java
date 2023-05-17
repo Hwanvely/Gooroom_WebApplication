@@ -2,8 +2,8 @@ package GooRoom.projectgooroom.homepost.repository;
 
 import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.domain.PostStatus;
-import GooRoom.projectgooroom.homepost.domain.RentType;
-import GooRoom.projectgooroom.homepost.domain.ResidenceType;
+import GooRoom.projectgooroom.global.embedded.RentType;
+import GooRoom.projectgooroom.global.embedded.ResidenceType;
 import GooRoom.projectgooroom.homepost.dto.HomePostFilterDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;

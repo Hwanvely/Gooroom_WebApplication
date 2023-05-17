@@ -1,5 +1,6 @@
 package GooRoom.projectgooroom.member.controller;
 
+import GooRoom.projectgooroom.global.jwt.JwtService;
 import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.member.domain.MemberInformation;
 import GooRoom.projectgooroom.global.exception.MemberException;
@@ -7,6 +8,7 @@ import GooRoom.projectgooroom.global.exception.MemberExceptionType;
 import GooRoom.projectgooroom.member.dto.*;
 import GooRoom.projectgooroom.member.service.MemberInformationService;
 import GooRoom.projectgooroom.member.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,6 +37,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberInformationService memberInformationService;
+    private final JwtService jwtService;
 
     //프로필 사진 절대 경로 지정
     private static final String PROFILE_IMAGE_PATH = "/Users/junseo/Documents/Study/Gooroom_WebApplication/projectgooroom/src/main/resources/image/user/";
@@ -179,7 +183,8 @@ public class MemberController {
             InputStream inputStream = new FileInputStream(image);
             MediaType imageType;
 
-            if (image.getName().endsWith(".jpg") || image.getName().endsWith(".jpeg")) {
+            if (image.getName().endsWith(".jpg") || image.getName().endsWith(".jpeg")
+                    ||image.getName().endsWith(".JPG")||image.getName().endsWith(".JPEG")) {
                 imageType = MediaType.IMAGE_JPEG;
             } else if (image.getName().endsWith(".png")) {
                 imageType = MediaType.IMAGE_PNG;
@@ -292,5 +297,16 @@ public class MemberController {
         Member member = memberService.findOneByEmail(email);
 
         memberService.updatePassword(member.getId(),updatePasswordDto.checkPassword(),updatePasswordDto.toBePassword());
+    }
+
+    /**
+     * Refresh Token을 통해 Access Token 갱신
+     * @param request
+     * @param response
+     */
+    @GetMapping("/login/refresh")
+    public void refreshAccessToken(HttpServletRequest request, HttpServletResponse response){
+        jwtService.extractRefreshToken(request)
+                .ifPresent(refreshToken -> jwtService.reissueAccessToken(response, refreshToken));
     }
 }
