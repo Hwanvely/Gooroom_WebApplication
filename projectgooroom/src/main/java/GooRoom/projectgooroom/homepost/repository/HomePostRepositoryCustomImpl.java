@@ -21,10 +21,10 @@ import static GooRoom.projectgooroom.member.domain.QMember.member;
 
 @Repository
 @Transactional
-public class HomePostRepositoryImpl implements HomePostRepositoryCustom {
+public class HomePostRepositoryCustomImpl implements HomePostRepositoryCustom {
 
     private JPAQueryFactory queryFactory;
-    public HomePostRepositoryImpl(JPAQueryFactory queryFactory) {
+    public HomePostRepositoryCustomImpl(JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
     }
 

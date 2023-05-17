@@ -27,6 +27,7 @@ import java.io.File;
 public class HomePostService {
 
     private final HomePostRepository homePostRepository;
+
     private final MemberRepository memberRepository;
 
     /**
@@ -126,10 +127,14 @@ public class HomePostService {
      */
     @Transactional
     public void addPostMark(String email, Long homePostId) {
-        Member member = memberRepository.findMemberByEmail(email).get();
-        HomePost homePost = homePostRepository.findHomePostById(homePostId);
-        Postmark postmark = new Postmark(member, homePost);
-        member.addPostmark(postmark);
+        try {
+            Member member = memberRepository.findMemberByEmail(email).get();
+            HomePost homePost = homePostRepository.findHomePostById(homePostId);
+            Postmark postmark = new Postmark(member, homePost);
+            member.addPostmark(postmark);
+        }catch (Exception e){
+            throw new MemberException(MemberExceptionType.CANNOT_ADD_POSTMARK);
+        }
     }
 
     /**

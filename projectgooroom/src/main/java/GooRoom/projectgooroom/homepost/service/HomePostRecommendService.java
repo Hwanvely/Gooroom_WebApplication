@@ -4,7 +4,7 @@ import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.domain.Postmark;
 import GooRoom.projectgooroom.homepost.dto.HomePostFilterDto;
 import GooRoom.projectgooroom.homepost.dto.ListedPostDto;
-import GooRoom.projectgooroom.homepost.repository.HomePostRepositoryImpl;
+import GooRoom.projectgooroom.homepost.repository.HomePostRepositoryCustomImpl;
 import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.member.domain.MemberInformation;
 import GooRoom.projectgooroom.member.repository.MemberRepository;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class HomePostRecommendService {
 
-    private final HomePostRepositoryImpl homePostRepository;
+    private final HomePostRepositoryCustomImpl homePostRepository;
 
     private final MemberRepository memberRepository;
 
