@@ -3,6 +3,7 @@ package GooRoom.projectgooroom.homepost.service;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.domain.Postmark;
 import GooRoom.projectgooroom.homepost.dto.HomePostFilterDto;
+import GooRoom.projectgooroom.homepost.dto.ListedPostDto;
 import GooRoom.projectgooroom.homepost.repository.HomePostRepositoryImpl;
 import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.member.domain.MemberInformation;
@@ -41,20 +42,25 @@ public class HomePostRecommendService {
      * @param homePostFilterDto
      * @return Page<HomePost>
      */
-    public Page<HomePost> findFilteredPost(String email, Pageable pageable, HomePostFilterDto homePostFilterDto){
+    public Page<ListedPostDto> findFilteredPost(String email, Pageable pageable, HomePostFilterDto homePostFilterDto){
         //추천 대상
         Member member = memberRepository.findMemberByEmail(email).get();
         MemberInformation clientMemberInformation = member.getMemberInformation();
 
         //검색 필터에 맞는 게시글 조회
-        Page<HomePost> homePostByFilter = homePostRepository.findHomePostByFilter(pageable, homePostFilterDto);
+        Page<HomePost> homePostByFilter = homePostRepository.findHomePostByFilter(pageable, homePostFilterDto, member.getId());
         List<HomePost> homePostList = homePostByFilter.getContent();
         //검색 필더에 맞는 게시글의 수
         int count = homePostList.size();
 
         //0, 1개인 경우 반환
-        if(count<2){
-            return homePostByFilter;
+        if(count==0){
+            return new PageImpl<>(null);
+        }
+        if(count==1){
+            List<ListedPostDto> mateList = new ArrayList<>();
+            mateList.add(new ListedPostDto(homePostList.get(0), homePostList.get(0).getMember().getNickname()));
+            return new PageImpl<>(mateList);
         }
 
         //작성자 목록
@@ -83,8 +89,14 @@ public class HomePostRecommendService {
 
         //최종 반환 순서
         List<HomePost> sortedHomePosts = getHomeCollaboratedFilteredPosts(homePostList, count, similarityMap);
-        
-        return new PageImpl<>(sortedHomePosts);
+        List<ListedPostDto> listedPosts = new ArrayList<>();
+
+
+        for(HomePost homePost:sortedHomePosts){
+            listedPosts.add(new ListedPostDto(homePost, homePost.getMember().getNickname()));
+        }
+
+        return new PageImpl<>(listedPosts);
     }
 
     /**

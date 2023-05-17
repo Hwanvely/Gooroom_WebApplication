@@ -5,6 +5,7 @@ import GooRoom.projectgooroom.global.exception.MemberException;
 import GooRoom.projectgooroom.global.exception.MemberExceptionType;
 import GooRoom.projectgooroom.member.repository.MemberRepository;
 import com.auth0.jwt.algorithms.Algorithm;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import com.auth0.jwt.JWT;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
@@ -33,10 +35,10 @@ public class JwtService {
     private String secretKey;
 
     @Value("${jwt.access.expiration}")
-    private Long accessTokenExpirationPeriod;
+    private int accessTokenExpirationPeriod;
 
     @Value("${jwt.refresh.expiration}")
-    private Long refreshTokenExpirationPeriod;
+    private int refreshTokenExpirationPeriod;
 
     @Value("${jwt.access.header}")
     private String accessHeader;
@@ -69,7 +71,6 @@ public class JwtService {
 
     /**
      * RefreshToken 생성
-     * RefreshToken은 claim X
      */
     public String createRefreshToken() {
         Date now = new Date();
@@ -90,24 +91,29 @@ public class JwtService {
     }
 
     /**
-     * AccessToken + RefreshToken 헤더에 실어서 보내기
+     * AccessToken은 헤더에, RefreshToken은 쿠키에 보내기.
      */
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
 
         setAccessTokenHeader(response, accessToken);
-        setRefreshTokenHeader(response, refreshToken);
-        log.info("Access Token, Refresh Token 헤더 설정 완료");
+        setRefreshTokenCookie(response, refreshToken);
+        log.info("Access Token 헤더, Refresh Token 쿠키 설정 완료.");
     }
 
     /**
-     * 헤더에서 RefreshToken 추출
+     * 쿠키에서 RefreshToken 추출
      * 토큰 형식 : Bearer XXX -> "" XXX
      */
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(refreshHeader))
-                .filter(refreshToken -> refreshToken.startsWith(BEARER))
-                .map(refreshToken -> refreshToken.replace(BEARER, ""));
+        Cookie refreshCookie = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals(refreshHeader))
+                .findFirst()
+                .orElse(null);
+        if(refreshCookie == null){
+            throw new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
+        }
+        return Optional.ofNullable(refreshCookie.getValue());
     }
 
     /**
@@ -149,10 +155,13 @@ public class JwtService {
     }
 
     /**
-     * RefreshToken 헤더 설정
+     * RefreshToken 쿠키 설정
      */
-    public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {
-        response.setHeader(refreshHeader, refreshToken);
+    public void setRefreshTokenCookie(HttpServletResponse response, String refreshToken){
+        Cookie cookie = new Cookie(refreshHeader, refreshToken);
+        cookie.setMaxAge(accessTokenExpirationPeriod);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
     }
 
     /**
@@ -167,6 +176,26 @@ public class JwtService {
                 );
     }
 
+    /**
+     * Refresh Token 을 통해 AccessToken 재발급
+     * @param response
+     * @param refreshToken
+     */
+    public void reissueAccessToken(HttpServletResponse response, String refreshToken){
+        try {
+            String email = memberRepository.findMemberByRefreshToken(refreshToken).get().getEmail();
+            String accessToken = createAccessToken(email);
+            setAccessTokenHeader(response, accessToken);
+        }catch (Exception e){
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+        }
+    }
+
+    /**
+     * Token의 유효성 검사
+     * @param token
+     * @return {@link Boolean}
+     */
     public boolean isTokenValid(String token) {
         try {
             JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);

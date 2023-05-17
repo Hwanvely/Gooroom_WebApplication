@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -95,6 +96,15 @@ public class MemberService {
 
         if(!member.matchPassword(passwordEncoder, checkPassword) ) {
             throw new Exception("비밀번호가 일치하지 않습니다.");
+        }
+
+        //프로필 사진 삭제
+        if(member.getMemberInformation().getProfileImage()!=null){
+            String profileImagePath = member.getMemberInformation().getProfileImage();
+            File oldFile = new File(profileImagePath);
+            if (oldFile.exists()) { // 파일이 존재하는지 확인
+                oldFile.delete();
+            }
         }
 
         memberRepository.delete(member);

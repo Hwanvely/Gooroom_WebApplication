@@ -20,6 +20,6 @@ public class JwtAccessDenialHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        response.sendError(MemberExceptionType.INVALIDATE_TOKEN.getErrorCode());
+        response.sendError(MemberExceptionType.INVALIDATE_ACCESS_TOKEN.getErrorCode());
     }
 }

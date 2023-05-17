@@ -5,9 +5,11 @@ import GooRoom.projectgooroom.global.exception.HomePostExceptionType;
 import GooRoom.projectgooroom.global.exception.MemberException;
 import GooRoom.projectgooroom.global.exception.MemberExceptionType;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
-import GooRoom.projectgooroom.homepost.dto.EditHomePostDto;
-import GooRoom.projectgooroom.homepost.dto.HomePostDto;
-import GooRoom.projectgooroom.homepost.dto.GetHomePostDto;
+import GooRoom.projectgooroom.homepost.domain.PostStatus;
+import GooRoom.projectgooroom.global.embedded.RentType;
+import GooRoom.projectgooroom.global.embedded.ResidenceType;
+import GooRoom.projectgooroom.homepost.dto.*;
+import GooRoom.projectgooroom.homepost.service.HomePostRecommendService;
 import GooRoom.projectgooroom.homepost.service.HomePostService;
 import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.member.service.MemberService;
@@ -15,6 +17,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -37,6 +43,8 @@ import java.util.UUID;
 public class HomePostController {
 
     private final HomePostService homePostService;
+
+    private final HomePostRecommendService recommendService;
 
     private final MemberService memberService;
 
@@ -136,7 +144,8 @@ public class HomePostController {
             InputStream inputStream = new FileInputStream(image);
             MediaType imageType;
 
-            if (image.getName().endsWith(".jpg") || image.getName().endsWith(".jpeg")) {
+            if (image.getName().endsWith(".jpg") || image.getName().endsWith(".jpeg")
+                    ||image.getName().endsWith(".JPG")||image.getName().endsWith(".JPEG")) {
                 imageType = MediaType.IMAGE_JPEG;
             } else if (image.getName().endsWith(".png")) {
                 imageType = MediaType.IMAGE_PNG;
@@ -209,5 +218,42 @@ public class HomePostController {
             log.error(e.getMessage());
             throw e;
         }
+    }
+
+    @GetMapping("/mates")
+    public ResponseEntity<HomePostListDto> getHomePostList(@AuthenticationPrincipal UserDetails userDetails,
+                                                           @RequestParam Optional<RentType> rentType,
+                                                           @RequestParam(defaultValue = "0") int minPrice,
+                                                           @RequestParam(defaultValue = "999999999") int maxPrice,
+                                                           @RequestParam Optional<ResidenceType> residenceType,
+                                                           @RequestParam Optional<String> dong,
+                                                           @RequestParam(defaultValue = "0") int minAge,
+                                                           @RequestParam(defaultValue = "100") int maxAge,
+                                                           @RequestParam Optional<Boolean> hasHome,
+                                                           @RequestParam Optional<PostStatus> postStatus,
+                                                           @RequestParam(defaultValue = "0") int page
+                                ){
+        if(userDetails == null)
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+
+        Pageable pageable = PageRequest.of(page, 10);
+
+        HomePostFilterDto homePostFilterDto = new HomePostFilterDto(
+                postStatus.isPresent() ? postStatus.get() : null,
+                rentType.isPresent() ? rentType.get() : null,
+                minPrice,
+                maxPrice,
+                residenceType.isPresent() ? residenceType.get() : null,
+                dong.isPresent() ? dong.get() : null,
+                minAge,
+                maxAge,
+                hasHome.isPresent() ? hasHome.get().booleanValue() : null
+        );
+
+        String email = userDetails.getUsername();
+        Page<ListedPostDto> filteredPost = recommendService.findFilteredPost(email, pageable, homePostFilterDto);
+        int postCount = filteredPost.getContent().size();
+
+        return new ResponseEntity<>(new HomePostListDto(postCount, filteredPost.getContent()),HttpStatus.OK);
     }
 }

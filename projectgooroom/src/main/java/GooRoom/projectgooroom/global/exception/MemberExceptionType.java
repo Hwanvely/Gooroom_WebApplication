@@ -14,7 +14,9 @@ public enum MemberExceptionType implements BaseExceptionType {
     NOT_FOUND_MEMBER(404, HttpStatus.NOT_FOUND, "회원 정보가 없습니다."),
 
     //유효하지 않은 토큰인 경우
-    INVALIDATE_TOKEN(499, HttpStatus.UNAUTHORIZED, "만료된 토큰 또는 유효하지 않은 토큰입니다."),
+    REFRESH_TOKEN_NOT_EXIST(480, HttpStatus.BAD_REQUEST, "만료 또는 유효하지 않은 ACCESS 토큰입니다."),
+    INVALIDATE_ACCESS_TOKEN(499, HttpStatus.UNAUTHORIZED, "만료 또는 유효하지 않은 ACCESS 토큰입니다."),
+    INVALIDATE_REFRESH_TOKEN(489, HttpStatus.UNAUTHORIZED, "만료 또는 유효하지 않은 REFRESH 토큰입니다."),
 
     //MemberInformation 이미 존재 시
     ALREADY_EXIST_MEMBERINFORMATION(409, HttpStatus.CONFLICT, "성향정보가 이미 존재합니다.");
