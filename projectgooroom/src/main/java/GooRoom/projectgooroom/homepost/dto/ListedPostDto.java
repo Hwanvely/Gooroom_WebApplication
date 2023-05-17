@@ -1,5 +1,6 @@
 package GooRoom.projectgooroom.homepost.dto;
 
+import GooRoom.projectgooroom.global.embedded.RentType;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.domain.PostStatus;
 import GooRoom.projectgooroom.global.embedded.ResidenceType;
@@ -16,6 +17,9 @@ public class ListedPostDto{
         private String zipcode;
         @JsonFormat(shape = JsonFormat.Shape.STRING)
         private ResidenceType residenceType;
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
+        private RentType rentType;
         private int roomPrice;
         private Long postId;
         private String nickname;
@@ -30,6 +34,7 @@ public class ListedPostDto{
                 this.buildingNumber = homePost.getAddress().getBuildingNumber();
                 this.zipcode = homePost.getAddress().getZipcode();
                 this.residenceType = homePost.getResidenceType();
+                this.rentType = homePost.getRentType();
                 this.roomPrice = homePost.getRoomPrice();
                 this.postId = homePost.getId();
                 this.nickname = nickname;
@@ -66,6 +71,10 @@ public class ListedPostDto{
 
         public ResidenceType getResidenceType() {
                 return residenceType;
+        }
+
+        public RentType getRentType() {
+                return rentType;
         }
 
         public int getRoomPrice() {

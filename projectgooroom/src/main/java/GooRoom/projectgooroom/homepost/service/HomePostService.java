@@ -55,7 +55,11 @@ public class HomePostService {
      * @return
      */
     public Page<HomePost> findAllPostsByMember(Long memberId, Pageable pageable) {
-        return homePostRepository.findHomePostsByMemberId(memberId, pageable);
+        try{
+            return homePostRepository.findHomePostsByMemberId(memberId, pageable);
+        }catch (Exception e){
+            throw new HomePostException(HomePostExceptionType.CANNOT_GET_HOME_POST);
+        }
     }
 
     /**

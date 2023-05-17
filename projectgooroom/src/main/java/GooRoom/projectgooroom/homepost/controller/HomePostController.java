@@ -220,6 +220,21 @@ public class HomePostController {
         }
     }
 
+    /**
+     * 필터에 따라 글 목록 조회, 협업필터링에 의해 정렬
+     * @param userDetails
+     * @param rentType
+     * @param minPrice
+     * @param maxPrice
+     * @param residenceType
+     * @param dong
+     * @param minAge
+     * @param maxAge
+     * @param hasHome
+     * @param postStatus
+     * @param page
+     * @return homePostListDto
+     */
     @GetMapping("/mates")
     public ResponseEntity<HomePostListDto> getHomePostList(@AuthenticationPrincipal UserDetails userDetails,
                                                            @RequestParam Optional<RentType> rentType,

@@ -29,6 +29,7 @@ public class MemberService {
 
 
     private final MemberRepository memberRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -177,6 +178,11 @@ public class MemberService {
         }
     }
 
+    /**
+     * nickname을 통한 Member 검색
+     * @param nickname
+     * @return member
+     */
     public Member findOneByNickname(String nickname){
         try{
             return memberRepository.findMemberByNickname(nickname).get();
