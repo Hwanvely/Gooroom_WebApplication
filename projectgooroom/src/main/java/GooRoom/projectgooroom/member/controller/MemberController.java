@@ -4,6 +4,8 @@ import GooRoom.projectgooroom.global.jwt.JwtService;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.dto.HomePostListDto;
 import GooRoom.projectgooroom.homepost.dto.ListedPostDto;
+import GooRoom.projectgooroom.homepost.dto.ListedPostmarkDto;
+import GooRoom.projectgooroom.homepost.dto.PostmarkListDto;
 import GooRoom.projectgooroom.homepost.service.HomePostService;
 import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.member.domain.MemberInformation;
@@ -18,10 +20,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -332,10 +331,7 @@ public class MemberController {
     @GetMapping("/users/mates")
     public ResponseEntity getMyHomePosts(@AuthenticationPrincipal UserDetails userDetails,
                                          @RequestParam(defaultValue = "0")int page){
-        if(userDetails == null)
-            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
-
-        Member member = memberService.findOneByEmail(userDetails.getUsername());
+        Member member = getMemberFromUserDetails(userDetails);
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "lastEditTime"));
 
@@ -348,4 +344,68 @@ public class MemberController {
 
         return new ResponseEntity(new HomePostListDto(listedPostDtoList.size(), listedPostDtoList), HttpStatus.OK);
     }
+
+    /**
+     * HomePost 찜하기
+     * @param userDetails
+     * @param postId
+     */
+    @PostMapping("/users/matesmark/{postId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void addMyPostmark(@AuthenticationPrincipal UserDetails userDetails,
+                              @PathVariable Long postId){
+        homePostService.addPostMark(userDetails.getUsername(), postId);
+    }
+
+    /**
+     * 내가 찜한 게시글 조회
+     * @param userDetails
+     * @param page
+     * @return
+     */
+    @GetMapping("/users/matesmark")
+    public ResponseEntity getMyPostmarks(@AuthenticationPrincipal UserDetails userDetails,
+                                         @RequestParam(defaultValue = "0")int page){
+        Member member = getMemberFromUserDetails(userDetails);
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "lastEditTime"));
+
+        PageImpl<ListedPostmarkDto> postmarkList = memberService.getPostmarkList(member.getId(), pageable);
+
+        List<ListedPostmarkDto> listedPostDtoList = postmarkList.getContent();
+
+        return new ResponseEntity(new PostmarkListDto(listedPostDtoList.size(), listedPostDtoList), HttpStatus.OK);
+    }
+
+    /**
+     * 찜한 게시글 찜 목록에서 삭제
+     * @param userDetails
+     * @param postmarkId
+     */
+    @DeleteMapping("/users/matesmark/{postmarkId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    public void deleteMyPostmark(@AuthenticationPrincipal UserDetails userDetails,
+                                 @PathVariable Long postmarkId){
+        Member member = getMemberFromUserDetails(userDetails);
+        try {
+            member.getPostmarkList().removeIf(postmark -> postmark.getId() == postmarkId);
+        }catch (Exception e){
+            throw new MemberException(MemberExceptionType.CANNOT_DELETE_POSTMARK);
+        }
+    }
+
+    /**
+     * UserDetails로 부터 email출 후 Member 반환
+     * @param userDetails
+     * @return member
+     */
+    private Member getMemberFromUserDetails(UserDetails userDetails) {
+        if(userDetails == null)
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+
+        Member member = memberService.findOneByEmail(userDetails.getUsername());
+        return member;
+    }
+
 }
