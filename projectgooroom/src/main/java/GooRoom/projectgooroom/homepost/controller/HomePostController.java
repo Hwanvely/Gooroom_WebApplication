@@ -88,7 +88,7 @@ public class HomePostController {
         Member member = homePost.getMember();
 
         try {
-            GetHomePostDto getHomePostDto = new GetHomePostDto(homePost, member.getNickname());
+            GetHomePostDto getHomePostDto = new GetHomePostDto(homePost, member.getNickname(), member.getAge());
             log.debug("게시글 조회??");
             return new ResponseEntity(getHomePostDto, HttpStatus.OK);
         } catch (Exception e) {

@@ -59,7 +59,7 @@ public class HomePostRecommendService {
         }
         if(count==1){
             List<ListedPostDto> mateList = new ArrayList<>();
-            mateList.add(new ListedPostDto(homePostList.get(0), homePostList.get(0).getMember().getNickname()));
+            mateList.add(new ListedPostDto(homePostList.get(0), homePostList.get(0).getMember().getNickname(), homePostList.get(0).getMember().getAge()));
             return new PageImpl<>(mateList);
         }
 
@@ -93,7 +93,7 @@ public class HomePostRecommendService {
 
 
         for(HomePost homePost:sortedHomePosts){
-            listedPosts.add(new ListedPostDto(homePost, homePost.getMember().getNickname()));
+            listedPosts.add(new ListedPostDto(homePost, homePost.getMember().getNickname(), homePost.getMember().getAge()));
         }
 
         return new PageImpl<>(listedPosts);

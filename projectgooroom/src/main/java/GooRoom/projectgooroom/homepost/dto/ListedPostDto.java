@@ -19,8 +19,9 @@ public class ListedPostDto{
         private int roomPrice;
         private Long postId;
         private String nickname;
+        private int age;
 
-        public ListedPostDto(HomePost homePost, String nickname) {
+        public ListedPostDto(HomePost homePost, String nickname, int age) {
                 this.title = homePost.getTitle();
                 this.postStatus = homePost.getPostStatus();
                 this.city = homePost.getAddress().getCity();
@@ -32,6 +33,7 @@ public class ListedPostDto{
                 this.roomPrice = homePost.getRoomPrice();
                 this.postId = homePost.getId();
                 this.nickname = nickname;
+                this.age = age;
         }
 
         public String getTitle() {
@@ -76,5 +78,9 @@ public class ListedPostDto{
 
         public String getNickname() {
                 return nickname;
+        }
+
+        public int getAge() {
+                return age;
         }
 }
