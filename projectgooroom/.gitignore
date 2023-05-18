@@ -41,3 +41,6 @@ test/
 
 ## OAuth2.0
 /src/main/resources/application-oauth.yml
+
+## yml 무시
+/src/main/resources/application.yml
