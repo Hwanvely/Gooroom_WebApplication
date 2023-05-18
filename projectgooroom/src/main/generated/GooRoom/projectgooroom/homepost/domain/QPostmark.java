@@ -28,6 +28,8 @@ public class QPostmark extends EntityPathBase<Postmark> {
 
     public final GooRoom.projectgooroom.member.domain.QMember member;
 
+    public final NumberPath<Long> postId = createNumber("postId", Long.class);
+
     public QPostmark(String variable) {
         this(Postmark.class, forVariable(variable), INITS);
     }

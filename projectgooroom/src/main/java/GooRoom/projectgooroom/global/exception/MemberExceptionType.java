@@ -19,8 +19,10 @@ public enum MemberExceptionType implements BaseExceptionType {
     INVALIDATE_REFRESH_TOKEN(489, HttpStatus.UNAUTHORIZED, "만료 또는 유효하지 않은 REFRESH 토큰입니다."),
 
     //MemberInformation 이미 존재 시
-    ALREADY_EXIST_MEMBERINFORMATION(409, HttpStatus.CONFLICT, "성향정보가 이미 존재합니다.");
-
+    ALREADY_EXIST_MEMBERINFORMATION(409, HttpStatus.CONFLICT, "성향정보가 이미 존재합니다."),
+    //PostMark 추가 실패 시
+    CANNOT_ADD_POSTMARK(430, HttpStatus.BAD_REQUEST, "postmark를 추가할 수 없습니다."),
+    CANNOT_DELETE_POSTMARK(440, HttpStatus.BAD_REQUEST, "postmark를 삭제할 수 없습니다.");
 
     private int errorCode;
     private HttpStatus httpStatus;

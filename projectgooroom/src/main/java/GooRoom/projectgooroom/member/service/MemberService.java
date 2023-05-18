@@ -1,5 +1,7 @@
 package GooRoom.projectgooroom.member.service;
 
+import GooRoom.projectgooroom.homepost.dto.ListedPostDto;
+import GooRoom.projectgooroom.homepost.repository.PostmarkRepositoryCustom;
 import GooRoom.projectgooroom.member.domain.LoginType;
 import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.member.domain.MemberInformation;
@@ -10,6 +12,8 @@ import GooRoom.projectgooroom.member.dto.*;
 import GooRoom.projectgooroom.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +33,9 @@ public class MemberService {
 
 
     private final MemberRepository memberRepository;
+
+    private final PostmarkRepositoryCustom postmarkRepositoryCustom;
+
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -177,12 +184,28 @@ public class MemberService {
         }
     }
 
+    /**
+     * nickname을 통한 Member 검색
+     * @param nickname
+     * @return member
+     */
     public Member findOneByNickname(String nickname){
         try{
             return memberRepository.findMemberByNickname(nickname).get();
         }catch (Exception e){
             throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
         }
+    }
+
+    /**
+     * 찜 목록 조회
+     *
+     * @param memberId
+     * @param pageable
+     * @return
+     */
+    public PageImpl<ListedPostDto> getPostmarkList(Long memberId, Pageable pageable){
+        return postmarkRepositoryCustom.findAllByMember_Id(memberId, pageable);
     }
 
     /**

@@ -1,6 +1,12 @@
 package GooRoom.projectgooroom.member.controller;
 
 import GooRoom.projectgooroom.global.jwt.JwtService;
+import GooRoom.projectgooroom.homepost.domain.HomePost;
+import GooRoom.projectgooroom.homepost.dto.HomePostListDto;
+import GooRoom.projectgooroom.homepost.dto.ListedPostDto;
+import GooRoom.projectgooroom.homepost.dto.ListedPostmarkDto;
+import GooRoom.projectgooroom.homepost.dto.PostmarkListDto;
+import GooRoom.projectgooroom.homepost.service.HomePostService;
 import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.member.domain.MemberInformation;
 import GooRoom.projectgooroom.global.exception.MemberException;
@@ -14,6 +20,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,7 +35,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,8 +44,12 @@ import java.util.Optional;
 public class MemberController {
 
     private final MemberService memberService;
+
     private final MemberInformationService memberInformationService;
+
     private final JwtService jwtService;
+
+    private final HomePostService homePostService;
 
     //프로필 사진 절대 경로 지정
     private static final String PROFILE_IMAGE_PATH = "/Users/junseo/Documents/Study/Gooroom_WebApplication/projectgooroom/src/main/resources/image/user/";
@@ -309,4 +321,41 @@ public class MemberController {
         jwtService.extractRefreshToken(request)
                 .ifPresent(refreshToken -> jwtService.reissueAccessToken(response, refreshToken));
     }
+
+    /**
+     * 내가 작성한 게시글 조회
+     * @param userDetails
+     * @param page
+     * @return
+     */
+    @GetMapping("/users/mates")
+    public ResponseEntity getMyHomePosts(@AuthenticationPrincipal UserDetails userDetails,
+                                         @RequestParam(defaultValue = "0")int page){
+        Member member = getMemberFromUserDetails(userDetails);
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "lastEditTime"));
+
+        Page<HomePost> allPostsByMember = homePostService.findAllPostsByMember(member.getId(), pageable);
+        List<HomePost> homePostList = allPostsByMember.getContent();
+
+        List<ListedPostDto> listedPostDtoList = new ArrayList<>();
+
+        homePostList.forEach(homePost -> listedPostDtoList.add(new ListedPostDto(homePost, member.getNickname(), member.getAge())));
+
+        return new ResponseEntity(new HomePostListDto(listedPostDtoList.size(), listedPostDtoList), HttpStatus.OK);
+    }
+
+    /**
+     * UserDetails로 부터 email출 후 Member 반환
+     * @param userDetails
+     * @return member
+     */
+    private Member getMemberFromUserDetails(UserDetails userDetails) {
+        if(userDetails == null)
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+
+        Member member = memberService.findOneByEmail(userDetails.getUsername());
+        return member;
+    }
+
 }

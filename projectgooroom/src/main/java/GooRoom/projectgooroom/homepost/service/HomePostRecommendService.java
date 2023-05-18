@@ -4,7 +4,7 @@ import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.domain.Postmark;
 import GooRoom.projectgooroom.homepost.dto.HomePostFilterDto;
 import GooRoom.projectgooroom.homepost.dto.ListedPostDto;
-import GooRoom.projectgooroom.homepost.repository.HomePostRepositoryImpl;
+import GooRoom.projectgooroom.homepost.repository.HomePostRepositoryCustomImpl;
 import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.member.domain.MemberInformation;
 import GooRoom.projectgooroom.member.repository.MemberRepository;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class HomePostRecommendService {
 
-    private final HomePostRepositoryImpl homePostRepository;
+    private final HomePostRepositoryCustomImpl homePostRepository;
 
     private final MemberRepository memberRepository;
 
@@ -55,11 +55,11 @@ public class HomePostRecommendService {
 
         //0, 1개인 경우 반환
         if(count==0){
-            return new PageImpl<>(null);
+            return new PageImpl<>(new ArrayList<>());
         }
         if(count==1){
             List<ListedPostDto> mateList = new ArrayList<>();
-            mateList.add(new ListedPostDto(homePostList.get(0), homePostList.get(0).getMember().getNickname()));
+            mateList.add(new ListedPostDto(homePostList.get(0), homePostList.get(0).getMember().getNickname(), homePostList.get(0).getMember().getAge()));
             return new PageImpl<>(mateList);
         }
 
@@ -93,7 +93,7 @@ public class HomePostRecommendService {
 
 
         for(HomePost homePost:sortedHomePosts){
-            listedPosts.add(new ListedPostDto(homePost, homePost.getMember().getNickname()));
+            listedPosts.add(new ListedPostDto(homePost, homePost.getMember().getNickname(), homePost.getMember().getAge()));
         }
 
         return new PageImpl<>(listedPosts);

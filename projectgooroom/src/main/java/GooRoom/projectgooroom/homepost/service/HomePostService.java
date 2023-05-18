@@ -27,6 +27,7 @@ import java.io.File;
 public class HomePostService {
 
     private final HomePostRepository homePostRepository;
+
     private final MemberRepository memberRepository;
 
     /**
@@ -55,7 +56,11 @@ public class HomePostService {
      * @return
      */
     public Page<HomePost> findAllPostsByMember(Long memberId, Pageable pageable) {
-        return homePostRepository.findHomePostsByMemberId(memberId, pageable);
+        try{
+            return homePostRepository.findHomePostsByMemberId(memberId, pageable);
+        }catch (Exception e){
+            throw new HomePostException(HomePostExceptionType.CANNOT_GET_HOME_POST);
+        }
     }
 
     /**
@@ -122,10 +127,14 @@ public class HomePostService {
      */
     @Transactional
     public void addPostMark(String email, Long homePostId) {
-        Member member = memberRepository.findMemberByEmail(email).get();
-        HomePost homePost = homePostRepository.findHomePostById(homePostId);
-        Postmark postmark = new Postmark(member, homePost);
-        member.addPostmark(postmark);
+        try {
+            Member member = memberRepository.findMemberByEmail(email).get();
+            HomePost homePost = homePostRepository.findHomePostById(homePostId);
+            Postmark postmark = new Postmark(member, homePost);
+            member.addPostmark(postmark);
+        }catch (Exception e){
+            throw new MemberException(MemberExceptionType.CANNOT_ADD_POSTMARK);
+        }
     }
 
     /**

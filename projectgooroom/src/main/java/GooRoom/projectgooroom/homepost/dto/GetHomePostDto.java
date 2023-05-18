@@ -11,7 +11,10 @@ import java.time.LocalDateTime;
 
 @Data
 public class GetHomePostDto{
+    private boolean postmark;
+
     private String nickname;
+    private int age;
     private String title;
     private Boolean hasHome;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -32,7 +35,7 @@ public class GetHomePostDto{
     private String content;
 
 
-    public GetHomePostDto(HomePost homePost, String nickname) {
+    public GetHomePostDto(HomePost homePost, String nickname, int age, boolean postmark) {
         this.title = homePost.getTitle();
         this.hasHome = homePost.getHasHome();
         this.postStatus = homePost.getPostStatus();
@@ -46,5 +49,7 @@ public class GetHomePostDto{
         this.zipcode = homePost.getAddress().getZipcode();
         this.content = homePost.getContent();
         this.nickname = nickname;
+        this.age = age;
+        this.postmark = postmark;
     }
 }
