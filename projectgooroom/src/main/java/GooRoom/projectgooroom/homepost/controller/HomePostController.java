@@ -17,9 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -59,12 +58,7 @@ public class HomePostController {
     public ResponseEntity postHomePost(@Valid @AuthenticationPrincipal UserDetails userDetails,
                                    @Valid @RequestPart("homePost") HomePostDto homePostDto,
                                    @Valid @RequestPart("file")MultipartFile file){
-        if(userDetails == null){
-            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
-        }
-
-        String email = userDetails.getUsername();
-        Member member = memberService.findOneByEmail(email);
+        Member member = getMemberFromUserDetails(userDetails);
 
         try{
             String path = ROOM_IMAGE_PATH + UUID.randomUUID() + "_" + file.getOriginalFilename();
@@ -88,8 +82,9 @@ public class HomePostController {
         Member member = homePost.getMember();
 
         try {
-            GetHomePostDto getHomePostDto = new GetHomePostDto(homePost, member.getNickname(), member.getAge());
-            log.debug("게시글 조회??");
+            boolean isPostmark = member.getPostmarkList().stream()
+                    .anyMatch(postmark -> postmark.getPostId().equals(postId));
+            GetHomePostDto getHomePostDto = new GetHomePostDto(homePost, member.getNickname(), member.getAge(), isPostmark);
             return new ResponseEntity(getHomePostDto, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
@@ -270,5 +265,51 @@ public class HomePostController {
         int postCount = filteredPost.getContent().size();
 
         return new ResponseEntity<>(new HomePostListDto(postCount, filteredPost.getContent()),HttpStatus.OK);
+    }
+
+    /**
+     * HomePost 찜하기
+     * @param userDetails
+     * @param postId
+     */
+    @PostMapping("/mark/{postId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    public void addMyPostmark(@AuthenticationPrincipal UserDetails userDetails,
+                              @PathVariable("postId") Long postId){
+        homePostService.addPostMark(userDetails.getUsername(), postId);
+    }
+
+    /**
+     * 내가 찜한 게시글 조회
+     * @param userDetails
+     * @param page
+     * @return
+     */
+    @GetMapping("/users/matesmark")
+    public ResponseEntity getMyPostmarks(@AuthenticationPrincipal UserDetails userDetails,
+                                         @RequestParam(defaultValue = "0")int page){
+        Member member = getMemberFromUserDetails(userDetails);
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "lastEditTime"));
+
+        PageImpl<ListedPostDto> postmarkList = memberService.getPostmarkList(member.getId(), pageable);
+
+        List<ListedPostDto> listedPostDtoList = postmarkList.getContent();
+
+        return new ResponseEntity(new HomePostListDto(listedPostDtoList.size(), listedPostDtoList), HttpStatus.OK);
+    }
+
+    /**
+     * UserDetails로 부터 email출 후 Member 반환
+     * @param userDetails
+     * @return member
+     */
+    private Member getMemberFromUserDetails(UserDetails userDetails) {
+        if(userDetails == null)
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+
+        Member member = memberService.findOneByEmail(userDetails.getUsername());
+        return member;
     }
 }

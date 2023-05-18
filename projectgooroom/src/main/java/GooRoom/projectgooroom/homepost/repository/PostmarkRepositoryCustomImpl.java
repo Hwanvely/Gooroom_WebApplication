@@ -30,7 +30,7 @@ public class PostmarkRepositoryCustomImpl implements PostmarkRepositoryCustom{
     }
 
     @Override
-    public PageImpl<ListedPostmarkDto> findAllByMember_Id(Long memberId, Pageable pageable) {
+    public PageImpl<ListedPostDto> findAllByMember_Id(Long memberId, Pageable pageable) {
         List<Tuple> tuples = queryFactory
                 .select(homePost, member, postmark)
                 .from(postmark)
@@ -55,16 +55,14 @@ public class PostmarkRepositoryCustomImpl implements PostmarkRepositoryCustom{
             members.add(member);
             postmarks.add(postmark);
         }
-        return getListedPostDtos(homePosts, members, postmarks);
+        return getListedPostDtos(homePosts, members);
     }
 
-    private static PageImpl<ListedPostmarkDto> getListedPostDtos(List<HomePost> homePosts, List<Member> members, List<Postmark> postmarks) {
-        List<ListedPostmarkDto> listedPostDtos = new ArrayList<>();
+    private static PageImpl<ListedPostDto> getListedPostDtos(List<HomePost> homePosts, List<Member> members) {
+        List<ListedPostDto> listedPostDtos = new ArrayList<>();
 
         for (int i = 0; i< members.size(); i++){
-            listedPostDtos.add(new ListedPostmarkDto(
-                    new ListedPostDto(homePosts.get(i), members.get(i).getNickname(), members.get(i).getAge()),
-                    postmarks.get(i).getId()));
+            listedPostDtos.add(new ListedPostDto(homePosts.get(i), members.get(i).getNickname(), members.get(i).getAge()));
         }
 
         return new PageImpl<>(listedPostDtos);

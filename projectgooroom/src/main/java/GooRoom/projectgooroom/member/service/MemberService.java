@@ -1,6 +1,6 @@
 package GooRoom.projectgooroom.member.service;
 
-import GooRoom.projectgooroom.homepost.dto.ListedPostmarkDto;
+import GooRoom.projectgooroom.homepost.dto.ListedPostDto;
 import GooRoom.projectgooroom.homepost.repository.PostmarkRepositoryCustom;
 import GooRoom.projectgooroom.member.domain.LoginType;
 import GooRoom.projectgooroom.member.domain.Member;
@@ -204,7 +204,7 @@ public class MemberService {
      * @param pageable
      * @return
      */
-    public PageImpl<ListedPostmarkDto> getPostmarkList(Long memberId, Pageable pageable){
+    public PageImpl<ListedPostDto> getPostmarkList(Long memberId, Pageable pageable){
         return postmarkRepositoryCustom.findAllByMember_Id(memberId, pageable);
     }
 

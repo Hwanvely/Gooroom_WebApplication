@@ -55,7 +55,7 @@ public class HomePostRecommendService {
 
         //0, 1개인 경우 반환
         if(count==0){
-            return new PageImpl<>(null);
+            return new PageImpl<>(new ArrayList<>());
         }
         if(count==1){
             List<ListedPostDto> mateList = new ArrayList<>();

@@ -23,8 +23,11 @@ public class Postmark {
     @JoinColumn(name = "home_post_id")
     private HomePost homePost;
 
+    private Long postId;
+
     public Postmark(Member member, HomePost homePost) {
         this.member = member;
         this.homePost = homePost;
+        this.postId = homePost.getId();
     }
 }

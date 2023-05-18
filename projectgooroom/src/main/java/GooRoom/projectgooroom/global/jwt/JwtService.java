@@ -183,9 +183,14 @@ public class JwtService {
      */
     public void reissueAccessToken(HttpServletResponse response, String refreshToken){
         try {
-            String email = memberRepository.findMemberByRefreshToken(refreshToken).get().getEmail();
-            String accessToken = createAccessToken(email);
-            setAccessTokenHeader(response, accessToken);
+            if(isTokenValid(refreshToken)) {
+                String email = memberRepository.findMemberByRefreshToken(refreshToken).get().getEmail();
+                String accessToken = createAccessToken(email);
+                setAccessTokenHeader(response, accessToken);
+            }
+            else {
+                throw new MemberException(MemberExceptionType.INVALIDATE_REFRESH_TOKEN);
+            }
         }catch (Exception e){
             throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
         }

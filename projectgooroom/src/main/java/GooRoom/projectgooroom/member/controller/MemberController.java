@@ -346,56 +346,6 @@ public class MemberController {
     }
 
     /**
-     * HomePost 찜하기
-     * @param userDetails
-     * @param postId
-     */
-    @PostMapping("/users/matesmark/{postId}")
-    @ResponseStatus(HttpStatus.OK)
-    public void addMyPostmark(@AuthenticationPrincipal UserDetails userDetails,
-                              @PathVariable Long postId){
-        homePostService.addPostMark(userDetails.getUsername(), postId);
-    }
-
-    /**
-     * 내가 찜한 게시글 조회
-     * @param userDetails
-     * @param page
-     * @return
-     */
-    @GetMapping("/users/matesmark")
-    public ResponseEntity getMyPostmarks(@AuthenticationPrincipal UserDetails userDetails,
-                                         @RequestParam(defaultValue = "0")int page){
-        Member member = getMemberFromUserDetails(userDetails);
-
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "lastEditTime"));
-
-        PageImpl<ListedPostmarkDto> postmarkList = memberService.getPostmarkList(member.getId(), pageable);
-
-        List<ListedPostmarkDto> listedPostDtoList = postmarkList.getContent();
-
-        return new ResponseEntity(new PostmarkListDto(listedPostDtoList.size(), listedPostDtoList), HttpStatus.OK);
-    }
-
-    /**
-     * 찜한 게시글 찜 목록에서 삭제
-     * @param userDetails
-     * @param postmarkId
-     */
-    @DeleteMapping("/users/matesmark/{postmarkId}")
-    @ResponseStatus(HttpStatus.OK)
-    @Transactional
-    public void deleteMyPostmark(@AuthenticationPrincipal UserDetails userDetails,
-                                 @PathVariable Long postmarkId){
-        Member member = getMemberFromUserDetails(userDetails);
-        try {
-            member.getPostmarkList().removeIf(postmark -> postmark.getId() == postmarkId);
-        }catch (Exception e){
-            throw new MemberException(MemberExceptionType.CANNOT_DELETE_POSTMARK);
-        }
-    }
-
-    /**
      * UserDetails로 부터 email출 후 Member 반환
      * @param userDetails
      * @return member
