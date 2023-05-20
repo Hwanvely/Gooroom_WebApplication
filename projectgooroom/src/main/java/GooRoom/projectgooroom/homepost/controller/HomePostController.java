@@ -57,14 +57,20 @@ public class HomePostController {
     @Transactional
     public ResponseEntity postHomePost(@Valid @AuthenticationPrincipal UserDetails userDetails,
                                    @Valid @RequestPart("homePost") HomePostDto homePostDto,
-                                   @Valid @RequestPart("file")MultipartFile file){
+                                   @Valid @RequestPart(value = "file", required = false)MultipartFile file){
         Member member = getMemberFromUserDetails(userDetails);
 
         try{
-            String path = ROOM_IMAGE_PATH + UUID.randomUUID() + "_" + file.getOriginalFilename();
-            homePostService.createHomePost(member.getId(), homePostDto, path);
-            file.transferTo(new File(path));
-            return ResponseEntity.status(HttpStatus.OK).build();
+            if(file!=null){
+                String path = ROOM_IMAGE_PATH + UUID.randomUUID() + "_" + file.getOriginalFilename();
+                homePostService.createHomePost(member.getId(), homePostDto, path);
+                file.transferTo(new File(path));
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+            else{
+                homePostService.createHomePost(member.getId(), homePostDto, null);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
