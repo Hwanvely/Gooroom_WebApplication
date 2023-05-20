@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -56,6 +57,9 @@ public class HomePost {
     private String content;
 
     private String roomImage;
+
+    @OneToMany(mappedBy = "homePost", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Postmark> postmarkList;
 
     /**
      * 연관관계 생성 메서드

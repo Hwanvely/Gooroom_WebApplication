@@ -34,6 +34,8 @@ public class QHomePost extends EntityPathBase<HomePost> {
 
     public final GooRoom.projectgooroom.member.domain.QMember member;
 
+    public final ListPath<Postmark, QPostmark> postmarkList = this.<Postmark, QPostmark>createList("postmarkList", Postmark.class, QPostmark.class, PathInits.DIRECT2);
+
     public final EnumPath<PostStatus> postStatus = createEnum("postStatus", PostStatus.class);
 
     public final EnumPath<GooRoom.projectgooroom.global.embedded.RentType> rentType = createEnum("rentType", GooRoom.projectgooroom.global.embedded.RentType.class);

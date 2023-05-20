@@ -57,20 +57,6 @@ public class PostmarkRepositoryCustomImpl implements PostmarkRepositoryCustom{
         return getListedPostDtos(homePosts, members);
     }
 
-    @Override
-    public void deleteAllByPostID(Long postId) {
-        queryFactory
-                .delete(postmark)
-                .where(postmark.homePost.id.eq(postId));
-    }
-
-    @Override
-    public void deleteAllByMemberID(Long memberId) {
-        queryFactory
-                .delete(postmark)
-                .where(postmark.member.id.eq(memberId));
-    }
-
     private static PageImpl<ListedPostDto> getListedPostDtos(List<HomePost> homePosts, List<Member> members) {
         List<ListedPostDto> listedPostDtos = new ArrayList<>();
 
