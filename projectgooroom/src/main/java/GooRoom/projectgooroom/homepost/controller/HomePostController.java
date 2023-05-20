@@ -112,7 +112,8 @@ public class HomePostController {
             InputStream inputStream = new FileInputStream(image);
             MediaType imageType;
 
-            if (image.getName().endsWith(".jpg") || image.getName().endsWith(".jpeg")) {
+            if (image.getName().endsWith(".jpg") || image.getName().endsWith(".jpeg")
+                ||image.getName().endsWith(".JPG")||image.getName().endsWith(".JPEG")) {
                 imageType = MediaType.IMAGE_JPEG;
             } else if (image.getName().endsWith(".png")) {
                 imageType = MediaType.IMAGE_PNG;

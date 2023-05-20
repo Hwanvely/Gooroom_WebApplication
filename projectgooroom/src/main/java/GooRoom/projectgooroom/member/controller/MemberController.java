@@ -346,6 +346,17 @@ public class MemberController {
     }
 
     /**
+     * 로그아웃 시 쿠키 만료 설정
+     * @param request
+     * @param response
+     */
+    @GetMapping("/signout")
+    @ResponseStatus(HttpStatus.OK)
+    public void logout(HttpServletRequest request, HttpServletResponse response){
+        jwtService.expireRefreshToken(response, request);
+    }
+
+    /**
      * UserDetails로 부터 email출 후 Member 반환
      * @param userDetails
      * @return member

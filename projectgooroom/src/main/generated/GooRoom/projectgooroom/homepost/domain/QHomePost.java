@@ -2,8 +2,6 @@ package GooRoom.projectgooroom.homepost.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import GooRoom.projectgooroom.global.embedded.RentType;
-import GooRoom.projectgooroom.global.embedded.ResidenceType;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
