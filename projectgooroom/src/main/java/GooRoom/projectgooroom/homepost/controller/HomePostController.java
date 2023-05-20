@@ -49,6 +49,8 @@ public class HomePostController {
 
     private static final String ROOM_IMAGE_PATH = "/Users/junseo/Documents/Study/Gooroom_WebApplication/projectgooroom/src/main/resources/image/homePost/";
 
+    private static int PAGING_SIZE = 10;
+
     /**
      * 새 HomePost 작성
      * @param userDetails
@@ -59,6 +61,13 @@ public class HomePostController {
                                    @Valid @RequestPart("homePost") HomePostDto homePostDto,
                                    @Valid @RequestPart(value = "file", required = false)MultipartFile file){
         Member member = getMemberFromUserDetails(userDetails);
+        List<HomePost> homePostList = member.getHomePostList();
+        int homePostCount = homePostList.size();
+
+        //진행 중인 게시글은 인당 1개만 등록 가능.
+        if(homePostCount >0&&homePostList.get(homePostCount -1).getPostStatus()==PostStatus.PROGRESS){
+            throw new HomePostException(HomePostExceptionType.ALREADY_PROGRESS);
+        }
 
         try{
             if(file!=null){
@@ -179,7 +188,7 @@ public class HomePostController {
     public void editHomePost(@AuthenticationPrincipal UserDetails userDetails,
                                        @Valid @PathVariable("postId")Long postId,
                                        @Valid @RequestPart("homePost") EditHomePostDto homePostDto,
-                                       @Valid @RequestPart("file")MultipartFile file){
+                                       @Valid @RequestPart(value = "file", required = false)MultipartFile file){
         try{
             HomePost homePost = homePostService.findOne(postId);
             if(!file.isEmpty()){
@@ -198,7 +207,10 @@ public class HomePostController {
             else{
                 homePostService.updateHomePost(postId, userDetails.getUsername(), homePostDto, null);
             }
-        }catch (Exception e){
+        }catch (HomePostException e){
+            throw e;
+        }
+        catch (Exception e){
             log.error(e.getMessage());
             throw new HomePostException(HomePostExceptionType.CANNOT_UPDATE_HOME_POST);
         }
@@ -247,13 +259,13 @@ public class HomePostController {
                                                            @RequestParam(defaultValue = "0") int minAge,
                                                            @RequestParam(defaultValue = "100") int maxAge,
                                                            @RequestParam Optional<Boolean> hasHome,
-                                                           @RequestParam Optional<PostStatus> postStatus,
+                                                           @RequestParam(defaultValue = "PROGRESS") Optional<PostStatus> postStatus,
                                                            @RequestParam(defaultValue = "0") int page
                                 ){
         if(userDetails == null)
             throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
 
-        Pageable pageable = PageRequest.of(page, 10);
+        String email = userDetails.getUsername();
 
         HomePostFilterDto homePostFilterDto = new HomePostFilterDto(
                 postStatus.isPresent() ? postStatus.get() : null,
@@ -266,12 +278,21 @@ public class HomePostController {
                 maxAge,
                 hasHome.isPresent() ? hasHome.get().booleanValue() : null
         );
+        if(homePostFilterDto.postStatus()==PostStatus.PROGRESS){
+            Pageable pageable = PageRequest.of(page, PAGING_SIZE);
+            Page<ListedPostDto> filteredPost = recommendService.findFilteredPostProgress(email, pageable, homePostFilterDto);
+            int postCount = filteredPost.getContent().size();
 
-        String email = userDetails.getUsername();
-        Page<ListedPostDto> filteredPost = recommendService.findFilteredPost(email, pageable, homePostFilterDto);
-        int postCount = filteredPost.getContent().size();
+            return new ResponseEntity<>(new HomePostListDto(postCount, filteredPost.getContent()),HttpStatus.OK);
+        }
+        else{
+            Pageable pageable = PageRequest.of(page, PAGING_SIZE);
+            Page<ListedPostDto> filteredPost = recommendService.findFilteredPostNotProgress(email, pageable, homePostFilterDto);
+            int postCount = filteredPost.getContent().size();
 
-        return new ResponseEntity<>(new HomePostListDto(postCount, filteredPost.getContent()),HttpStatus.OK);
+            return new ResponseEntity<>(new HomePostListDto(postCount, filteredPost.getContent()),HttpStatus.OK);
+        }
+
     }
 
     /**

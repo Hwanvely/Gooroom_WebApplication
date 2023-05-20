@@ -3,7 +3,6 @@ package GooRoom.projectgooroom.homepost.repository;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.domain.Postmark;
 import GooRoom.projectgooroom.homepost.dto.ListedPostDto;
-import GooRoom.projectgooroom.homepost.dto.ListedPostmarkDto;
 import GooRoom.projectgooroom.member.domain.Member;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -56,6 +55,20 @@ public class PostmarkRepositoryCustomImpl implements PostmarkRepositoryCustom{
             postmarks.add(postmark);
         }
         return getListedPostDtos(homePosts, members);
+    }
+
+    @Override
+    public void deleteAllByPostID(Long postId) {
+        queryFactory
+                .delete(postmark)
+                .where(postmark.homePost.id.eq(postId));
+    }
+
+    @Override
+    public void deleteAllByMemberID(Long memberId) {
+        queryFactory
+                .delete(postmark)
+                .where(postmark.member.id.eq(memberId));
     }
 
     private static PageImpl<ListedPostDto> getListedPostDtos(List<HomePost> homePosts, List<Member> members) {

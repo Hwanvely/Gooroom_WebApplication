@@ -6,4 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostmarkRepositoryCustom {
     PageImpl<ListedPostDto> findAllByMember_Id(Long memberId, Pageable pageable);
+
+    void deleteAllByPostID(Long postId);
+    void deleteAllByMemberID(Long memberId);
 }

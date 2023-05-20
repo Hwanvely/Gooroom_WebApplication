@@ -4,8 +4,6 @@ import GooRoom.projectgooroom.global.jwt.JwtService;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.dto.HomePostListDto;
 import GooRoom.projectgooroom.homepost.dto.ListedPostDto;
-import GooRoom.projectgooroom.homepost.dto.ListedPostmarkDto;
-import GooRoom.projectgooroom.homepost.dto.PostmarkListDto;
 import GooRoom.projectgooroom.homepost.service.HomePostService;
 import GooRoom.projectgooroom.member.domain.Member;
 import GooRoom.projectgooroom.member.domain.MemberInformation;
