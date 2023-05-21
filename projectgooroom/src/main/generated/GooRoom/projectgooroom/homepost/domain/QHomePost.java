@@ -2,8 +2,6 @@ package GooRoom.projectgooroom.homepost.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import GooRoom.projectgooroom.global.embedded.RentType;
-import GooRoom.projectgooroom.global.embedded.ResidenceType;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -35,6 +33,8 @@ public class QHomePost extends EntityPathBase<HomePost> {
     public final DateTimePath<java.time.LocalDateTime> lastEditTime = createDateTime("lastEditTime", java.time.LocalDateTime.class);
 
     public final GooRoom.projectgooroom.member.domain.QMember member;
+
+    public final ListPath<Postmark, QPostmark> postmarkList = this.<Postmark, QPostmark>createList("postmarkList", Postmark.class, QPostmark.class, PathInits.DIRECT2);
 
     public final EnumPath<PostStatus> postStatus = createEnum("postStatus", PostStatus.class);
 

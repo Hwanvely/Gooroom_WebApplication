@@ -65,6 +65,7 @@ public class SecurityConfig {
                 .requestMatchers("/","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**").permitAll()
                 .requestMatchers("/signup/**").permitAll() //회원가입 접근 가능
                 .requestMatchers("/login/**").permitAll()   //로그인 접근 가능
+                .requestMatchers("/signout").permitAll() //로그아웃 접근 가능
                 .anyRequest().authenticated()
                 .and()
                 //== 소셜 로그인 설정 ==//
@@ -72,6 +73,7 @@ public class SecurityConfig {
                 .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
                 .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
                 .userInfoEndpoint().userService(customOAuth2UserService); // customUserService 설정
+
 
         http.exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)

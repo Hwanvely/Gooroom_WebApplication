@@ -4,17 +4,20 @@ import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.domain.PostStatus;
 import GooRoom.projectgooroom.global.embedded.RentType;
 import GooRoom.projectgooroom.global.embedded.ResidenceType;
+import GooRoom.projectgooroom.homepost.domain.QHomePost;
 import GooRoom.projectgooroom.homepost.dto.HomePostFilterDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 import static GooRoom.projectgooroom.homepost.domain.QHomePost.homePost;
 import static GooRoom.projectgooroom.member.domain.QMember.member;
@@ -31,7 +34,9 @@ public class HomePostRepositoryCustomImpl implements HomePostRepositoryCustom {
     @Override
     public Page<HomePost> findHomePostByFilter(Pageable pageable, HomePostFilterDto homePostFilter, Long memberId) {
         //HomePost 조회.
-        List<HomePost> content = queryFactory
+        QHomePost qHomePost = QHomePost.homePost;
+        DateTimePath<LocalDateTime> lastEditTime = qHomePost.lastEditTime;
+        JPAQuery<HomePost> query = queryFactory
                 .selectFrom(homePost)
                 .join(homePost.member, member)
                 .where(
@@ -44,23 +49,8 @@ public class HomePostRepositoryCustomImpl implements HomePostRepositoryCustom {
                         ageBetween(homePostFilter.minAge(), homePostFilter.maxAge()),
                         member.id.ne(memberId)
                 )
-                .fetch();
-        //HomePost 수
-        Long count = queryFactory
-                .select(homePost.count())
-                .from(homePost)
-                .join(homePost.member, member)
-                .where(
-                        postTypeEq(homePostFilter.postStatus()),
-                        hasHomeEq(homePostFilter.hasHome()),
-                        residenceTypeEq(homePostFilter.residenceType()),
-                        rentTypeEq(homePostFilter.rentType()),
-                        addressDongEq(homePostFilter.dong()),
-                        ageBetween(homePostFilter.minAge(), homePostFilter.maxAge()),
-                        member.id.ne(memberId)
-                )
-                .fetchOne();
-        return new PageImpl<>(content, pageable, count);
+                .orderBy(lastEditTime.desc());
+        return PageableExecutionUtils.getPage(query.fetch(), pageable, query::fetchCount);
     }
 
     private BooleanExpression postTypeEq(PostStatus postStatus) {

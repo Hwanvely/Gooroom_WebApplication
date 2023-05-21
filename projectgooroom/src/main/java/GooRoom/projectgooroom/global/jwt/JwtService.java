@@ -197,6 +197,24 @@ public class JwtService {
     }
 
     /**
+     * 로그아웃 시 쿠키 만료를 통한 Refresh Token 만료.
+     * @param response
+     * @param request
+     */
+    public void expireRefreshToken(HttpServletResponse response, HttpServletRequest request){
+        Cookie refreshCookie = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals(refreshHeader))
+                .findFirst()
+                .orElse(null);
+        if(refreshCookie == null){
+            throw new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
+        }
+        refreshCookie.setMaxAge(0);
+        refreshCookie.setHttpOnly(true);
+        response.addCookie(refreshCookie);
+    }
+
+    /**
      * Token의 유효성 검사
      * @param token
      * @return {@link Boolean}

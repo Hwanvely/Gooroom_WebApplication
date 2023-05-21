@@ -36,13 +36,13 @@ public class HomePostRecommendService {
     }
 
     /**
-     * 필터에 따라 조회 후 성향에 따른 협업필터링 결과 페이징 조회
+     * 룸메이트를 구하는 중인 게시글에 대해 필터에 따라 조회 후 성향에 따른 협업필터링 결과 페이징 조회
      * @param email
      * @param pageable
      * @param homePostFilterDto
      * @return Page<HomePost>
      */
-    public Page<ListedPostDto> findFilteredPost(String email, Pageable pageable, HomePostFilterDto homePostFilterDto){
+    public Page<ListedPostDto> findFilteredPostProgress(String email, Pageable pageable, HomePostFilterDto homePostFilterDto){
         //추천 대상
         Member member = memberRepository.findMemberByEmail(email).get();
         MemberInformation clientMemberInformation = member.getMemberInformation();
@@ -93,6 +93,27 @@ public class HomePostRecommendService {
 
 
         for(HomePost homePost:sortedHomePosts){
+            listedPosts.add(new ListedPostDto(homePost, homePost.getMember().getNickname(), homePost.getMember().getAge()));
+        }
+
+        return new PageImpl<>(listedPosts);
+    }
+
+    /**
+     * 진행중 또는 완료된 게시글에 대해 조회
+     * @param email
+     * @param pageable
+     * @param homePostFilterDto
+     * @return
+     */
+    public Page<ListedPostDto> findFilteredPostNotProgress(String email, Pageable pageable, HomePostFilterDto homePostFilterDto){
+        //조회 클라이언트
+        Member member = memberRepository.findMemberByEmail(email).get();
+        //조회 결과
+        Page<HomePost> homePostByFilter = homePostRepository.findHomePostByFilter(pageable, homePostFilterDto, member.getId());
+        List<ListedPostDto> listedPosts = new ArrayList<>();
+
+        for(HomePost homePost:homePostByFilter.getContent()){
             listedPosts.add(new ListedPostDto(homePost, homePost.getMember().getNickname(), homePost.getMember().getAge()));
         }
 

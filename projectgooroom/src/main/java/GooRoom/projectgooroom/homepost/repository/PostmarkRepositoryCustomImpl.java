@@ -3,7 +3,6 @@ package GooRoom.projectgooroom.homepost.repository;
 import GooRoom.projectgooroom.homepost.domain.HomePost;
 import GooRoom.projectgooroom.homepost.domain.Postmark;
 import GooRoom.projectgooroom.homepost.dto.ListedPostDto;
-import GooRoom.projectgooroom.homepost.dto.ListedPostmarkDto;
 import GooRoom.projectgooroom.member.domain.Member;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
