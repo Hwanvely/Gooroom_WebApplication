@@ -191,7 +191,7 @@ public class HomePostController {
                                        @Valid @RequestPart(value = "file", required = false)MultipartFile file){
         try{
             HomePost homePost = homePostService.findOne(postId);
-            if(!file.isEmpty()){
+            if(file!=null){
                 //기존 파일 제거
                 String oldFilePath = homePost.getRoomImage();
                 File oldFile = new File(oldFilePath);
