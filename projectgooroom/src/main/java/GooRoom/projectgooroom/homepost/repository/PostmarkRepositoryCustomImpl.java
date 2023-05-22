@@ -39,7 +39,7 @@ public class PostmarkRepositoryCustomImpl implements PostmarkRepositoryCustom{
                 .where(member.id.eq(memberId))
                 .orderBy(homePost.lastEditTime.desc())
                 .limit(pageable.getPageSize())
-                .offset(pageable.getOffset() * pageable.getPageSize())
+                .offset(pageable.getPageNumber() * pageable.getPageSize())
                 .fetch();
 
         JPAQuery<HomePost> query = queryFactory

@@ -340,7 +340,7 @@ public class MemberController {
 
         homePostList.forEach(homePost -> listedPostDtoList.add(new ListedPostDto(homePost, member.getNickname(), member.getAge())));
 
-        return new ResponseEntity(new HomePostListDto(listedPostDtoList.size(), listedPostDtoList), HttpStatus.OK);
+        return new ResponseEntity(new HomePostListDto(allPostsByMember.getTotalElements(), listedPostDtoList), HttpStatus.OK);
     }
 
     /**
