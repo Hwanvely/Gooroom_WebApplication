@@ -32,7 +32,6 @@ public class GetHomePostDto{
     private String roadName;
     private String buildingNumber;
 
-    private String zipcode;
     private String content;
 
 
@@ -48,7 +47,6 @@ public class GetHomePostDto{
         this.dong = homePost.getAddress().getDong();
         this.roadName = homePost.getAddress().getRoadName();
         this.buildingNumber = homePost.getAddress().getBuildingNumber();
-        this.zipcode = homePost.getAddress().getZipcode();
         this.content = homePost.getContent();
         this.nickname = nickname;
         this.age = age;
