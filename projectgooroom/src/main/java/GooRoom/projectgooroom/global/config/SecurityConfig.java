@@ -65,7 +65,8 @@ public class SecurityConfig {
                 .requestMatchers("/","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**").permitAll()
                 .requestMatchers("/signup/**").permitAll() //회원가입 접근 가능
                 .requestMatchers("/login/**").permitAll()   //로그인 접근 가능
-                .requestMatchers("/signout").permitAll() //로그아웃 접근 가능
+                .requestMatchers("/signout").permitAll()//로그아웃 접근 가능
+                .requestMatchers("/rooms/**").permitAll() //매물정보 접근 가능
                 .anyRequest().authenticated()
                 .and()
                 //== 소셜 로그인 설정 ==//
