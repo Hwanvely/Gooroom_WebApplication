@@ -34,8 +34,10 @@ import java.util.Random;
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     private static final String NO_CHECK_URL_LOGIN = "/login/"; // "/login/**"으로 들어오는 요청은 Filter 작동 X
-    private static final String NO_CHECK_URL_LOGOUT = "/signout"; // "/logout"으로 들어오는 요청은 Filter 작동 X
+    private static final String NO_CHECK_URL_LOGOUT = "/signout"; // "/signout"으로 들어오는 요청은 Filter 작동 X
     private static final String NO_CHECK_URL_SIGNUP = "/signup/"; // "/signup/**"으로 들어오는 요청은 Filter 작동 X
+
+    private static final String NO_CHECK_URL_ROOMS = "/rooms/";
 
     private static final String NO_CHECK_URL_NAVER = "/"; // "네이버 로그인"으로 들어오는 요청은 Filter 작동 X
 
@@ -68,6 +70,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         }
         if (request.getRequestURI().equals(NO_CHECK_URL_LOGOUT)) {
             filterChain.doFilter(request, response); // "로그아웃" 요청이 들어오면, 다음 필터 호출
+            return; // return으로 이후 현재 필터 진행 막기 (안해주면 아래로 내려가서 계속 필터 진행시킴)
+        }
+
+        if (request.getRequestURI().equals(NO_CHECK_URL_ROOMS)) {
+            filterChain.doFilter(request, response); // "매물정보 접근" 요청이 들어오면, 다음 필터 호출
             return; // return으로 이후 현재 필터 진행 막기 (안해주면 아래로 내려가서 계속 필터 진행시킴)
         }
 

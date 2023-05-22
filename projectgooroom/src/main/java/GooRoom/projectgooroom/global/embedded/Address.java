@@ -12,10 +12,10 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 public class Address {
-    private String city;
-    private String dong;
-    private String roadName;
-    private String buildingNumber;
+    private String city; //시 구
+    private String dong; // 동
+    private String roadName; //~ 로 ~길
+    private String buildingNumber; //
 
     public Address(){}
 
