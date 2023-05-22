@@ -65,7 +65,7 @@ public class HomePostController {
         int homePostCount = homePostList.size();
 
         //진행 중인 게시글은 인당 1개만 등록 가능.
-        if(homePostCount >0&&homePostList.get(homePostCount -1).getPostStatus()==PostStatus.PROGRESS){
+        if(homePostCount >0&&homePostList.get(homePostCount -1).getPostStatus()!=PostStatus.COMPLETE){
             throw new HomePostException(HomePostExceptionType.ALREADY_PROGRESS);
         }
 
