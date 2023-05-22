@@ -28,6 +28,7 @@ public class GetHomePostDto{
     private int roomPrice;
 
     private String city;
+    private String dong;
     private String roadName;
     private String buildingNumber;
 
@@ -44,6 +45,7 @@ public class GetHomePostDto{
         this.rentType = homePost.getRentType();
         this.roomPrice = homePost.getRoomPrice();
         this.city = homePost.getAddress().getCity();
+        this.dong = homePost.getAddress().getDong();
         this.roadName = homePost.getAddress().getRoadName();
         this.buildingNumber = homePost.getAddress().getBuildingNumber();
         this.zipcode = homePost.getAddress().getZipcode();
