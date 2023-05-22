@@ -355,7 +355,7 @@ public class MemberController {
     }
 
     /**
-     * UserDetails로 부터 email출 후 Member 반환
+     * UserDetails로 부터 email 추출 후 Member 반환
      * @param userDetails
      * @return member
      */

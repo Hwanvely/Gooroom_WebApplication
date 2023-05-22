@@ -55,6 +55,9 @@ public class JwtService {
     private static final String EMAIL_CLAIM = "email";
     private static final String BEARER = "Bearer ";
 
+    private static final String COOKIE_PATH = "/";
+    private static final String COOKIE_DOMAIN = "localhost";
+
     private final MemberRepository memberRepository;
 
     /**
@@ -161,6 +164,8 @@ public class JwtService {
         Cookie cookie = new Cookie(refreshHeader, refreshToken);
         cookie.setMaxAge(accessTokenExpirationPeriod);
         cookie.setHttpOnly(true);
+        cookie.setPath(COOKIE_PATH);
+        cookie.setDomain(COOKIE_DOMAIN);
         response.addCookie(cookie);
     }
 
