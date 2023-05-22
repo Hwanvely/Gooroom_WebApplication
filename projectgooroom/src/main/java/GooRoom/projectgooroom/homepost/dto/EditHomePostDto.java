@@ -12,7 +12,6 @@ public record EditHomePostDto(
         String dong,
         String roadName,
         String buildingNumber,
-        String zipcode,
         String content)
 {
 

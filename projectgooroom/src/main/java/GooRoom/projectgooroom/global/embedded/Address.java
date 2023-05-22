@@ -16,7 +16,6 @@ public class Address {
     private String dong;
     private String roadName;
     private String buildingNumber;
-    private String zipcode;
 
     public Address(){}
 
@@ -25,11 +24,11 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return Objects.equals(getCity(), address.getCity()) && Objects.equals(getDong(), address.getDong()) && Objects.equals(getRoadName(), address.getRoadName()) && Objects.equals(getBuildingNumber(), address.getBuildingNumber()) && Objects.equals(getZipcode(), address.getZipcode());
+        return Objects.equals(getCity(), address.getCity()) && Objects.equals(getDong(), address.getDong()) && Objects.equals(getRoadName(), address.getRoadName()) && Objects.equals(getBuildingNumber(), address.getBuildingNumber());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCity(), getDong(), getRoadName(), getBuildingNumber(), getZipcode());
+        return Objects.hash(getCity(), getDong(), getRoadName(), getBuildingNumber());
     }
 }

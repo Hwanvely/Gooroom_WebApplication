@@ -38,7 +38,7 @@ public class PostmarkRepositoryCustomImpl implements PostmarkRepositoryCustom{
                 .where(member.id.eq(memberId))
                 .orderBy(homePost.lastEditTime.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()* pageable.getPageNumber())
                 .fetch();
 
         List<HomePost> homePosts = new ArrayList<>();

@@ -49,7 +49,9 @@ public class HomePostRepositoryCustomImpl implements HomePostRepositoryCustom {
                         ageBetween(homePostFilter.minAge(), homePostFilter.maxAge()),
                         member.id.ne(memberId)
                 )
-                .orderBy(lastEditTime.desc());
+                .orderBy(lastEditTime.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getPageNumber() * pageable.getPageSize());
         return PageableExecutionUtils.getPage(query.fetch(), pageable, query::fetchCount);
     }
 

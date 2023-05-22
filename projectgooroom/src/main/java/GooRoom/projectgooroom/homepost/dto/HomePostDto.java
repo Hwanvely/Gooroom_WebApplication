@@ -24,7 +24,6 @@ public record HomePostDto(
         String dong,
         String roadName,
         String buildingNumber,
-        String zipcode,
 
         String content
 ) {
@@ -41,7 +40,6 @@ public record HomePostDto(
                         .dong(dong)
                         .roadName(roadName)
                         .buildingNumber(buildingNumber)
-                        .zipcode(zipcode)
                         .build())
                 .content(content)
                 .build();
