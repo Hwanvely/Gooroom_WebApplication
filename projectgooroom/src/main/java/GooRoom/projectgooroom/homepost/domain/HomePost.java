@@ -58,7 +58,7 @@ public class HomePost {
 
     private String roomImage;
 
-    @OneToMany(mappedBy = "homePost", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "homePost", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Postmark> postmarkList;
 
     /**
@@ -88,7 +88,6 @@ public class HomePost {
                 .dong(homePostDto.dong())
                 .roadName(homePostDto.roadName())
                 .buildingNumber(homePostDto.buildingNumber())
-                .zipcode(homePostDto.zipcode())
                 .build();
         this.content = homePostDto.content();
     }
