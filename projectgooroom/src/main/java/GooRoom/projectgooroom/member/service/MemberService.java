@@ -12,7 +12,7 @@ import GooRoom.projectgooroom.member.dto.*;
 import GooRoom.projectgooroom.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -204,7 +204,7 @@ public class MemberService {
      * @param pageable
      * @return
      */
-    public PageImpl<ListedPostDto> getPostmarkList(Long memberId, Pageable pageable){
+    public Page<ListedPostDto> getPostmarkList(Long memberId, Pageable pageable){
         return postmarkRepositoryCustom.findAllByMember_Id(memberId, pageable);
     }
 

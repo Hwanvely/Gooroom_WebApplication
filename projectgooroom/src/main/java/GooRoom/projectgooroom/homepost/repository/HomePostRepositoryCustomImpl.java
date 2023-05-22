@@ -36,6 +36,7 @@ public class HomePostRepositoryCustomImpl implements HomePostRepositoryCustom {
         //HomePost 조회.
         QHomePost qHomePost = QHomePost.homePost;
         DateTimePath<LocalDateTime> lastEditTime = qHomePost.lastEditTime;
+
         JPAQuery<HomePost> query = queryFactory
                 .selectFrom(homePost)
                 .join(homePost.member, member)
@@ -49,10 +50,13 @@ public class HomePostRepositoryCustomImpl implements HomePostRepositoryCustom {
                         ageBetween(homePostFilter.minAge(), homePostFilter.maxAge()),
                         member.id.ne(memberId)
                 )
-                .orderBy(lastEditTime.desc())
-                .limit(pageable.getPageSize())
-                .offset(pageable.getPageNumber() * pageable.getPageSize());
-        return PageableExecutionUtils.getPage(query.fetch(), pageable, query::fetchCount);
+                .orderBy(lastEditTime.desc());
+
+        return PageableExecutionUtils.getPage(
+                query.orderBy(lastEditTime.desc())
+                    .limit(pageable.getPageSize())
+                    .offset(pageable.getPageNumber() * pageable.getPageSize()).fetch()
+                , pageable, query::fetchCount);
     }
 
     private BooleanExpression postTypeEq(PostStatus postStatus) {

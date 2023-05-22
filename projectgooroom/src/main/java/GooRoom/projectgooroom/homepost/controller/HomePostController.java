@@ -321,7 +321,7 @@ public class HomePostController {
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "lastEditTime"));
 
-        PageImpl<ListedPostDto> postmarkList = memberService.getPostmarkList(member.getId(), pageable);
+        Page<ListedPostDto> postmarkList = memberService.getPostmarkList(member.getId(), pageable);
 
         List<ListedPostDto> listedPostDtoList = postmarkList.getContent();
 
