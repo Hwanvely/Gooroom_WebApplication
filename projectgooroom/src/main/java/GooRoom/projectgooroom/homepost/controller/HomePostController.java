@@ -93,10 +93,9 @@ public class HomePostController {
      */
     @GetMapping("/mates/{postId}")
     public ResponseEntity getHomePost(@Valid @PathVariable("postId") Long postId) {
-        HomePost homePost = homePostService.findOne(postId);
-        Member member = homePost.getMember();
-
         try {
+            HomePost homePost = homePostService.findOne(postId);
+            Member member = homePost.getMember();
             boolean isPostmark = member.getPostmarkList().stream()
                     .anyMatch(postmark -> postmark.getPostId().equals(postId));
             GetHomePostDto getHomePostDto = new GetHomePostDto(homePost, member.getNickname(), member.getAge(), isPostmark);
@@ -281,7 +280,7 @@ public class HomePostController {
         if(homePostFilterDto.postStatus()==PostStatus.PROGRESS){
             Pageable pageable = PageRequest.of(page, PAGING_SIZE);
             Page<ListedPostDto> filteredPost = recommendService.findFilteredPostProgress(email, pageable, homePostFilterDto);
-            int postCount = filteredPost.getContent().size();
+            long postCount = filteredPost.getTotalElements();
 
             return new ResponseEntity<>(new HomePostListDto(postCount, filteredPost.getContent()),HttpStatus.OK);
         }
@@ -319,13 +318,13 @@ public class HomePostController {
                                          @RequestParam(defaultValue = "0")int page){
         Member member = getMemberFromUserDetails(userDetails);
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "lastEditTime"));
+        Pageable pageable = PageRequest.of(page, 10);
 
-        PageImpl<ListedPostDto> postmarkList = memberService.getPostmarkList(member.getId(), pageable);
+        Page<ListedPostDto> postmarkList = memberService.getPostmarkList(member.getId(), pageable);
 
         List<ListedPostDto> listedPostDtoList = postmarkList.getContent();
 
-        return new ResponseEntity(new HomePostListDto(listedPostDtoList.size(), listedPostDtoList), HttpStatus.OK);
+        return new ResponseEntity(new HomePostListDto(postmarkList.getTotalElements(), listedPostDtoList), HttpStatus.OK);
     }
 
     /**
