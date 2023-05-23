@@ -93,10 +93,9 @@ public class HomePostController {
      */
     @GetMapping("/mates/{postId}")
     public ResponseEntity getHomePost(@Valid @PathVariable("postId") Long postId) {
-        HomePost homePost = homePostService.findOne(postId);
-        Member member = homePost.getMember();
-
         try {
+            HomePost homePost = homePostService.findOne(postId);
+            Member member = homePost.getMember();
             boolean isPostmark = member.getPostmarkList().stream()
                     .anyMatch(postmark -> postmark.getPostId().equals(postId));
             GetHomePostDto getHomePostDto = new GetHomePostDto(homePost, member.getNickname(), member.getAge(), isPostmark);
