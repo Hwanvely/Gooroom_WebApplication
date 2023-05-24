@@ -64,9 +64,11 @@ public class Member {
     private MemberInformation memberInformation;
 
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HomePost> homePostList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Postmark> postmarkList = new ArrayList<>();
 
