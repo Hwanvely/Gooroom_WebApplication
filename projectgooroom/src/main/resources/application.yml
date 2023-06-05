@@ -38,7 +38,12 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
     # org.apache.coyote.http11: debug # http 로그 정보
-
+server:
+  port: 443
+  ssl:
+    key-store: classpath:ssl/keystore.p12
+    key-store-password: 1234
+    key-store-type: PKCS12
 ---
 
 spring:
