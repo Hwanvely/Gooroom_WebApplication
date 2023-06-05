@@ -16,6 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://gooroom-frontend-git-develop-clap-0.vercel.app"
                 )
                 .allowedMethods("*")
+                .exposedHeaders("Authorization")
                 .allowedHeaders("*");
     }
 }
