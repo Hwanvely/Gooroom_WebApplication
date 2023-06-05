@@ -1,0 +1,82 @@
+spring:
+  profiles:
+    group:
+      dev:
+        - h2
+        - oauth
+      prod:
+        - mysql
+        - oauth
+
+---
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+
+  thymeleaf:
+    prefix: src/main/resources/templates
+    suffix: .html
+    mode: LEGACYHTML5
+    enabled: true
+
+  profiles:
+    active: oauth
+
+jwt:
+  secretKey: U2ltcGxlQm9hcmQtSnVuc2VvLVNwcmluZ0Jvb3QtVXNpbmdTcHJpbmdTZWN1cml0eS0yMDIzLTA0LTA5LXN1bmRheS13aXRoLU1hY2tib29rQWlyLUFpcnBvZHNwcm8taXBob25lMTRwcm8taXBhZGFyaXI0Cg==
+  access:
+    expiration: 3600000 # 1시간(60분) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
+    header: Authorization
+  refresh:
+    expiration: 1209600000 # (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> 하루) * 14(2주))
+    header: Authorization-refresh
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+    # org.apache.coyote.http11: debug # http 로그 정보
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: h2
+
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/gooroom
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+      default_batch_fetch_size: 100
+    properties:
+      hibernate:
+        format_sql: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: mysql
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/gooroom?characterEncoding=UTF-8&serverTimezone=UTC
+    username: hwan
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 'leo!990706'
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      default_batch_fetch_size: 100
+    properties:
+      hibernate:
+        format_sql: true
