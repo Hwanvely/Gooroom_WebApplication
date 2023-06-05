@@ -58,7 +58,7 @@ public class JwtService {
     private static final String BEARER = "Bearer ";
 
     private static final String COOKIE_PATH = "/";
-    private static final String COOKIE_DOMAIN = "localhost";
+    private static final String COOKIE_DOMAIN = "www.gooroom.site";
 
     private final MemberRepository memberRepository;
 
@@ -163,19 +163,13 @@ public class JwtService {
      * RefreshToken 쿠키 설정
      */
     public void setRefreshTokenCookie(HttpServletResponse response, String refreshToken){
-//        Cookie cookie = new Cookie(refreshHeader, refreshToken);
-//        cookie.setMaxAge(accessTokenExpirationPeriod);
-//        cookie.setHttpOnly(true);
-//        cookie.setPath(COOKIE_PATH);
-////        cookie.setDomain();
-//        response.addCookie(cookie);
+        Cookie cookie = new Cookie(refreshHeader, refreshToken);
+        cookie.setMaxAge(accessTokenExpirationPeriod);
+        cookie.setHttpOnly(true);
+        cookie.setPath(COOKIE_PATH);
+        cookie.setDomain(COOKIE_DOMAIN);
+        response.addCookie(cookie);
 
-        ResponseCookie cookie = ResponseCookie.from("Authorization-refresh",refreshToken)
-                .sameSite("None")
-                .secure(false)
-                .path("/")
-                .build();
-        response.addHeader("Set-Cookie", cookie.toString());
     }
 
     /**
