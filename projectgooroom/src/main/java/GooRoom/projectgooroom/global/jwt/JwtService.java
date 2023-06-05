@@ -11,7 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import org.springframework.transaction.annotation.Transactional;
@@ -161,12 +163,19 @@ public class JwtService {
      * RefreshToken 쿠키 설정
      */
     public void setRefreshTokenCookie(HttpServletResponse response, String refreshToken){
-        Cookie cookie = new Cookie(refreshHeader, refreshToken);
-        cookie.setMaxAge(accessTokenExpirationPeriod);
-        cookie.setHttpOnly(true);
-        cookie.setPath(COOKIE_PATH);
-//        cookie.setDomain(COOKIE_DOMAIN);
-        response.addCookie(cookie);
+//        Cookie cookie = new Cookie(refreshHeader, refreshToken);
+//        cookie.setMaxAge(accessTokenExpirationPeriod);
+//        cookie.setHttpOnly(true);
+//        cookie.setPath(COOKIE_PATH);
+////        cookie.setDomain();
+//        response.addCookie(cookie);
+
+        ResponseCookie cookie = ResponseCookie.from("Authorization-refresh",refreshToken)
+                .sameSite("None")
+                .secure(false)
+                .path("/")
+                .build();
+        response.addHeader("Set-Cookie", cookie.toString());
     }
 
     /**
