@@ -80,9 +80,9 @@ spring:
         format_sql: true
 
 server:
-  port: 443
+  port: 8443
   ssl:
     key-store: classpath:ssl/keystore.p12
     key-store-type: PKCS12
     key-alias: tomcat
-    key-password: 1234
+    key-store-password: 1234
