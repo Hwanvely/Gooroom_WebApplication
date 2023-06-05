@@ -168,6 +168,7 @@ public class JwtService {
         cookie.setHttpOnly(true);
         cookie.setPath(COOKIE_PATH);
         cookie.setDomain(COOKIE_DOMAIN);
+        cookie.setSecure(true);
         response.addCookie(cookie);
 
     }
