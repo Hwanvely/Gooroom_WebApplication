@@ -56,7 +56,7 @@ public class JwtService {
     private static final String BEARER = "Bearer ";
 
     private static final String COOKIE_PATH = "/";
-    private static final String COOKIE_DOMAIN = "localhost";
+    private static final String COOKIE_DOMAIN = "gooroom-frontend.vercel.app";
 
     private final MemberRepository memberRepository;
 
