@@ -14,7 +14,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://localhost:3000",
                         "https://gooroom-frontend.vercel.app",
                         "https://gooroom-frontend-git-develop-clap-0.vercel.app",
-                        "https://www.gooroom.site"
+                        "https://www.gooroom.site",
+                        "https://www.gooroom.store"
                 )
                 .allowedMethods("*")
                 .allowedHeaders("*");
