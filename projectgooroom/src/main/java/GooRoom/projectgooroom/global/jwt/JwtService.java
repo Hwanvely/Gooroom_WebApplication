@@ -11,9 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,14 +109,19 @@ public class JwtService {
      * 토큰 형식 : Bearer XXX -> "" XXX
      */
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
-        Cookie refreshCookie = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals(refreshHeader))
-                .findFirst()
-                .orElse(null);
-        if(refreshCookie == null){
-            throw new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
+        try{
+            Cookie refreshCookie = Arrays.stream(request.getCookies())
+                    .filter(cookie -> cookie.getName().equals(refreshHeader))
+                    .findFirst()
+                    .orElse(null);
+            if (refreshCookie == null) {
+                throw new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
+            }
+            return Optional.ofNullable(refreshCookie.getValue());
+        }catch(Exception e){
+            new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
         }
-        return Optional.ofNullable(refreshCookie.getValue());
+        return Optional.empty();
     }
 
     /**
@@ -167,10 +170,9 @@ public class JwtService {
         cookie.setMaxAge(accessTokenExpirationPeriod);
         cookie.setHttpOnly(true);
         cookie.setPath(COOKIE_PATH);
-        cookie.setDomain(COOKIE_DOMAIN);
-        cookie.setSecure(true);
+//        cookie.setDomain(COOKIE_DOMAIN);
+//        cookie.setSecure(true);
         response.addCookie(cookie);
-
     }
 
     /**
@@ -211,16 +213,20 @@ public class JwtService {
      * @param request
      */
     public void expireRefreshToken(HttpServletResponse response, HttpServletRequest request){
-        Cookie refreshCookie = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals(refreshHeader))
-                .findFirst()
-                .orElse(null);
-        if(refreshCookie == null){
+        try{
+            Cookie refreshCookie = Arrays.stream(request.getCookies())
+                    .filter(cookie -> cookie.getName().equals(refreshHeader))
+                    .findFirst()
+                    .orElse(null);
+            if (refreshCookie == null) {
+                throw new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
+            }
+            refreshCookie.setMaxAge(0);
+            refreshCookie.setHttpOnly(true);
+            response.addCookie(refreshCookie);
+        }catch (Exception e){
             throw new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
         }
-        refreshCookie.setMaxAge(0);
-        refreshCookie.setHttpOnly(true);
-        response.addCookie(refreshCookie);
     }
 
     /**
