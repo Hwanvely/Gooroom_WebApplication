@@ -50,7 +50,7 @@ public class MemberController {
     private final HomePostService homePostService;
 
     //프로필 사진 절대 경로 지정
-    private static final String PROFILE_IMAGE_PATH = "/Users/junseo/Documents/Study/Gooroom_WebApplication/projectgooroom/src/main/resources/image/user/";
+    private static final String PROFILE_IMAGE_PATH = "/home/ubuntu/images/user/";
 
     /**
      * Email을 통한 회원가입

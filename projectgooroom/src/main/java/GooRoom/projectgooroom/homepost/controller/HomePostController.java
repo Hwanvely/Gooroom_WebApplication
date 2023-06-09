@@ -47,7 +47,7 @@ public class HomePostController {
 
     private final MemberService memberService;
 
-    private static final String ROOM_IMAGE_PATH = "/Users/junseo/Documents/Study/Gooroom_WebApplication/projectgooroom/src/main/resources/image/homePost/";
+    private static final String ROOM_IMAGE_PATH = "/home/ubuntu/images/homePost/";
 
     private static int PAGING_SIZE = 10;
 
