@@ -18,7 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://www.gooroom.store"
                 )
                 .allowedMethods("*")
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }
 

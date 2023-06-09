@@ -33,11 +33,11 @@ import java.util.Random;
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL_LOGIN = "/login/"; // "/login/**"으로 들어오는 요청은 Filter 작동 X
-    private static final String NO_CHECK_URL_LOGOUT = "/signout"; // "/signout"으로 들어오는 요청은 Filter 작동 X
-    private static final String NO_CHECK_URL_SIGNUP = "/signup/"; // "/signup/**"으로 들어오는 요청은 Filter 작동 X
+    private static final String NO_CHECK_URL_LOGIN = "/api/login/"; // "/login/**"으로 들어오는 요청은 Filter 작동 X
+    private static final String NO_CHECK_URL_LOGOUT = "/api/signout"; // "/signout"으로 들어오는 요청은 Filter 작동 X
+    private static final String NO_CHECK_URL_SIGNUP = "/api/signup/"; // "/signup/**"으로 들어오는 요청은 Filter 작동 X
 
-    private static final String NO_CHECK_URL_ROOMS = "/rooms/";
+    private static final String NO_CHECK_URL_ROOMS = "/api/rooms/";
 
     private static final String NO_CHECK_URL_NAVER = "/"; // "네이버 로그인"으로 들어오는 요청은 Filter 작동 X
 
