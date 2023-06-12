@@ -72,7 +72,11 @@ public class SecurityConfig {
                 .requestMatchers("/api/signup/**").permitAll() //회원가입 접근 가능
                 .requestMatchers("/api/login/**").permitAll()   //로그인 접근 가능
                 .requestMatchers("/api/signout").permitAll()//로그아웃 접근 가능
-                .requestMatchers("/api/rooms/**").permitAll() //매물정보 접근 가능
+                .requestMatchers("/api/rooms/**").permitAll() //매물정보 접근 가능.
+                .requestMatchers("/signup/**").permitAll() //회원가입 접근 가능
+                .requestMatchers("/login/**").permitAll()   //로그인 접근 가능
+                .requestMatchers("/signout").permitAll()//로그아웃 접근 가능
+                .requestMatchers("/rooms/**").permitAll() //매물정보 접근 가능
                 .anyRequest().authenticated()
                 .and()
                 //== 소셜 로그인 설정 ==//
