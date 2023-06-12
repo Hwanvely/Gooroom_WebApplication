@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
@@ -50,7 +51,8 @@ public class MemberController {
     private final HomePostService homePostService;
 
     //프로필 사진 절대 경로 지정
-    private static final String PROFILE_IMAGE_PATH = "/home/ubuntu/images/user/";
+    @Value("${imgPath.profile}")
+    private String PROFILE_IMAGE_PATH;
 
     /**
      * Email을 통한 회원가입
