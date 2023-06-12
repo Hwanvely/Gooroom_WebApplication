@@ -46,6 +46,12 @@ public class JwtService {
     @Value("${jwt.refresh.header}")
     private String refreshHeader;
 
+    @Value("${jwt.cookie.path}")
+    private String COOKIE_PATH;
+
+    @Value("${jwt.cookie.domain}")
+    private String COOKIE_DOMAIN;
+
     /**
      * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "email"으로 설정
      * JWT의 헤더에 들어오는 값 : 'Authorization(Key) = Bearer {토큰} (Value)'
@@ -54,9 +60,6 @@ public class JwtService {
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String EMAIL_CLAIM = "email";
     private static final String BEARER = "Bearer ";
-
-    private static final String COOKIE_PATH = "/";
-    private static final String COOKIE_DOMAIN = "www.gooroom.site";
 
     private final MemberRepository memberRepository;
 
