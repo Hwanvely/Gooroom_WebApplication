@@ -15,12 +15,6 @@ spring:
     multipart:
       max-file-size: 20MB
 
-  thymeleaf:
-    prefix: src/main/resources/templates
-    suffix: .html
-    mode: LEGACYHTML5
-    enabled: true
-
   profiles:
     active: oauth
 
@@ -32,6 +26,13 @@ jwt:
   refresh:
     expiration: 1209600000 # (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> 하루) * 14(2주))
     header: Authorization-refresh
+  cookie:
+      path: /
+      domain: www.gooroom.site
+
+server:
+  servlet:
+    context-path: /api
 
 logging:
   level:
@@ -58,6 +59,9 @@ spring:
       hibernate:
         format_sql: true
 
+imgPath:
+    profile: /Users/junseo/Documents/Study/Gooroom_WebApplication/projectgooroom/src/main/resources/image/user/
+    homePost: /Users/junseo/Documents/Study/Gooroom_WebApplication/projectgooroom/src/main/resources/image/homePost/
 
 ---
 spring:
@@ -66,10 +70,10 @@ spring:
       on-profile: mysql
 
   datasource:
-    url: jdbc:mysql://localhost:3306/gooroom?characterEncoding=UTF-8&serverTimezone=UTC
-    username: hwan
+    url: jdbc:mysql://gooroom-db.cwfs4j4gmmfx.ap-northeast-2.rds.amazonaws.com:3306/gooroom_db
+    username: p3j1
+    password: wjdghkswldkstndudwnstj
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: 'leo!990706'
 
   jpa:
     hibernate:
@@ -78,11 +82,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
-server:
-  port: 443
-  ssl:
-    key-store: classpath:ssl/keystore.p12
-    key-store-type: PKCS12
-    key-store-password: 1234
-    enabled: true
+imgPath:
+  profile: /user/
+  homePost: /homepost/

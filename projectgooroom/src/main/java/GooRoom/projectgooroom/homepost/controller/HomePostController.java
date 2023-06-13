@@ -16,6 +16,7 @@ import GooRoom.projectgooroom.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
@@ -47,7 +48,8 @@ public class HomePostController {
 
     private final MemberService memberService;
 
-    private static final String ROOM_IMAGE_PATH = "/Users/junseo/Documents/Study/Gooroom_WebApplication/projectgooroom/src/main/resources/image/homePost/";
+    @Value("${imgPath.homePost}")
+    private String ROOM_IMAGE_PATH;
 
     private static int PAGING_SIZE = 10;
 

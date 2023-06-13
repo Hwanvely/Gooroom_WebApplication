@@ -11,9 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +46,12 @@ public class JwtService {
     @Value("${jwt.refresh.header}")
     private String refreshHeader;
 
+    @Value("${jwt.cookie.path}")
+    private String COOKIE_PATH;
+
+    @Value("${jwt.cookie.domain}")
+    private String COOKIE_DOMAIN;
+
     /**
      * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "email"으로 설정
      * JWT의 헤더에 들어오는 값 : 'Authorization(Key) = Bearer {토큰} (Value)'
@@ -56,9 +60,6 @@ public class JwtService {
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String EMAIL_CLAIM = "email";
     private static final String BEARER = "Bearer ";
-
-    private static final String COOKIE_PATH = "/";
-    private static final String COOKIE_DOMAIN = "www.gooroom.site";
 
     private final MemberRepository memberRepository;
 
@@ -111,14 +112,19 @@ public class JwtService {
      * 토큰 형식 : Bearer XXX -> "" XXX
      */
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
-        Cookie refreshCookie = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals(refreshHeader))
-                .findFirst()
-                .orElse(null);
-        if(refreshCookie == null){
-            throw new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
+        try{
+            Cookie refreshCookie = Arrays.stream(request.getCookies())
+                    .filter(cookie -> cookie.getName().equals(refreshHeader))
+                    .findFirst()
+                    .orElse(null);
+            if (refreshCookie == null) {
+                throw new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
+            }
+            return Optional.ofNullable(refreshCookie.getValue());
+        }catch(Exception e){
+            new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
         }
-        return Optional.ofNullable(refreshCookie.getValue());
+        return Optional.empty();
     }
 
     /**
@@ -167,10 +173,9 @@ public class JwtService {
         cookie.setMaxAge(accessTokenExpirationPeriod);
         cookie.setHttpOnly(true);
         cookie.setPath(COOKIE_PATH);
-        cookie.setDomain(COOKIE_DOMAIN);
-        cookie.setSecure(true);
+//        cookie.setDomain(COOKIE_DOMAIN);
+//        cookie.setSecure(true);
         response.addCookie(cookie);
-
     }
 
     /**
@@ -211,16 +216,20 @@ public class JwtService {
      * @param request
      */
     public void expireRefreshToken(HttpServletResponse response, HttpServletRequest request){
-        Cookie refreshCookie = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals(refreshHeader))
-                .findFirst()
-                .orElse(null);
-        if(refreshCookie == null){
+        try{
+            Cookie refreshCookie = Arrays.stream(request.getCookies())
+                    .filter(cookie -> cookie.getName().equals(refreshHeader))
+                    .findFirst()
+                    .orElse(null);
+            if (refreshCookie == null) {
+                throw new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
+            }
+            refreshCookie.setMaxAge(0);
+            refreshCookie.setHttpOnly(true);
+            response.addCookie(refreshCookie);
+        }catch (Exception e){
             throw new MemberException(MemberExceptionType.REFRESH_TOKEN_NOT_EXIST);
         }
-        refreshCookie.setMaxAge(0);
-        refreshCookie.setHttpOnly(true);
-        response.addCookie(refreshCookie);
     }
 
     /**

@@ -69,6 +69,10 @@ public class SecurityConfig {
                 // 아이콘, css, js 관련
                 // 기본 페이지, css, image, js 하위 폴더에 있는 자료들은 모두 접근 가능, h2-console에 접근 가능
                 .requestMatchers("/","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**").permitAll()
+                .requestMatchers("/api/signup/**").permitAll() //회원가입 접근 가능
+                .requestMatchers("/api/login/**").permitAll()   //로그인 접근 가능
+                .requestMatchers("/api/signout").permitAll()//로그아웃 접근 가능
+                .requestMatchers("/api/rooms/**").permitAll() //매물정보 접근 가능.
                 .requestMatchers("/signup/**").permitAll() //회원가입 접근 가능
                 .requestMatchers("/login/**").permitAll()   //로그인 접근 가능
                 .requestMatchers("/signout").permitAll()//로그아웃 접근 가능
